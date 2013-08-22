@@ -45,7 +45,7 @@ class PublicAction extends GlobalAction {
 			$uname = $userModel->where($map)->getField('uname');
 			
 			if($uname != null && $password == null){
-				$data['info'] = "你好".$uname."，请输入登录密码。";
+				$data['info'] = "你好".$uname."，请输入登录密码";
 				$data['status'] = 1;//账号验证正确
 			}else if($uname == null && $password == null){
 				$data['info'] = "该账号未注册,请重新输入！";
@@ -153,6 +153,7 @@ class PublicAction extends GlobalAction {
 	 */
 	public function sendEmail($address,$subject,$body){
 		$this->gloIncludes();//包含邮件发送类
+		$result = 0;
 		
 		$mail = new PHPMailer(); //建立邮件发送类
 		$address = $address;//收件人地址
@@ -178,18 +179,10 @@ class PublicAction extends GlobalAction {
 			trace($mail->ErrorInfo,'邮件发送失败原因');
 		}else{
 			trace("邮件发送成功",'提示');
+			$result = 1;
 		}
-		return;
+		return $result;
 	}
-	
-	/**
-	 * 点击邮件链接重新设置密码功能界面显示
-	 * @author wangkai2013820
-	 */
-	public function resetPassword(){
-		$this->display();
-	}
-	
 	
 	/**
 	 * 邮箱验证账号激活
@@ -211,20 +204,39 @@ class PublicAction extends GlobalAction {
 			$this->error('激活失败请重新完成激活(原因：激活码不正确或者已过期。)','../Index/index');
 		}
 	}
+	
+	/**
+	 * 点击邮件链接重新设置密码功能界面显示
+	 * @author wangkai2013820
+	 */
+	public function resetPassword(){
+		$email = $_REQUEST['email'];
+				
+		$this->display();
+	}
+	
 	/**
 	 * 发送找回密码链接
 	 */
 	public function findPassword(){
-		$email = $_POST('Email');
+		$email = $_POST['Email'];
+		$data['rightinfo'] = "重发邮件";
 		
 		//发送找回密码链接邮件
 		$address = $email;
 		$subject = "Hello密码找回邮件";
 		$verifyCode = sha1(md5($email*"5815355"/"wang5815355"));//sha1(md5(邮箱地址*5815355/"wang5815355"))找回密码链接加密规则;
 		$body = "<heml><body>ok&nbsp&nbsp! 点一下
-						<a href='http://localhost/hello/index.php/Public/emailVerify?verifyCode=".$verifyCode."'>重设密码</a>
+						<a href='http://localhost/hello/index.php/Public/resetPassword?verifyCode=".$verifyCode."&email=".$email."'>重设密码</a>
 						进入密码设置页面重新设置登录密码。<body/></html>";
-		$this->sendEmail($address,$subject,$body);
+		
+		$result = $this->sendEmail($address,$subject,$body);
+		if($result == 1){
+			$data['talkinfo'] = "密码找回邮件已发送至你注册邮箱";
+		}else{
+			$data['talkinfo'] = "邮件发送失败，请点击'重发邮件'";
+		}
+		$this->ajaxReturn($data,'JSON');
 	}
 	
 	/**
