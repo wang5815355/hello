@@ -70,7 +70,7 @@
 		}
 		.inputbox{
 			margin-left:8px;
-			margin-top:60px;
+			margin-top:80px;
 		}
 		.container{
 			width:780px;
@@ -87,10 +87,11 @@
 	$(document).ready(function(){
 		$("#appendedInputButton").focus();
 		
-		//回车键提交
+		//回车键提交内容
 		$("#appendedInputButton").keyup(function(event){
-			if(event.whitch == '13'){
-				alert("13");
+			var i = event.which;
+			if(i==13){
+				$('#sendBtn').click();
 			}
 		});
 		

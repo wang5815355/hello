@@ -199,7 +199,7 @@
 			margin-left:31px;
 			margin-top:15px;
 		}
-		
+
 		.captain-register{
 			display:none;
 		}
@@ -424,7 +424,7 @@
 					<div class="logo">Hello</div>
 				</div>
 			</div>
-			
+
 			<div class="content">
 				<div class="dialog left" id="dialog">
 					<div class="row captain">
@@ -443,11 +443,11 @@
 							</div>
 						</div>
 					</div>
-					
+
 					<!-- 注册表单  -->
 					<div class="row captain captain-register" >
 						<div class="span2 offset1">
-							
+
 							<div class="cface">
 								<a href="#" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="提示底部">
 									<img src="__ROOT__/hello/Uploads/4.jpg" class="img-polaroid" id="img-polaroid">
@@ -486,7 +486,7 @@
 							</div>
 						</div>
 					</div>
-					
+
 					<!-- <div class="row user" id="user">
 						<div class="span5 offset2">
 							<div class="talkbox-user"></div>
@@ -496,7 +496,7 @@
 							<div class="talkbox-title-left-2-user"></div>
 						</div>
 					</div> -->
-					
+
 				</div>
 			</div>
 			<div class="row inputbox">
