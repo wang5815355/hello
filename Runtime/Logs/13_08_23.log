@@ -2908,3 +2908,503 @@ INFO: ReadHtmlCache Behavior ::run [ RunTime:0.001085s ]
 INFO: [ app_begin ] --END-- [ RunTime:0.001160s ]
 SQL: SHOW COLUMNS FROM `hello_user` [ RunTime:0.019946s ]
 
+[ 2013-08-23T17:50:51+08:00 ] 127.0.0.1 /hello/index.php/Public/login
+INFO: [ route_check ] --START--
+INFO: CheckRoute Behavior ::run [ RunTime:0.002200s ]
+INFO: [ route_check ] --END-- [ RunTime:0.002339s ]
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.001217s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001306s ]
+INFO: [ view_parse ] --START--
+INFO: ParseTemplate Behavior ::run [ RunTime:0.017661s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.017773s ]
+INFO: [ view_filter ] --START--
+INFO: ContentReplace Behavior ::run [ RunTime:0.001046s ]
+INFO: TokenBuild Behavior ::run [ RunTime:0.001011s ]
+INFO: WriteHtmlCache Behavior ::run [ RunTime:0.000753s ]
+INFO: ShowRuntime Behavior ::run [ RunTime:0.001053s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.004117s ]
+INFO: [ view_end ] --START--
+INFO: ShowPageTrace Behavior ::run [ RunTime:0.001531s ]
+INFO: [ view_end ] --END-- [ RunTime:0.001629s ]
+
+[ 2013-08-23T17:50:51+08:00 ] 127.0.0.1 /hello/index.php/Public/verify/
+INFO: [ route_check ] --START--
+INFO: CheckRoute Behavior ::run [ RunTime:0.001740s ]
+INFO: [ route_check ] --END-- [ RunTime:0.001863s ]
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.001214s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001309s ]
+
+[ 2013-08-23T17:50:54+08:00 ] 127.0.0.1 /hello/index.php/Public/login
+INFO: [ route_check ] --START--
+INFO: CheckRoute Behavior ::run [ RunTime:0.001435s ]
+INFO: [ route_check ] --END-- [ RunTime:0.001550s ]
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.001346s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001452s ]
+INFO: [ view_parse ] --START--
+INFO: ParseTemplate Behavior ::run [ RunTime:0.016880s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.016996s ]
+INFO: [ view_filter ] --START--
+INFO: ContentReplace Behavior ::run [ RunTime:0.001096s ]
+INFO: TokenBuild Behavior ::run [ RunTime:0.000919s ]
+INFO: WriteHtmlCache Behavior ::run [ RunTime:0.000767s ]
+INFO: ShowRuntime Behavior ::run [ RunTime:0.000992s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.003994s ]
+INFO: [ view_end ] --START--
+INFO: ShowPageTrace Behavior ::run [ RunTime:0.001189s ]
+INFO: [ view_end ] --END-- [ RunTime:0.001267s ]
+
+[ 2013-08-23T17:50:54+08:00 ] 127.0.0.1 /hello/index.php/Public/verify/
+INFO: [ route_check ] --START--
+INFO: CheckRoute Behavior ::run [ RunTime:0.002108s ]
+INFO: [ route_check ] --END-- [ RunTime:0.002242s ]
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.001561s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001716s ]
+
+[ 2013-08-23T17:50:56+08:00 ] 127.0.0.1 /hello/index.php/Public/login
+INFO: [ route_check ] --START--
+INFO: CheckRoute Behavior ::run [ RunTime:0.001265s ]
+INFO: [ route_check ] --END-- [ RunTime:0.001367s ]
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.000990s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001074s ]
+INFO: [ view_parse ] --START--
+INFO: ParseTemplate Behavior ::run [ RunTime:0.017907s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.018041s ]
+INFO: [ view_filter ] --START--
+INFO: ContentReplace Behavior ::run [ RunTime:0.001252s ]
+INFO: TokenBuild Behavior ::run [ RunTime:0.000924s ]
+INFO: WriteHtmlCache Behavior ::run [ RunTime:0.000873s ]
+INFO: ShowRuntime Behavior ::run [ RunTime:0.001151s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.004446s ]
+INFO: [ view_end ] --START--
+INFO: ShowPageTrace Behavior ::run [ RunTime:0.001277s ]
+INFO: [ view_end ] --END-- [ RunTime:0.001361s ]
+
+[ 2013-08-23T17:50:57+08:00 ] 127.0.0.1 /hello/index.php/Public/verify/
+INFO: [ route_check ] --START--
+INFO: CheckRoute Behavior ::run [ RunTime:0.001919s ]
+INFO: [ route_check ] --END-- [ RunTime:0.002059s ]
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.001938s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.002138s ]
+
+[ 2013-08-23T17:51:05+08:00 ] 127.0.0.1 /hello/index.php/Public/register
+INFO: [ route_check ] --START--
+INFO: CheckRoute Behavior ::run [ RunTime:0.001476s ]
+INFO: [ route_check ] --END-- [ RunTime:0.001604s ]
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.001087s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001173s ]
+SQL: SHOW COLUMNS FROM `hello_user` [ RunTime:0.006967s ]
+NOTIC: [8] Undefined index: password D:\wamp\www\hello\Lib\Action\PublicAction.class.php 第 19 行.
+SQL: SELECT `uname` FROM `hello_user` WHERE ( `email` = '393867916@qq.com' ) LIMIT 1   [ RunTime:0.000611s ]
+
+[ 2013-08-23T17:51:14+08:00 ] 127.0.0.1 /hello/index.php/Public/register
+INFO: [ route_check ] --START--
+INFO: CheckRoute Behavior ::run [ RunTime:0.001351s ]
+INFO: [ route_check ] --END-- [ RunTime:0.001470s ]
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.000956s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001028s ]
+SQL: SHOW COLUMNS FROM `hello_user` [ RunTime:0.008041s ]
+SQL: SELECT * FROM `hello_user` WHERE ( `email` = '393867916@qq.com' ) AND ( `password` = '2bc792e3cc551aa676a309d3fbe463b0d0c70834' )  [ RunTime:0.001291s ]
+
+[ 2013-08-23T17:51:20+08:00 ] 127.0.0.1 /hello/index.php/Public/findPassword
+INFO: [ route_check ] --START--
+INFO: CheckRoute Behavior ::run [ RunTime:0.001268s ]
+INFO: [ route_check ] --END-- [ RunTime:0.001374s ]
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.000911s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000980s ]
+NOTIC: [2] Division by zero D:\wamp\www\hello\Lib\Action\PublicAction.class.php 第 268 行.
+DEBUG: 提示:邮件发送成功
+
+[ 2013-08-23T17:51:53+08:00 ] 127.0.0.1 /hello/index.php/Public/findPassword
+INFO: [ route_check ] --START--
+INFO: CheckRoute Behavior ::run [ RunTime:0.001258s ]
+INFO: [ route_check ] --END-- [ RunTime:0.001361s ]
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.000906s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000976s ]
+NOTIC: [2] Division by zero D:\wamp\www\hello\Lib\Action\PublicAction.class.php 第 268 行.
+DEBUG: 提示:邮件发送成功
+
+[ 2013-08-23T17:52:18+08:00 ] 127.0.0.1 /hello/index.php/Public/resetPassword?verifyCode=67a74306b06d0c01624fe0d0249a570f4d093747&email=393867916@qq.com
+INFO: [ route_check ] --START--
+INFO: CheckRoute Behavior ::run [ RunTime:0.001260s ]
+INFO: [ route_check ] --END-- [ RunTime:0.001364s ]
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.000909s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000991s ]
+NOTIC: [2] Division by zero D:\wamp\www\hello\Lib\Action\PublicAction.class.php 第 216 行.
+INFO: [ view_parse ] --START--
+INFO: ParseTemplate Behavior ::run [ RunTime:0.012629s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.012749s ]
+INFO: [ view_filter ] --START--
+INFO: ContentReplace Behavior ::run [ RunTime:0.000755s ]
+INFO: TokenBuild Behavior ::run [ RunTime:0.000774s ]
+INFO: WriteHtmlCache Behavior ::run [ RunTime:0.000609s ]
+INFO: ShowRuntime Behavior ::run [ RunTime:0.000841s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.003208s ]
+INFO: [ view_end ] --START--
+INFO: ShowPageTrace Behavior ::run [ RunTime:0.001030s ]
+INFO: [ view_end ] --END-- [ RunTime:0.001109s ]
+
+[ 2013-08-23T17:52:23+08:00 ] 127.0.0.1 /hello/index.php/Public/doResetPassword
+INFO: [ route_check ] --START--
+INFO: CheckRoute Behavior ::run [ RunTime:0.001485s ]
+INFO: [ route_check ] --END-- [ RunTime:0.001610s ]
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.000955s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001030s ]
+SQL: SHOW COLUMNS FROM `hello_user` [ RunTime:0.006427s ]
+SQL: UPDATE `hello_user` SET `password`='d6077b1caee887c5cc79845c22b39bdc948348b4' WHERE ( `email` = '393867916@qq.com' ) [ RunTime:0.000930s ]
+
+[ 2013-08-23T17:52:23+08:00 ] 127.0.0.1 /hello/index.php/Index/index
+INFO: [ route_check ] --START--
+INFO: CheckRoute Behavior ::run [ RunTime:0.001463s ]
+INFO: [ route_check ] --END-- [ RunTime:0.001617s ]
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.000934s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001012s ]
+INFO: [ view_parse ] --START--
+INFO: ParseTemplate Behavior ::run [ RunTime:0.006266s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.006411s ]
+INFO: [ view_filter ] --START--
+INFO: ContentReplace Behavior ::run [ RunTime:0.000728s ]
+INFO: TokenBuild Behavior ::run [ RunTime:0.000712s ]
+INFO: WriteHtmlCache Behavior ::run [ RunTime:0.000583s ]
+INFO: ShowRuntime Behavior ::run [ RunTime:0.000800s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.003042s ]
+INFO: [ view_end ] --START--
+INFO: ShowPageTrace Behavior ::run [ RunTime:0.001059s ]
+INFO: [ view_end ] --END-- [ RunTime:0.001149s ]
+
+[ 2013-08-23T17:52:32+08:00 ] 127.0.0.1 /hello/index.php/Public/register
+INFO: [ route_check ] --START--
+INFO: CheckRoute Behavior ::run [ RunTime:0.001576s ]
+INFO: [ route_check ] --END-- [ RunTime:0.001723s ]
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.001163s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001256s ]
+SQL: SHOW COLUMNS FROM `hello_user` [ RunTime:0.007929s ]
+SQL: SELECT * FROM `hello_user` WHERE ( `email` = '393867916@qq.com' ) AND ( `password` = 'd6077b1caee887c5cc79845c22b39bdc948348b4' )  [ RunTime:0.000635s ]
+
+[ 2013-08-23T17:52:39+08:00 ] 127.0.0.1 /hello/index.php/Public/register
+INFO: [ route_check ] --START--
+INFO: CheckRoute Behavior ::run [ RunTime:0.001364s ]
+INFO: [ route_check ] --END-- [ RunTime:0.001481s ]
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.001013s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001107s ]
+SQL: SHOW COLUMNS FROM `hello_user` [ RunTime:0.008069s ]
+SQL: SELECT * FROM `hello_user` WHERE ( `email` = '393867916@qq.com' ) AND ( `password` = 'd6077b1caee887c5cc79845c22b39bdc948348b4' )  [ RunTime:0.000798s ]
+
+[ 2013-08-23T18:01:37+08:00 ] 127.0.0.1 /hello/index.php/Public/register
+INFO: [ route_check ] --START--
+INFO: CheckRoute Behavior ::run [ RunTime:0.001787s ]
+INFO: [ route_check ] --END-- [ RunTime:0.001900s ]
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.001135s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001210s ]
+SQL: SHOW COLUMNS FROM `hello_user` [ RunTime:0.006027s ]
+SQL: SELECT * FROM `hello_user` WHERE ( `email` = '393867916@qq.com' ) AND ( `password` = 0 )  [ RunTime:0.007985s ]
+
+[ 2013-08-23T18:01:38+08:00 ] 127.0.0.1 /hello/index.php/Index/index
+INFO: [ route_check ] --START--
+INFO: CheckRoute Behavior ::run [ RunTime:0.001290s ]
+INFO: [ route_check ] --END-- [ RunTime:0.001395s ]
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.000939s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001017s ]
+INFO: [ view_parse ] --START--
+INFO: ParseTemplate Behavior ::run [ RunTime:0.006939s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.007065s ]
+INFO: [ view_filter ] --START--
+INFO: ContentReplace Behavior ::run [ RunTime:0.000907s ]
+INFO: TokenBuild Behavior ::run [ RunTime:0.000948s ]
+INFO: WriteHtmlCache Behavior ::run [ RunTime:0.000991s ]
+INFO: ShowRuntime Behavior ::run [ RunTime:0.001046s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.004150s ]
+INFO: [ view_end ] --START--
+INFO: ShowPageTrace Behavior ::run [ RunTime:0.001279s ]
+INFO: [ view_end ] --END-- [ RunTime:0.001362s ]
+
+[ 2013-08-23T18:20:11+08:00 ] 127.0.0.1 /hello/index.php/Public/resetPassword?verifyCode=67a74306b06d0c01624fe0d0249a570f4d093747&email=393867916@qq.com
+INFO: [ route_check ] --START--
+INFO: CheckRoute Behavior ::run [ RunTime:0.002447s ]
+INFO: [ route_check ] --END-- [ RunTime:0.002566s ]
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.001237s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001334s ]
+NOTIC: [2] Division by zero D:\wamp\www\hello\Lib\Action\PublicAction.class.php 第 216 行.
+INFO: [ view_parse ] --START--
+INFO: ParseTemplate Behavior ::run [ RunTime:0.015298s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.015479s ]
+INFO: [ view_filter ] --START--
+INFO: ContentReplace Behavior ::run [ RunTime:0.001196s ]
+INFO: TokenBuild Behavior ::run [ RunTime:0.001741s ]
+INFO: WriteHtmlCache Behavior ::run [ RunTime:0.001039s ]
+INFO: ShowRuntime Behavior ::run [ RunTime:0.001107s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.005381s ]
+INFO: [ view_end ] --START--
+INFO: ShowPageTrace Behavior ::run [ RunTime:0.001339s ]
+INFO: [ view_end ] --END-- [ RunTime:0.001430s ]
+
+[ 2013-08-23T18:21:36+08:00 ] 127.0.0.1 /hello/index.php/Public/resetPassword?verifyCode=67a74306b06d0c01624fe0d0249a570f4d093747&email=393867916@qq.com
+INFO: [ route_check ] --START--
+INFO: CheckRoute Behavior ::run [ RunTime:0.001647s ]
+INFO: [ route_check ] --END-- [ RunTime:0.001752s ]
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.001349s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001464s ]
+NOTIC: [2] Division by zero D:\wamp\www\hello\Lib\Action\PublicAction.class.php 第 216 行.
+INFO: [ view_parse ] --START--
+INFO: ParseTemplate Behavior ::run [ RunTime:0.012801s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.012913s ]
+INFO: [ view_filter ] --START--
+INFO: ContentReplace Behavior ::run [ RunTime:0.000950s ]
+INFO: TokenBuild Behavior ::run [ RunTime:0.000873s ]
+INFO: WriteHtmlCache Behavior ::run [ RunTime:0.001344s ]
+INFO: ShowRuntime Behavior ::run [ RunTime:0.001217s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.004638s ]
+INFO: [ view_end ] --START--
+INFO: ShowPageTrace Behavior ::run [ RunTime:0.001243s ]
+INFO: [ view_end ] --END-- [ RunTime:0.001325s ]
+
+[ 2013-08-23T18:21:58+08:00 ] 127.0.0.1 /hello/index.php/Public/doResetPassword
+INFO: [ route_check ] --START--
+INFO: CheckRoute Behavior ::run [ RunTime:0.001662s ]
+INFO: [ route_check ] --END-- [ RunTime:0.001766s ]
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.001473s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001554s ]
+SQL: SHOW COLUMNS FROM `hello_user` [ RunTime:0.007199s ]
+SQL: UPDATE `hello_user` SET `password`='00fbfeb9353ca2055ddc129b2f0a01913796a192' WHERE ( `email` = '393867916@qq.com' ) [ RunTime:0.001031s ]
+
+[ 2013-08-23T18:21:59+08:00 ] 127.0.0.1 /hello/index.php/Index/index
+INFO: [ route_check ] --START--
+INFO: CheckRoute Behavior ::run [ RunTime:0.001405s ]
+INFO: [ route_check ] --END-- [ RunTime:0.001523s ]
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.001148s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001255s ]
+INFO: [ view_parse ] --START--
+INFO: ParseTemplate Behavior ::run [ RunTime:0.006317s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.006428s ]
+INFO: [ view_filter ] --START--
+INFO: ContentReplace Behavior ::run [ RunTime:0.000921s ]
+INFO: TokenBuild Behavior ::run [ RunTime:0.001036s ]
+INFO: WriteHtmlCache Behavior ::run [ RunTime:0.000893s ]
+INFO: ShowRuntime Behavior ::run [ RunTime:0.000979s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.004073s ]
+INFO: [ view_end ] --START--
+INFO: ShowPageTrace Behavior ::run [ RunTime:0.001153s ]
+INFO: [ view_end ] --END-- [ RunTime:0.001229s ]
+
+[ 2013-08-23T18:22:08+08:00 ] 127.0.0.1 /hello/index.php
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.000933s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001031s ]
+INFO: [ view_parse ] --START--
+INFO: ParseTemplate Behavior ::run [ RunTime:0.005614s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.005723s ]
+INFO: [ view_filter ] --START--
+INFO: ContentReplace Behavior ::run [ RunTime:0.000692s ]
+INFO: TokenBuild Behavior ::run [ RunTime:0.000700s ]
+INFO: WriteHtmlCache Behavior ::run [ RunTime:0.000879s ]
+INFO: ShowRuntime Behavior ::run [ RunTime:0.000967s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.003586s ]
+INFO: [ view_end ] --START--
+INFO: ShowPageTrace Behavior ::run [ RunTime:0.001005s ]
+INFO: [ view_end ] --END-- [ RunTime:0.001080s ]
+
+[ 2013-08-23T18:22:32+08:00 ] 127.0.0.1 /hello/index.php/Public/login
+INFO: [ route_check ] --START--
+INFO: CheckRoute Behavior ::run [ RunTime:0.001436s ]
+INFO: [ route_check ] --END-- [ RunTime:0.001555s ]
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.000992s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001072s ]
+INFO: [ view_parse ] --START--
+INFO: ParseTemplate Behavior ::run [ RunTime:0.016796s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.016918s ]
+INFO: [ view_filter ] --START--
+INFO: ContentReplace Behavior ::run [ RunTime:0.000963s ]
+INFO: TokenBuild Behavior ::run [ RunTime:0.000791s ]
+INFO: WriteHtmlCache Behavior ::run [ RunTime:0.000584s ]
+INFO: ShowRuntime Behavior ::run [ RunTime:0.000833s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.003393s ]
+INFO: [ view_end ] --START--
+INFO: ShowPageTrace Behavior ::run [ RunTime:0.001022s ]
+INFO: [ view_end ] --END-- [ RunTime:0.001096s ]
+
+[ 2013-08-23T18:22:32+08:00 ] 127.0.0.1 /hello/index.php/Public/verify/
+INFO: [ route_check ] --START--
+INFO: CheckRoute Behavior ::run [ RunTime:0.001614s ]
+INFO: [ route_check ] --END-- [ RunTime:0.001729s ]
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.001036s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001128s ]
+
+[ 2013-08-23T18:25:20+08:00 ] 127.0.0.1 /hello/index.php/Public/login
+INFO: [ route_check ] --START--
+INFO: CheckRoute Behavior ::run [ RunTime:0.002030s ]
+INFO: [ route_check ] --END-- [ RunTime:0.002188s ]
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.001261s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001371s ]
+INFO: [ view_parse ] --START--
+INFO: ParseTemplate Behavior ::run [ RunTime:0.018954s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.019086s ]
+INFO: [ view_filter ] --START--
+INFO: ContentReplace Behavior ::run [ RunTime:0.001050s ]
+INFO: TokenBuild Behavior ::run [ RunTime:0.001014s ]
+INFO: WriteHtmlCache Behavior ::run [ RunTime:0.000770s ]
+INFO: ShowRuntime Behavior ::run [ RunTime:0.001014s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.004082s ]
+INFO: [ view_end ] --START--
+INFO: ShowPageTrace Behavior ::run [ RunTime:0.001184s ]
+INFO: [ view_end ] --END-- [ RunTime:0.001261s ]
+
+[ 2013-08-23T18:25:20+08:00 ] 127.0.0.1 /hello/index.php/Public/verify/
+INFO: [ route_check ] --START--
+INFO: CheckRoute Behavior ::run [ RunTime:0.001698s ]
+INFO: [ route_check ] --END-- [ RunTime:0.001808s ]
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.001796s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001899s ]
+
+[ 2013-08-23T18:25:23+08:00 ] 127.0.0.1 /hello/index.php/Public/login
+INFO: [ route_check ] --START--
+INFO: CheckRoute Behavior ::run [ RunTime:0.001357s ]
+INFO: [ route_check ] --END-- [ RunTime:0.001467s ]
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.000947s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001027s ]
+INFO: [ view_parse ] --START--
+INFO: ParseTemplate Behavior ::run [ RunTime:0.017361s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.017481s ]
+INFO: [ view_filter ] --START--
+INFO: ContentReplace Behavior ::run [ RunTime:0.001051s ]
+INFO: TokenBuild Behavior ::run [ RunTime:0.000918s ]
+INFO: WriteHtmlCache Behavior ::run [ RunTime:0.000757s ]
+INFO: ShowRuntime Behavior ::run [ RunTime:0.001607s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.004577s ]
+INFO: [ view_end ] --START--
+INFO: ShowPageTrace Behavior ::run [ RunTime:0.001635s ]
+INFO: [ view_end ] --END-- [ RunTime:0.001766s ]
+
+[ 2013-08-23T18:25:23+08:00 ] 127.0.0.1 /hello/index.php/Public/verify/
+INFO: [ route_check ] --START--
+INFO: CheckRoute Behavior ::run [ RunTime:0.001789s ]
+INFO: [ route_check ] --END-- [ RunTime:0.001931s ]
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.001789s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001998s ]
+
+[ 2013-08-23T18:25:27+08:00 ] 127.0.0.1 /hello/index.php/Public/register
+INFO: [ route_check ] --START--
+INFO: CheckRoute Behavior ::run [ RunTime:0.001368s ]
+INFO: [ route_check ] --END-- [ RunTime:0.001515s ]
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.000964s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001036s ]
+SQL: SHOW COLUMNS FROM `hello_user` [ RunTime:0.010048s ]
+NOTIC: [8] Undefined index: password D:\wamp\www\hello\Lib\Action\PublicAction.class.php 第 19 行.
+SQL: SELECT `uname` FROM `hello_user` WHERE ( `email` = '393867916@qq.com' ) LIMIT 1   [ RunTime:0.000560s ]
+
+[ 2013-08-23T18:27:37+08:00 ] 127.0.0.1 /hello/index.php/Public/login
+INFO: [ route_check ] --START--
+INFO: CheckRoute Behavior ::run [ RunTime:0.001643s ]
+INFO: [ route_check ] --END-- [ RunTime:0.001749s ]
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.001131s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001220s ]
+INFO: [ view_parse ] --START--
+INFO: ParseTemplate Behavior ::run [ RunTime:0.017355s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.017472s ]
+INFO: [ view_filter ] --START--
+INFO: ContentReplace Behavior ::run [ RunTime:0.001051s ]
+INFO: TokenBuild Behavior ::run [ RunTime:0.001355s ]
+INFO: WriteHtmlCache Behavior ::run [ RunTime:0.001204s ]
+INFO: ShowRuntime Behavior ::run [ RunTime:0.001072s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.005092s ]
+INFO: [ view_end ] --START--
+INFO: ShowPageTrace Behavior ::run [ RunTime:0.001260s ]
+INFO: [ view_end ] --END-- [ RunTime:0.001341s ]
+
+[ 2013-08-23T18:27:38+08:00 ] 127.0.0.1 /hello/index.php/Public/verify/
+INFO: [ route_check ] --START--
+INFO: CheckRoute Behavior ::run [ RunTime:0.002044s ]
+INFO: [ route_check ] --END-- [ RunTime:0.002184s ]
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.001364s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001482s ]
+
+[ 2013-08-23T18:27:43+08:00 ] 127.0.0.1 /hello/index.php/Public/register
+INFO: [ route_check ] --START--
+INFO: CheckRoute Behavior ::run [ RunTime:0.001710s ]
+INFO: [ route_check ] --END-- [ RunTime:0.001837s ]
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.001146s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001242s ]
+SQL: SHOW COLUMNS FROM `hello_user` [ RunTime:0.007295s ]
+NOTIC: [8] Undefined index: password D:\wamp\www\hello\Lib\Action\PublicAction.class.php 第 19 行.
+SQL: SELECT `uname` FROM `hello_user` WHERE ( `email` = '393867916@qq.com' ) LIMIT 1   [ RunTime:0.000506s ]
+
+[ 2013-08-23T18:27:47+08:00 ] 127.0.0.1 /hello/index.php/Public/register
+INFO: [ route_check ] --START--
+INFO: CheckRoute Behavior ::run [ RunTime:0.001314s ]
+INFO: [ route_check ] --END-- [ RunTime:0.001427s ]
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.000939s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001009s ]
+SQL: SHOW COLUMNS FROM `hello_user` [ RunTime:0.007347s ]
+SQL: SELECT * FROM `hello_user` WHERE ( `email` = '393867916@qq.com' ) AND ( `password` = 0 )  [ RunTime:0.000731s ]
+
+[ 2013-08-23T18:27:48+08:00 ] 127.0.0.1 /hello/index.php/Index/index
+INFO: [ route_check ] --START--
+INFO: CheckRoute Behavior ::run [ RunTime:0.001318s ]
+INFO: [ route_check ] --END-- [ RunTime:0.001424s ]
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.000937s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001017s ]
+INFO: [ view_parse ] --START--
+INFO: ParseTemplate Behavior ::run [ RunTime:0.007084s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.007206s ]
+INFO: [ view_filter ] --START--
+INFO: ContentReplace Behavior ::run [ RunTime:0.000904s ]
+INFO: TokenBuild Behavior ::run [ RunTime:0.000879s ]
+INFO: WriteHtmlCache Behavior ::run [ RunTime:0.000771s ]
+INFO: ShowRuntime Behavior ::run [ RunTime:0.000963s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.003736s ]
+INFO: [ view_end ] --START--
+INFO: ShowPageTrace Behavior ::run [ RunTime:0.001176s ]
+INFO: [ view_end ] --END-- [ RunTime:0.001256s ]
+
+[ 2013-08-23T18:27:53+08:00 ] 127.0.0.1 /hello/index.php/Public/register
+INFO: [ route_check ] --START--
+INFO: CheckRoute Behavior ::run [ RunTime:0.001542s ]
+INFO: [ route_check ] --END-- [ RunTime:0.001680s ]
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.001110s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001197s ]
+SQL: SHOW COLUMNS FROM `hello_user` [ RunTime:0.006798s ]
+NOTIC: [8] Undefined index: password D:\wamp\www\hello\Lib\Action\PublicAction.class.php 第 19 行.
+SQL: SELECT `uname` FROM `hello_user` WHERE ( `email` = '393867916@qq.com' ) LIMIT 1   [ RunTime:0.000456s ]
+
+[ 2013-08-23T18:27:54+08:00 ] 127.0.0.1 /hello/index.php/Public/register
+INFO: [ route_check ] --START--
+INFO: CheckRoute Behavior ::run [ RunTime:0.001714s ]
+INFO: [ route_check ] --END-- [ RunTime:0.001882s ]
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.001319s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001427s ]
+SQL: SHOW COLUMNS FROM `hello_user` [ RunTime:0.006573s ]
+SQL: SELECT * FROM `hello_user` WHERE ( `email` = '393867916@qq.com' ) AND ( `password` = 25610 )  [ RunTime:0.000754s ]
+

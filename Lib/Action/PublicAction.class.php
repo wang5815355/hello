@@ -56,7 +56,7 @@ class PublicAction extends GlobalAction {
 		//当用户同时提交账号和密码时
 		if($username != null && $password != null && $isPattern){
 			$map['email'] = $username;
-			$map['password'] = sha1(md5($password));
+			$map['password'] = sha1(md5($password))+'';
 			$result = $userModel->where($map)->select();
 			
 			if($result != null){
@@ -230,7 +230,7 @@ class PublicAction extends GlobalAction {
 		$userModel = M('user');
 		//获取需要重设密码的email账号和新密码
 		$email = $this->getUserName();
-		$password = $_POST['password'];
+		$password = trim($_POST['password']);
 		$matchPassword = '/^[A-Za-z0-9]{6,20}$/';//密码验证， 6至20位数字字母下划线正则表达式
 		
 		//如果email不等于空 且密码正则表达式通过 则更新密码 
