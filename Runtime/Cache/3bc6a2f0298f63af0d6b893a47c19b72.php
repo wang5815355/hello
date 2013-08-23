@@ -1,1 +1,14 @@
-<?php if (!defined('THINK_PATH')) exit();?>
+<?php if (!defined('THINK_PATH')) exit();?><!DOCTYPE html>
+<html>
+  <head lang="en">
+    <title>Hello</title>
+ 	<meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8">
+<link type="text/css" href="__ROOT__/hello/Public/css/bootstrap-responsive.css" rel="stylesheet">
+<link type="text/css" href="__ROOT__/hello/Public/css/bootstrap.min.css" rel="stylesheet" media="screen">
+<script type="text/javascript" src="__ROOT__/hello/Public/js/jquery.js"></script>
+<script type="text/javascript" src="__ROOT__/hello/Public/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+  	
+  </body>
+</html>

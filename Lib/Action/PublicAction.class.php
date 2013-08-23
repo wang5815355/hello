@@ -125,7 +125,7 @@ class PublicAction extends GlobalAction {
 				cookie('uid',$resultIn,604800);//将用户主键id号存入cookie
 				
 				//注册成功后发送账号激活邮件
-				$address = "393867916@qq.com";
+				$address = $Email;
 				$subject = "Hello注册账号激活邮件";
 				$verifyCode = sha1(md5($Email*"5815355"));//sha1(md5(邮箱地址*5815355))邮箱验证加密;
 				$body = "<heml><body>ok&nbsp&nbsp".$Name."，点一下

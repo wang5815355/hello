@@ -85,6 +85,15 @@
 </style>
 <script type="text/javascript">
 	$(document).ready(function(){
+		$("#appendedInputButton").focus();
+		
+		//回车键提交
+		$("#appendedInputButton").keyup(function(event){
+			if(event.whitch == '13'){
+				alert("13");
+			}
+		});
+		
 		$('#sendBtn').click(function(){
 			//获取输入框值
 			var value = $("#appendedInputButton").val();
@@ -123,7 +132,7 @@
 			
 			<div class="row inputbox">
 				<div class="input-append span9">
-					<input class="input-left offset1" id="appendedInputButton" type="password" placeholder="请输入密码">
+					<input class="input-left offset1" id="appendedInputButton" type="password" placeholder="请输入新密码">
 					<button class="btn" type="button" id="sendBtn" style="opacity: 1;">发送</button>
 				</div>
 			</div>
