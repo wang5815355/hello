@@ -2899,3 +2899,12 @@ INFO: [ app_begin ] --START--
 INFO: ReadHtmlCache Behavior ::run [ RunTime:0.002209s ]
 INFO: [ app_begin ] --END-- [ RunTime:0.002353s ]
 
+[ 2013-08-23T17:29:49+08:00 ] 127.0.0.1 /hello/index.php/Public/registerIn
+INFO: [ route_check ] --START--
+INFO: CheckRoute Behavior ::run [ RunTime:0.001665s ]
+INFO: [ route_check ] --END-- [ RunTime:0.001773s ]
+INFO: [ app_begin ] --START--
+INFO: ReadHtmlCache Behavior ::run [ RunTime:0.001085s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001160s ]
+SQL: SHOW COLUMNS FROM `hello_user` [ RunTime:0.019946s ]
+
