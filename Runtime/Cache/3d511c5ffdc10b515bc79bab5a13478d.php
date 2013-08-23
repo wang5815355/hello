@@ -2,11 +2,11 @@
 <html>
   <head lang="en">
     <title>Hello</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8">
-    <link type="text/css" href="__ROOT__/hello/Public/css/bootstrap-responsive.css" rel="stylesheet">
-    <link type="text/css" href="__ROOT__/hello/Public/css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <script type="text/javascript" src="__ROOT__/hello/Public/js/jquery.js"></script>
-    <script type="text/javascript" src="__ROOT__/hello/Public/js/bootstrap.min.js"></script>
+ 	<meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8">
+<link type="text/css" href="__ROOT__/hello/Public/css/bootstrap-responsive.css" rel="stylesheet">
+<link type="text/css" href="__ROOT__/hello/Public/css/bootstrap.min.css" rel="stylesheet" media="screen">
+<script type="text/javascript" src="__ROOT__/hello/Public/js/jquery.js"></script>
+<script type="text/javascript" src="__ROOT__/hello/Public/js/bootstrap.min.js"></script>
     <style type="text/css">
     	body{
     		background-color: rgb(28,151,223);
@@ -172,6 +172,9 @@
 		.lable-info-register,.lable-info-password{
 			float:right;
 		}
+		.lable-info-password{
+			margin-top:1px;
+		}
 		.lable-info-register:HOVER{
 			cursor: pointer;
 			background:rgb(35,152,217);
@@ -181,7 +184,7 @@
 			background:rgb(35,152,217);
 		}
 		#registerBtn{
-			padding: 4px 16px 4px 15px;
+			padding: 4px 14px 4px 15px;
 			font-size: 11px;
 			font-family: 微软雅黑;
 			border-radius: 3px;
@@ -240,6 +243,9 @@
 		.input-xlarge{
 			text-align: center;
 		}
+		.loader-gif{
+			margin:0 6px;
+		}
     </style>
     <script type="text/javascript">
     	$(document).ready(function(){
@@ -253,9 +259,19 @@
     		});
     		
     		//点击找回密码
-    		$("div").delegate(".lable-info-password","click",function(e){
-	    		alert('nihao');
-	    	});  
+    		$("body").delegate("#lable-info-password","click",function(){
+    			//点击提交注册后显示加载进度条 注册按钮失效
+  		    	$('#lable-info-password').attr("disabled",true);
+      		    $('#lable-info-password').html("<img src='__ROOT__/hello/Public/img/ajax-loader.gif' class='loader-gif'>");
+    			
+    			//获取email的值
+    		    var email = $("#email").val();
+    			//post findPassword方法 提交email查找密码.
+    			$.post("findPassword",{Email:email},function(data,status){
+    				 $('.talkbox:last').html(data['talkinfo']+"<span class='label label-info lable-info-password' id='lable-info-password'></span>");
+    				 $('#lable-info-password').html(data['rightinfo']);
+    			});
+    		});  
     		
     		//点击注册链接
     		$(".lable-info-register").click(function(){
@@ -281,6 +297,10 @@
       		    var rVerify = $(".rVerify").val().trim();
       		    
       		    if(rEmail != '' && rPassword != '' && rName != '' && rPhone != '' && rVerify != ''){
+      		    	//点击提交注册后显示加载进度条 注册按钮失效
+      		    	$('#registerBtn').attr("disabled",true);
+          		    $('#registerBtn').html("<img src='__ROOT__/hello/Public/img/ajax-loader.gif' class='loader-gif'>");
+      		    	
       		    	//使用post提交注册信息
       		    	$.post("registerIn", 
  	     	    			{ Email:rEmail,
@@ -291,8 +311,14 @@
  	     	    			  function(data,status){
  	     					  	//解析服务端返回的json数据
  	     	    			  	$('.alert-info').html(data['info']);
+ 	     					  	//如果插入数据成功 status == 5
  	     					  	if(data['status']=='5'){
+ 	     					  		$('#registerBtn').html("成功");
  	     					  		location.href='__APP__/Index/index';
+ 	     					  	}else{
+ 	     					  		//恢复注册按钮
+ 	      		    		    	$('#registerBtn').attr("disabled",false);
+ 	     					  		$('#registerBtn').html('提交');
  	     					  	}
  	     	    	});
       		    }else{
@@ -354,7 +380,7 @@
      	     						  }
      	     					  });
      	     					//解析服务端返回的json数据
-     	     					$('.talkbox:last').html(data['info']);
+     	     					$('.talkbox:last').html(data['info']+"<span class='label label-info lable-info-password' id='lable-info-password'>找回密码</span>");
      	     	    	 });
      	    		 }else if(email.length==0){
      	    			 //移除注册表单对话框
@@ -370,9 +396,10 @@
          						 $("#email").val(inputValue);
          						 $("#appendedInputButton").val("");
          						 $("#appendedInputButton").attr('type','password');
+         						 $('.talkbox:last').html(data['info']+"<span class='label label-info lable-info-password' id='lable-info-password'>找回密码</span>");
+         					  }else{
+         						 $('.talkbox:last').html(data['info']);
          					  }
-  	   	         		 	  //解析服务端返回的json数据
-  	   	         		      $('.talkbox:last').html(data['info']+"<span class='label label-info lable-info-password' id='lable-info-password'>找回密码</span>");
   	   	         		      $('#dialog>div:last-child').fadeIn(400,function(){
   	   	         		    	  $('.btn').attr("disabled",false);
   	   	         		    	  $(".btn").fadeTo(200,1);

@@ -56,7 +56,7 @@ class PublicAction extends GlobalAction {
 		//当用户同时提交账号和密码时
 		if($username != null && $password != null && $isPattern){
 			$map['email'] = $username;
-			$map['password'] = $password;
+			$map['password'] = sha1(md5($password));
 			$result = $userModel->where($map)->select();
 			
 			if($result != null){
@@ -201,7 +201,7 @@ class PublicAction extends GlobalAction {
 			$userModel->save($data);
 			redirect('../Index/index');//激活账号成功后跳转到index.php
 		}else{
-			$this->error('激活失败请重新完成激活(原因：激活码不正确或者已过期。)','../Index/index');
+			$this->error('激活失败请重新完成激活(原因：激活码不正确或者已过期。)','__APP__/Index/index');
 		}
 	}
 	
@@ -210,13 +210,53 @@ class PublicAction extends GlobalAction {
 	 * @author wangkai2013820
 	 */
 	public function resetPassword(){
-		$email = $_REQUEST['email'];
-				
-		$this->display();
+		//用户点击链接时判断链接是否合法
+		$email = $_GET['email'];
+		$verifyCode = $_GET['verifyCode'];
+		$rule = sha1(md5($email*"5815355"/"wang5815355"));//sha1(md5(邮箱地址*5815355/"wang5815355"))找回密码链接加密规则;
+		
+		if($verifyCode == $rule){//如果验证合法则将用户的email作为账户存入cookie 并且显示重设界面
+			cookie('username',$email,604800);
+			$this->display();
+		}else{
+			$this->error("密码重设链接不合法或已过期",'__APP__/Public/login');
+		}
 	}
 	
 	/**
-	 * 发送找回密码链接
+	 * 重设密码更新至数据库
+	 */
+	public function doResetPassword(){
+		$userModel = M('user');
+		//获取需要重设密码的email账号和新密码
+		$email = $this->getUserName();
+		$password = $_POST['password'];
+		$matchPassword = '/^[A-Za-z0-9]{6,20}$/';//密码验证， 6至20位数字字母下划线正则表达式
+		
+		//如果email不等于空 且密码正则表达式通过 则更新密码 
+		if($email != null && preg_match($matchPassword,$password)){
+			$map['email'] = $email;
+			$data['password'] = sha1(md5($password));
+			$result = $userModel->where($map)->save($data);
+			if($result != false){//更新成功
+				$dataInfo['info'] = "更新成功";
+			}else{//失败
+				$dataInfo['status'] = "-2";
+				$dataInfo['info'] = "可能由于网络问题，密码更新失败请重试";
+			}
+		}else if($email != null && !preg_match($matchPassword,$password)){
+			$dataInfo['status'] = "-1";
+			$dataInfo['info'] = "密码只能由6至20位数字,字母组成!请重新输入";
+		}else{
+			$dataInfo["status"] = "-3";
+			$dataInfo['info'] = "恶意更新失败，已获取你的ip地址";
+		}
+		
+		$this->ajaxReturn($dataInfo,'JSON');
+	}
+	
+	/**
+	 * 发送找回密码链接邮件方法
 	 */
 	public function findPassword(){
 		$email = $_POST['Email'];
@@ -232,7 +272,7 @@ class PublicAction extends GlobalAction {
 		
 		$result = $this->sendEmail($address,$subject,$body);
 		if($result == 1){
-			$data['talkinfo'] = "密码找回邮件已发送至你注册邮箱";
+			$data['talkinfo'] = "密码重设邮件已发送至你的注册邮箱，你也可以继续尝试输入密码登录。";
 		}else{
 			$data['talkinfo'] = "邮件发送失败，请点击'重发邮件'";
 		}

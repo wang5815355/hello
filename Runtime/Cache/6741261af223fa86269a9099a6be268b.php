@@ -1,8 +1,12 @@
-<!DOCTYPE html>
+<?php if (!defined('THINK_PATH')) exit();?><!DOCTYPE html>
 <html>
 <head>
 <title>密码设置</title>
-<include file="./Tpl/Include/header.html"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" charset="utf-8">
+<link type="text/css" href="__ROOT__/hello/Public/css/bootstrap-responsive.css" rel="stylesheet">
+<link type="text/css" href="__ROOT__/hello/Public/css/bootstrap.min.css" rel="stylesheet" media="screen">
+<script type="text/javascript" src="__ROOT__/hello/Public/js/jquery.js"></script>
+<script type="text/javascript" src="__ROOT__/hello/Public/js/bootstrap.min.js"></script>
 <style type="text/css">
 		body{
     		background-color: rgb(28,151,223);
