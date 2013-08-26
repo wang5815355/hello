@@ -8,6 +8,17 @@ class IndexAction extends GlobalAction {
 	public function index(){
     	//如果cookie中存在邮件账号则直接显示首页
     	if(cookie('username')!=null){
+    		//查询当前用户的账号验证状态
+    		$userModel = M('user');
+    		$map['email'] = cookie('username');
+    		$listRow = $userModel->where($map)->find();
+    		$faceimage = $listRow['faceimage'];
+    		$auth = $listRow['auth'];
+    		
+    		if($auth == '1' || $auth == '0'){ //0:邮箱未认证首次登陆 1：已邮箱认证，且首次登陆
+    			//当首次登录时 才显示slide1
+    			$this->assign('slide1','slide1');
+    		}
     		$this->display();
     	}else{//如果cookie中不存在用户账号则跳转到登录页面上
     		redirect('../Public/login');
@@ -15,6 +26,10 @@ class IndexAction extends GlobalAction {
     	}
     }
     
+    /**
+     * 上传用户头像图片
+     * @author wangkai
+     */
     public function doImageUp(){
     	//获取当前登录用户email账号
     	$email = $this->getUserName();
@@ -34,6 +49,15 @@ class IndexAction extends GlobalAction {
     		$infoMsg = $upload->getErrorMsg();
     	}else{// 上传成功 获取上传文件信息
     		$info =  $upload->getUploadFileInfo();
+    		
+    		//图片保存成功之后  将用户登录状态auth改成 非首次登陆 若原来为0则改成3 原来为 1 则改成2
+    		$uInfo = $this->getUinfo();//获取当前登录用户信息
+    		$auth = $uInfo['auth'];
+    		if($auth == '1'){
+    			$data['auth'] = '2';
+    		}else if($auth == '0'){
+    			$data['auth'] = '3';
+    		}
     	}
     	 
     	// 保存表单数据 包括附件数据
