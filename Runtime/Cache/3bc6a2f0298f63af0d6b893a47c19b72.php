@@ -10,6 +10,7 @@
 <style type="text/css">
 body{
 	background: rgb(241,241,241);
+	font-family: 微软雅黑;
 }
 .faceimg {
 	width:180px;
@@ -46,6 +47,7 @@ p {
 	width:940px;
 	height:500px;
 	float:left;
+	margin:0 auto;
 }
 .silde2{
 	height:600px;
@@ -55,34 +57,38 @@ p {
 }
 .image{
     color:rgb(28,151,223);
-	letter-spacing:-4px;
-	font-size:53px;
+	letter-spacing:-1px;
+	font-size:33px;
 	font-weight:800;
 	text-shadow: 0px -1px 1px #1E2D4D;
 	float:left;
-	height:60px;
-	margin-left:20px;
-	margin-top:10px;
+	height:30px;
 	line-height: 1;
 }
 .logo{
-	height:90px;
+	padding:10px 0 0 12px;
+	height:41px;
+	background:rgb(247,247,247);
+	-webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+	-moz-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+	box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+	border-radius: 3px;
 }
 
 
 #appendedInputButton{
-	color: rgba(255, 255, 255, .8);
+	color: rgba(90, 90, 90, .8);
 	background: rgba(0, 0, 0, .1);
 	/*box-shadow: 0 1px 0 rgba(255, 255, 255, .15),0px 1px 3px rgba(0, 0, 0, .2) inset;*/
 	color: #B7D4EC	9;
-	border: 1px solid #147DCD;
+	/*border: 1px solid rgb(196,200,202);*/
 	background: #0C6EBF	9;
 	letter-spacing: 1px;
 	font-family: 微软雅黑;
 	font-size: 13px;
 	font-weight: bold;
 	line-height: 18px;
-	padding: 9px 14px;
+	padding: 11px 14px;
 	width:460px;
 }
 input[type="text"],input[type="password"]{
@@ -96,12 +102,99 @@ input:-moz-placeholder {
 	color: rgba(255, 255, 255,.6);
 }
 .inputbox{
-	width:490px;
-	margin:0px auto;
+	width:578px;
+	height:70px;
+	margin:30px auto 0px;
+}
+.sanjiao,.text{
+	float:left;
+}
+.sanjiao{
+	width:10px;
 }
 .uface{
 	width:75px;
 	height:60px;
+}
+.talkbox-title-left-user {
+	width: 0;
+	height: 0;
+	border-top: 10px solid transparent;
+	border-bottom: 10px solid transparent;
+	border-left: 10px solid rgb(180,180,180);
+	position: relative;
+	top: 12px;
+	left: 0px;
+}
+.talkbox-title-left-2-user {
+	width: 0;
+	height: 0;
+	border-top: 10px solid transparent;
+	border-bottom: 10px solid transparent;
+	border-left: 10px solid rgb(217, 217, 217);
+	position: relative;
+	top: -8px;
+	left: -1px;
+}
+.uface2{
+	float:left;
+	margin-left:18px;
+}
+.img-polaroid{
+	height:60px;
+    width:60px;
+    padding:0;
+    border:1px;
+    -webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px ;
+}
+
+.content{
+	margin-top:15px;
+}
+.toolbar{
+	width:50px;
+	height:300px;
+	float:left;
+}
+.context{
+	width:810px;
+	height:300px;
+	float:right;
+	padding:20px;
+}
+.friend{
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	-webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+	-moz-box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+	box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+	width:120px;
+	height:160px;
+	background:rgb(247,247,247);
+	overflow: hidden;
+	line-height:0.6;
+}
+.f-face-img{
+	width:120px;
+	font-size:13px;
+}
+.f-face{
+	-webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+	-moz-box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+	box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+	border:1px solid  rgb(210,210,210);
+	background:black;
+	overflow: hidden;
+}
+.muted{
+	color: rgb(190,190,190);
+	font-size:12px;
+	text-align: left;
+	font-weight:bold;
+	letter-spacing:0px;
 }
 </style>
 <script type="text/javascript">
@@ -155,14 +248,31 @@ input:-moz-placeholder {
 			<!-- 用户首页 -->
 			<div class="silde2">
 				<div class="inputbox">
-					<input class="text" id="appendedInputButton" type="text">
+					<div class="text">
+						<input class="text" id="appendedInputButton" type="text">
+					</div>
+					<div class="sanjiao">
+						<div class="talkbox-title-left-user"></div>
+						<div class="talkbox-title-left-2-user"></div>
+					</div>
+					
+					<div class="uface2">
+						<img src="/hello/Uploads/4.jpg" class="img-polaroid">
+					</div>
 				</div>
-				<div class="uface">
-					<a href="#" class="thumbnail"> 
-							<img data-src="holder.js/160x160" alt="160x160" style="width: 66px; height: 61px;" src="__ROOT__/hello/Uploads/faceup.png">
-					</a>
+				
+				<div class="content">
+					<div class="toolbar"></div>
+					<div class="context">
+						<div class="friend">
+							<div class="f-face">
+								<img src="/hello/Uploads/4.jpg" class="f-face-img">
+							</div>
+							<p class="muted">王凯</p>
+							<p class="muted">15820781327</p>
+						</div>
+					</div>
 				</div>
-				<div class="content"></div>
 			</div>
 		</div>
 	</div>
