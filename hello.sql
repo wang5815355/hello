@@ -14,7 +14,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --
 
 -- --------------------------------------------------------
-
+-- 圈子表
 CREATE TABLE  `hello_db`.`hello_group` (
 `id` INT( 20 ) NOT NULL COMMENT  '圈子id',
 `name` INT NOT NULL COMMENT  '圈子名称',
