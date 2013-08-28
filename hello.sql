@@ -15,6 +15,18 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 -- --------------------------------------------------------
 
+CREATE TABLE  `hello_db`.`hello_group` (
+`id` INT( 20 ) NOT NULL COMMENT  '圈子id',
+`name` INT NOT NULL COMMENT  '圈子名称',
+`count` INT NOT NULL COMMENT  '圈子总人数',
+`type` INT NOT NULL COMMENT  '圈子类型',
+`createuser` INT NOT NULL COMMENT  '圈子创建人',
+`type2` INT NOT NULL COMMENT  '圈子类型',
+`location` INT NOT NULL COMMENT  '圈子所在地（例如公司或者学校类型的圈子）',
+`fcircle` INT NOT NULL COMMENT  '圈子所属（父圈子）',
+`time` INT NOT NULL COMMENT  '创建时间'
+) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT =  '圈子表';
+
 --
 -- 表的结构 `hello_friend`
 --
