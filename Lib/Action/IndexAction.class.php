@@ -18,6 +18,13 @@ class IndexAction extends GlobalAction {
     		if($auth == '1' || $auth == '0'){ //0:邮箱未认证首次登陆 1：已邮箱认证，且首次登陆
     			//当首次登录时 才显示slide1
     			$this->assign('slide1','slide1');
+    		}else{//非首次登陆
+    			$friendModel = M('friend');
+    			$friendList = $friendModel->where($map)->getField('femail',true);//查询用户的所有好友
+    			//根据用户的好友email查询这些好友的具体信息
+    			$map['email'] = array('in',$friendList);
+    			$friendMsgList = $userModel->where($map)->select();
+    			$this->assign('friendMsgList',$friendMsgList);
     		}
     		$this->display();
     	}else{//如果cookie中不存在用户账号则跳转到登录页面上
@@ -61,7 +68,7 @@ class IndexAction extends GlobalAction {
     	}
     	 
     	// 保存表单数据 包括附件数据
-    	$userModel = M("User"); // 实例化User对象
+    	$userModel = M('User'); // 实例化User对象
     	$userModel->create(); // 创建数据对象
     	$map['email'] = $email;
     	$data['faceimage'] = 'thumb_'.$info[0]['savename'];//缩略图文件名

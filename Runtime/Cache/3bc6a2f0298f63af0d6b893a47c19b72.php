@@ -89,7 +89,7 @@ p {
 	font-weight: bold;
 	line-height: 18px;
 	padding: 11px 14px;
-	width:460px;
+	width:440px;
 }
 input[type="text"],input[type="password"]{
 	font-size: 12px;
@@ -150,19 +150,17 @@ input:-moz-placeholder {
 	border-radius: 5px ;
 }
 
-.content{
-	margin-top:15px;
-}
 .toolbar{
-	width:50px;
-	height:300px;
-	float:left;
-}
-.context{
-	width:810px;
+	width:150px;
 	height:300px;
 	float:right;
-	padding:20px;
+	margin-top:30px;
+}
+.context{
+	width:740px;
+	height:300px;
+	margin-left:35px;
+	float:left;
 }
 .friend{
 	-webkit-border-radius: 5px;
@@ -177,6 +175,9 @@ input:-moz-placeholder {
 	background:rgb(247,247,247);
 	overflow: hidden;
 	line-height:0.7;
+	float:left;
+	margin-left:40px;
+	margin-top:30px;
 }
 .f-face-img{
 	width:120px;
@@ -205,6 +206,26 @@ input:-moz-placeholder {
 .f-bottom{
 	margin-top:1px;
 	border-top: 1px solid rgb(255,255,255);
+}
+.group{
+	background: rgb(248, 248, 248);
+	text-align: left;
+	padding: 10px 18px 8px;
+	/*-webkit-box-shadow: 1px 1px 0px rgba(0,0,0,.2);
+	-moz-box-shadow: 1px 1px 0px rgba(0,0,0,.2);*/
+	box-shadow: 0 0 2px rgba(0,0,0,.2);
+	border-radius: 2px;
+	word-wrap:break-word;
+	color: rgb(182, 182, 182);
+	letter-spacing: 1px;
+	font-weight:bold;
+	font-size:14px;	
+	width:100px;
+	margin:4px;
+}
+.group-top{
+	background:rgb(28,151,223);
+	color: rgba(250,250,250,.8);
 }
 </style>
 <script type="text/javascript">
@@ -272,17 +293,48 @@ input:-moz-placeholder {
 				</div>
 				
 				<div class="content">
-					<div class="toolbar"></div>
 					<div class="context">
+						<?php if(is_array($friendMsgList)): $i = 0; $__LIST__ = $friendMsgList;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?><div class="friend">
+								<div class="f-face">
+									<img src="/hello/Uploads/1.jpg" class="f-face-img">
+								</div>
+								<div class="f-bottom">
+									<p class="muted"><?php echo ($vo["uname"]); ?>&nbsp&nbsp<?php echo ($vo["phonenumber"]); ?></p>
+								</div>
+							</div><?php endforeach; endif; else: echo "" ;endif; ?>
 						<div class="friend">
-							<div class="f-face">
-								<img src="/hello/Uploads/1.jpg" class="f-face-img">
-							</div>
-							<div class="f-bottom">
-								<p class="muted">王凯&nbsp&nbsp15820781327</p>
-							</div>
+								<div class="f-face">
+									<img src="/hello/Uploads/1.jpg" class="f-face-img">
+								</div>
+								<div class="f-bottom">
+									<p class="muted">王凯&nbsp&nbsp123123123</p>
+								</div>
+						</div>
+						<div class="friend">
+								<div class="f-face">
+									<img src="/hello/Uploads/1.jpg" class="f-face-img">
+								</div>
+								<div class="f-bottom">
+									<p class="muted">王凯&nbsp&nbsp123123123</p>
+								</div>
+						</div>
+						<div class="friend">
+								<div class="f-face">
+									<img src="/hello/Uploads/1.jpg" class="f-face-img">
+								</div>
+								<div class="f-bottom">
+									<p class="muted">王凯&nbsp&nbsp123123123</p>
+								</div>
 						</div>
 					</div>
+					
+				</div>
+				<div class="toolbar">
+					<div class="group group-top">我的组织</div>
+					<div class="group group-center">测试圈子2</div>
+					<div class="group group-center">测试圈子3</div>
+					<div class="group group-center">测试圈子4</div>
+					<div class="group group-bottom">测试圈子1</div>
 				</div>
 			</div>
 		</div>
