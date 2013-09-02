@@ -124,7 +124,7 @@ input:-moz-placeholder {
 	border-left: 10px solid rgb(180,180,180);
 	position: relative;
 	top: 12px;
-	left: 0px;
+	left: -1px;
 }
 .talkbox-title-left-2-user {
 	width: 0;
@@ -134,7 +134,7 @@ input:-moz-placeholder {
 	border-left: 10px solid rgb(217, 217, 217);
 	position: relative;
 	top: -8px;
-	left: -1px;
+	left: -2px;
 }
 .uface2{
 	float:left;
@@ -156,7 +156,7 @@ input:-moz-placeholder {
 	float:right;
 	margin-top:30px;
 }
-.context{
+.context,.context-captain{
 	width:720px;
 	height:300px;
 	float:left;
@@ -244,6 +244,57 @@ input:-moz-placeholder {
 	background: rgba(252, 252, 252, 0.5);
 	color: rgba(250,250,250,.8);
 }
+.talkbox-title-left{
+			width: 0;
+			height: 0;
+			border-top: 10px solid transparent;
+			border-bottom: 10px solid transparent;
+			border-right: 10px solid #d9d9d9;
+			position:relative; 
+			top:15px; 
+			left:-30px;
+		}
+.talkbox-title-left-2{
+			width: 0;
+			height: 0;
+			border-top: 10px solid transparent;
+			border-bottom: 10px solid transparent;
+			border-right: 10px solid rgb(250,250,250);
+			position:relative ; 
+			top:-5px; 
+			left:-29px;
+}
+.talkbox,.talkbox-user{
+			background-color: rgb(250,250,250);
+			border: 1px solid #d9d9d9;
+			text-align: left;
+			padding: 15px 20px 13px;
+			margin-left:-72px;
+			border-radius: 3px;
+			-webkit-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
+			-moz-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
+			box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
+			word-wrap:break-word;
+			max-width:370px;
+			min-width:50px;
+			position:relative;
+			left:-76px;
+			color:rgb(28,151,223);
+			letter-spacing: 1px;
+			font-weight:bold;
+			font-size:15px;
+			display:inline-block;
+		}
+.captain-talk {
+	position: relative;
+	left: -48px;
+	z-index: 2;
+}
+
+.context-captain{
+	padding:40px 0 0 9px;
+	background: ;
+}
 </style>
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -254,6 +305,22 @@ input:-moz-placeholder {
 		$('.fileSelect').change(function(){
 			$('.submit').click();
 		});
+		
+		
+		$('.create-circle').click(function(){
+			//点击创建圈子之后 将现有context界面隐藏 然后吸纳实处captain对话框
+			$('.context').fadeOut(300,function(){
+				//将创建圈子对话框显示出来
+				$('.context-captain').fadeIn(200,function(){
+					
+				});
+			});
+		});
+		
+		$('.create-circle').click(function(){
+			
+		});
+
 		
 	});
 	
@@ -353,12 +420,31 @@ input:-moz-placeholder {
 						</div>
 					</div>
 					
+					<!-- captain context -->
+					<div class=" context-captain" style="display:none">
+						<div class="row captain">
+							<div class="span2 offset1">
+								<div class="cface">
+									<img src="__ROOT__/hello/Uploads/4.jpg" class="img-polaroid">
+								</div>
+							</div>
+							<div class="span1 captain-talk">
+								<div class="talkbox-title-left"></div>
+								<div class="talkbox-title-left-2"></div>
+							</div>
+							<div class="span5">
+								<div class="talkbox">告诉我你要创建的圈子名称
+								</div>
+							</div>
+						</div>
+					</div>
+					
 				</div>
 				<div class="toolbar">
 					<div class="group group-top">
 						<div class="group-word">我的组织
-							<span class="finfo">创建</span>
-							<span class="finfo">加入</span>
+							<span class="finfo create-circle">创建</span>
+							<span class="finfo join-circle">加入</span>
 						</div>
 					</div>
 					<div class="group group-center">测试圈子2</div>
