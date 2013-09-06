@@ -89,7 +89,7 @@ p {
 	font-weight: bold;
 	line-height: 18px;
 	padding: 11px 14px;
-	width:440px;
+	width:420px;
 }
 input[type="text"],input[type="password"]{
 	font-size: 12px;
@@ -124,7 +124,7 @@ input:-moz-placeholder {
 	border-left: 10px solid rgb(180,180,180);
 	position: relative;
 	top: 12px;
-	left: 0px;
+	left: -1px;
 }
 .talkbox-title-left-2-user {
 	width: 0;
@@ -134,7 +134,7 @@ input:-moz-placeholder {
 	border-left: 10px solid rgb(217, 217, 217);
 	position: relative;
 	top: -8px;
-	left: -1px;
+	left: -2px;
 }
 .uface2{
 	float:left;
@@ -151,15 +151,14 @@ input:-moz-placeholder {
 }
 
 .toolbar{
-	width:150px;
+	width:190px;
 	height:300px;
 	float:right;
 	margin-top:30px;
 }
-.context{
-	width:740px;
+.context,.context-captain{
+	width:720px;
 	height:300px;
-	margin-left:35px;
 	float:left;
 }
 .friend{
@@ -176,7 +175,7 @@ input:-moz-placeholder {
 	overflow: hidden;
 	line-height:0.7;
 	float:left;
-	margin-left:40px;
+	margin-left:42px;
 	margin-top:30px;
 }
 .f-face-img{
@@ -210,7 +209,7 @@ input:-moz-placeholder {
 .group{
 	background: rgb(248, 248, 248);
 	text-align: left;
-	padding: 10px 18px 8px;
+	padding: 10px 15px 8px;
 	/*-webkit-box-shadow: 1px 1px 0px rgba(0,0,0,.2);
 	-moz-box-shadow: 1px 1px 0px rgba(0,0,0,.2);*/
 	box-shadow: 0 0 2px rgba(0,0,0,.2);
@@ -219,14 +218,129 @@ input:-moz-placeholder {
 	color: rgb(182, 182, 182);
 	letter-spacing: 1px;
 	font-weight:bold;
-	font-size:14px;	
-	width:100px;
+	font-size:12px;	
+	width:150px;
 	margin:4px;
 }
 .group-top{
 	background:rgb(28,151,223);
 	color: rgba(250,250,250,.8);
 }
+.finfo{
+	background: rgba(252, 252, 252, 0.9);
+	padding: 2px 7px 2px;
+	box-shadow: 0 0 2px rgba(0,0,0,.2);
+	border-radius: 2px;
+	word-wrap: break-word;
+	color: rgb(97, 179, 255);
+	letter-spacing: 1px;
+	font-weight: bold;
+	float:right;
+	margin-left:4px;
+	margin-top:-3px;
+	cursor: pointer;
+}
+.finfo:HOVER{
+	background: rgba(252, 252, 252, 0.5);
+	color: rgba(250,250,250,.8);
+}
+.talkbox-title-left{
+			width: 0;
+			height: 0;
+			border-top: 10px solid transparent;
+			border-bottom: 10px solid transparent;
+			border-right: 10px solid #d9d9d9;
+			position:relative; 
+			top:15px; 
+			left:-11px;
+		}
+.talkbox-title-left-2{
+			width: 0;
+			height: 0;
+			border-top: 10px solid transparent;
+			border-bottom: 10px solid transparent;
+			border-right: 10px solid rgb(250,250,250);
+			position:relative ; 
+			top:-5px; 
+			left:-10px;
+}
+
+.talkbox,.talkbox-user{
+			background-color: rgb(250,250,250);
+			border: 1px solid #d9d9d9;
+			text-align: left;
+			padding: 15px 20px 13px;
+			margin-left:-72px;
+			border-radius: 3px;
+			-webkit-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
+			-moz-box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
+			box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
+			word-wrap:break-word;
+			max-width:370px;
+			min-width:50px;
+			position:relative;
+			left:-76px;
+			color:rgb(28,151,223);
+			letter-spacing: 1px;
+			font-weight:bold;
+			font-size:15px;
+}
+.captain-talk {
+	position: relative;
+	left: -48px;
+	z-index: 2;
+}
+
+.context-captain{
+	padding:40px 0 0 9px;
+	background: ;
+}
+
+.user{
+	margin-left:19px;
+}
+
+.talkbox-title-left-user-i {
+	width: 0;
+	height: 0;
+	border-top: 10px solid transparent;
+	border-bottom: 10px solid transparent;
+	border-left: 10px solid #147DCD;
+	position: relative;
+	top: 16px;
+	left: 2px;
+}
+
+.talkbox-title-left-2-user-i {
+	width: 0;
+	height: 0;
+	border-top: 10px solid transparent;
+	border-bottom: 10px solid transparent;
+	border-left: 10px solid rgb(30, 149, 229);
+	position: relative;
+	top: -4px;
+	left: 1px;
+}
+
+.talkbox-user{
+	background: rgb(30, 149, 229);
+	border: 1px solid #147DCD;
+	position:relative; 
+	left:63px;
+	color:#ffffff;	
+}
+
+.talkbox{
+	left:-58px;
+}
+.captain{
+	margin-top:25px;
+}
+.cface{
+	position:relative;
+	left:23px;
+}
+
 </style>
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -237,6 +351,34 @@ input:-moz-placeholder {
 		$('.fileSelect').change(function(){
 			$('.submit').click();
 		});
+		
+		//点击创建圈子之后 将现有context界面隐藏 然后吸纳实处captain对话框
+		$('.create-circle').click(function(){
+			
+			$('.context').fadeOut(300,function(){
+				//将创建圈子对话框显示出来
+				$('.context-captain').fadeIn(200,function(){
+					
+				});
+			});
+		});
+		
+		//当用户在创建圈子界面 输入圈子姓名时 获取隐藏input的value值 为hidden-circle
+		
+		//点击用户头像发送输入框数据
+		$(".button-face").click(function(){
+			//判断隐藏input的值
+			var hiddenInput = $(".hidden-input").val();
+			if(hiddenInput == 'hidden-circle'){
+				//获取当前用户输入框的值
+				var
+			}
+			
+			$(".button-face").attr('disabled',true);
+			$(".button-face").animate({opacity:'0.4'},100);
+		});
+		
+		
 		
 	});
 	
@@ -281,13 +423,15 @@ input:-moz-placeholder {
 				<div class="inputbox">
 					<div class="text">
 						<input class="text" id="appendedInputButton" type="text">
+						<!-- 隐藏input确认当前文本框状态 -->
+						<input type="hidden"  class="hidden-input" value="normal"/>
 					</div>
 					<div class="sanjiao">
 						<div class="talkbox-title-left-user"></div>
 						<div class="talkbox-title-left-2-user"></div>
 					</div>
 					
-					<div class="uface2">
+					<div class="uface2 button-face">
 						<img src="/hello/Uploads/4.jpg" class="img-polaroid">
 					</div>
 				</div>
@@ -326,11 +470,56 @@ input:-moz-placeholder {
 									<p class="muted">王凯&nbsp&nbsp123123123</p>
 								</div>
 						</div>
+						<div class="friend">
+								<div class="f-face">
+									<img src="/hello/Uploads/1.jpg" class="f-face-img">
+								</div>
+								<div class="f-bottom">
+									<p class="muted">王凯&nbsp&nbsp123123123</p>
+								</div>
+						</div>
+					</div>
+					
+					<!-- captain context -->
+					<div class=" context-captain" style="display:none">
+						
+						<!-- usertalkinput -->
+						<div class='row user' id='user'><div class='span5 offset2'><div class='talkbox-user'>asd</div></div><div class='span1'><div class='talkbox-title-left-user-i'></div><div class='talkbox-title-left-2-user-i'></div></div></div>
+						
+							<!--  用户发言框头像
+								<div class="cface">
+									<img src="__ROOT__/hello/Uploads/4.jpg" class="img-polaroid">
+								</div>
+							-->
+						
+						<!-- captaintalkinput -->
+						<div class="row captain">
+							<div class="span2 offset1">
+								<div class="cface">
+									<img src="__ROOT__/hello/Uploads/4.jpg" class="img-polaroid">
+								</div>
+							</div>
+							<div class="span1 captain-talk">
+								<div class="talkbox-title-left"></div>
+								<div class="talkbox-title-left-2"></div>
+							</div>
+							<div class="span5">
+								<div class="talkbox">告诉我你要创建的圈子名称
+								</div>
+							</div>
+						</div>
+						
+						<input name="circle-value" type="hidden"/>
 					</div>
 					
 				</div>
 				<div class="toolbar">
-					<div class="group group-top">我的组织</div>
+					<div class="group group-top">
+						<div class="group-word">我的组织
+							<span class="finfo create-circle">创建</span>
+							<span class="finfo join-circle">加入</span>
+						</div>
+					</div>
 					<div class="group group-center">测试圈子2</div>
 					<div class="group group-center">测试圈子3</div>
 					<div class="group group-center">测试圈子4</div>
