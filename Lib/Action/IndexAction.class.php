@@ -3,7 +3,7 @@ class IndexAction extends GlobalAction {
     
 	/**
 	 * 首页显示方法
-	 * @author wangkai2013820
+	 * @author wangkai
 	 */
 	public function index(){
     	//如果cookie中存在邮件账号则直接显示首页
@@ -82,5 +82,14 @@ class IndexAction extends GlobalAction {
     		echo "<script> parent.notice("."'".$infoMsg."'".");</script>";
     	}
     }
+    
+    /**
+     * 用户创建圈子处理方法
+     * @author wangkai
+     */
+    public function doCircle(){
+    	
+    }
+    
     
 }

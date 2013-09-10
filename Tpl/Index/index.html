@@ -294,6 +294,7 @@ input:-moz-placeholder {
 
 .user{
 	margin-left:19px;
+	display:none;
 }
 
 .talkbox-title-left-user-i {
@@ -354,7 +355,8 @@ input:-moz-placeholder {
 			$('.context').fadeOut(300,function(){
 				//将创建圈子对话框显示出来
 				$('.context-captain').fadeIn(200,function(){
-					
+					//将hidden value 赋值为hidden-circle
+					$(".hidden-input").val('hidden-circle');
 				});
 			});
 		});
@@ -363,21 +365,43 @@ input:-moz-placeholder {
 		
 		//点击用户头像发送输入框数据
 		$(".button-face").click(function(){
-			//判断隐藏input的值
-			var hiddenInput = $(".hidden-input").val();
-			if(hiddenInput == 'hidden-circle'){
-				//获取当前用户输入框的值
-				var circleName = $('.appendedInputButton').val();
+			//获取当前输入框的值
+			var appendVal = $("#appendedInputButton").val().trim();
+			
+			if(appendVal != ''){
+				//判断隐藏input的值
+				var hiddenInput = $(".hidden-input").val();
 				
+				if(hiddenInput == 'hidden-circle'){
+					$(".button-face").attr('disabled',true);
+					$(".button-face").animate({opacity:'0.4'},100);
+					//获取当前用户输入框的值
+					var circleName = $('.appendedInputButton').val();
+					//移除船长对话框
+					$(".captain").fadeOut(200,function(){
+						$(".captain").remove();
+						//在船长对话框之前添加 用户本人对话框
+						$(".context-captain").append("<div class='row user' id='user'><div class='span5 offset2'><div class='talkbox-user'>asd</div></div><div class='span1'><div class='talkbox-title-left-user-i'></div><div class='talkbox-title-left-2-user-i'></div></div></div>");
+						$(".user").fadeIn(200,function(){
+							//将圈子名称异步提交至action处理程序
+							$.post('doCircle',{circlename:appendVal},function(data,status){
+								
+							});
+						});
+					});
+				}
 			}
 			
-			$(".button-face").attr('disabled',true);
-			$(".button-face").animate({opacity:'0.4'},100);
+			
+			
+			
+		
 		});
 		
 		
 		
 	});
+	
 	
 	function notice(msg){
 		var m = msg;
@@ -387,6 +411,8 @@ input:-moz-placeholder {
 			alert('数据保存失败');
 		}
 	}
+	
+	
 </script>
 </head>
 
@@ -482,10 +508,10 @@ input:-moz-placeholder {
 					</div>
 					
 					<!-- captain context -->
-					<div class=" context-captain" style="display:none">
+					<div class="context-captain" style="display:none">
 						
 						<!-- usertalkinput -->
-						<div class='row user' id='user'><div class='span5 offset2'><div class='talkbox-user'>asd</div></div><div class='span1'><div class='talkbox-title-left-user-i'></div><div class='talkbox-title-left-2-user-i'></div></div></div>
+						<!-- <div class='row user' id='user'><div class='span5 offset2'><div class='talkbox-user'>asd</div></div><div class='span1'><div class='talkbox-title-left-user-i'></div><div class='talkbox-title-left-2-user-i'></div></div></div>-->
 						
 							<!--  用户发言框头像
 								<div class="cface">

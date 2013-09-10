@@ -252,7 +252,7 @@ input:-moz-placeholder {
 			border-right: 10px solid #d9d9d9;
 			position:relative; 
 			top:15px; 
-			left:-30px;
+			left:-11px;
 		}
 .talkbox-title-left-2{
 			width: 0;
@@ -262,8 +262,9 @@ input:-moz-placeholder {
 			border-right: 10px solid rgb(250,250,250);
 			position:relative ; 
 			top:-5px; 
-			left:-29px;
+			left:-10px;
 }
+
 .talkbox,.talkbox-user{
 			background-color: rgb(250,250,250);
 			border: 1px solid #d9d9d9;
@@ -283,8 +284,7 @@ input:-moz-placeholder {
 			letter-spacing: 1px;
 			font-weight:bold;
 			font-size:15px;
-			display:inline-block;
-		}
+}
 .captain-talk {
 	position: relative;
 	left: -48px;
@@ -295,6 +295,53 @@ input:-moz-placeholder {
 	padding:40px 0 0 9px;
 	background: ;
 }
+
+.user{
+	margin-left:19px;
+	display:none;
+}
+
+.talkbox-title-left-user-i {
+	width: 0;
+	height: 0;
+	border-top: 10px solid transparent;
+	border-bottom: 10px solid transparent;
+	border-left: 10px solid #147DCD;
+	position: relative;
+	top: 16px;
+	left: 2px;
+}
+
+.talkbox-title-left-2-user-i {
+	width: 0;
+	height: 0;
+	border-top: 10px solid transparent;
+	border-bottom: 10px solid transparent;
+	border-left: 10px solid rgb(30, 149, 229);
+	position: relative;
+	top: -4px;
+	left: 1px;
+}
+
+.talkbox-user{
+	background: rgb(30, 149, 229);
+	border: 1px solid #147DCD;
+	position:relative; 
+	left:63px;
+	color:#ffffff;	
+}
+
+.talkbox{
+	left:-58px;
+}
+.captain{
+	margin-top:25px;
+}
+.cface{
+	position:relative;
+	left:23px;
+}
+
 </style>
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -306,23 +353,56 @@ input:-moz-placeholder {
 			$('.submit').click();
 		});
 		
-		
+		//点击创建圈子之后 将现有context界面隐藏 然后吸纳实处captain对话框
 		$('.create-circle').click(function(){
-			//点击创建圈子之后 将现有context界面隐藏 然后吸纳实处captain对话框
+			
 			$('.context').fadeOut(300,function(){
 				//将创建圈子对话框显示出来
 				$('.context-captain').fadeIn(200,function(){
-					
+					//将hidden value 赋值为hidden-circle
+					$(".hidden-input").val('hidden-circle');
 				});
 			});
 		});
 		
-		$('.create-circle').click(function(){
+		//当用户在创建圈子界面 输入圈子姓名时 获取隐藏input的value值 为hidden-circle
+		
+		//点击用户头像发送输入框数据
+		$(".button-face").click(function(){
+			//获取当前输入框的值
+			var appendVal = $("#appendedInputButton").val().trim();
 			
+			if(appendVal != ''){
+				//判断隐藏input的值
+				var hiddenInput = $(".hidden-input").val();
+				
+				if(hiddenInput == 'hidden-circle'){
+					$(".button-face").attr('disabled',true);
+					$(".button-face").animate({opacity:'0.4'},100);
+					//获取当前用户输入框的值
+					var circleName = $('.appendedInputButton').val();
+					//移除船长对话框
+					$(".captain").fadeOut(200,function(){
+						$(".captain").remove();
+						//在船长对话框之前添加 用户本人对话框
+						$(".context-captain").append("<div class='row user' id='user'><div class='span5 offset2'><div class='talkbox-user'>asd</div></div><div class='span1'><div class='talkbox-title-left-user-i'></div><div class='talkbox-title-left-2-user-i'></div></div></div>");
+						$(".user").fadeIn(200,function(){
+							//将圈子名称异步提交至action处理程序
+						});
+					});
+				}
+			}
+			
+			
+			
+			
+		
 		});
-
+		
+		
 		
 	});
+	
 	
 	function notice(msg){
 		var m = msg;
@@ -332,6 +412,8 @@ input:-moz-placeholder {
 			alert('数据保存失败');
 		}
 	}
+	
+	
 </script>
 </head>
 
@@ -365,13 +447,15 @@ input:-moz-placeholder {
 				<div class="inputbox">
 					<div class="text">
 						<input class="text" id="appendedInputButton" type="text">
+						<!-- 隐藏input确认当前文本框状态 -->
+						<input type="hidden"  class="hidden-input" value="normal"/>
 					</div>
 					<div class="sanjiao">
 						<div class="talkbox-title-left-user"></div>
 						<div class="talkbox-title-left-2-user"></div>
 					</div>
 					
-					<div class="uface2">
+					<div class="uface2 button-face">
 						<img src="/hello/Uploads/4.jpg" class="img-polaroid">
 					</div>
 				</div>
@@ -421,7 +505,18 @@ input:-moz-placeholder {
 					</div>
 					
 					<!-- captain context -->
-					<div class=" context-captain" style="display:none">
+					<div class="context-captain" style="display:none">
+						
+						<!-- usertalkinput -->
+						<!-- <div class='row user' id='user'><div class='span5 offset2'><div class='talkbox-user'>asd</div></div><div class='span1'><div class='talkbox-title-left-user-i'></div><div class='talkbox-title-left-2-user-i'></div></div></div>-->
+						
+							<!--  用户发言框头像
+								<div class="cface">
+									<img src="__ROOT__/hello/Uploads/4.jpg" class="img-polaroid">
+								</div>
+							-->
+						
+						<!-- captaintalkinput -->
 						<div class="row captain">
 							<div class="span2 offset1">
 								<div class="cface">
@@ -437,6 +532,8 @@ input:-moz-placeholder {
 								</div>
 							</div>
 						</div>
+						
+						<input name="circle-value" type="hidden"/>
 					</div>
 					
 				</div>
