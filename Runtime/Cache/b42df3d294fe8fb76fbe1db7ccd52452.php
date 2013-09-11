@@ -380,14 +380,17 @@ input:-moz-placeholder {
 					$(".button-face").attr('disabled',true);
 					$(".button-face").animate({opacity:'0.4'},100);
 					//获取当前用户输入框的值
-					var circleName = $('.appendedInputButton').val();
+					var circleName = $("#appendedInputButton").val().trim();
 					//移除船长对话框
 					$(".captain").fadeOut(200,function(){
 						$(".captain").remove();
 						//在船长对话框之前添加 用户本人对话框
-						$(".context-captain").append("<div class='row user' id='user'><div class='span5 offset2'><div class='talkbox-user'>asd</div></div><div class='span1'><div class='talkbox-title-left-user-i'></div><div class='talkbox-title-left-2-user-i'></div></div></div>");
+						$(".context-captain").append("<div class='row user' id='user'><div class='span5 offset2'><div class='talkbox-user'>"+circleName+"</div></div><div class='span1'><div class='talkbox-title-left-user-i'></div><div class='talkbox-title-left-2-user-i'></div></div></div>");
 						$(".user").fadeIn(200,function(){
 							//将圈子名称异步提交至action处理程序
+							$.post('__URL__/doCircle',{circlename:circleName},function(data,status){
+								$(".context-captain").append("<div class='row captain'><div class='span2 offset1'><div class='cface'><img src='__ROOT__/hello/Uploads/4.jpg' class='img-polaroid'></div></div><div class='span1 captain-talk'><div class='talkbox-title-left'></div><div class='talkbox-title-left-2'></div></div><div class='span5'><div class='talkbox'>"+data['info']+"</div></div></div>");
+							});
 						});
 					});
 				}
@@ -517,21 +520,7 @@ input:-moz-placeholder {
 							-->
 						
 						<!-- captaintalkinput -->
-						<div class="row captain">
-							<div class="span2 offset1">
-								<div class="cface">
-									<img src="__ROOT__/hello/Uploads/4.jpg" class="img-polaroid">
-								</div>
-							</div>
-							<div class="span1 captain-talk">
-								<div class="talkbox-title-left"></div>
-								<div class="talkbox-title-left-2"></div>
-							</div>
-							<div class="span5">
-								<div class="talkbox">告诉我你要创建的圈子名称
-								</div>
-							</div>
-						</div>
+						<div class="row captain"><div class="span2 offset1"><div class="cface"><img src="__ROOT__/hello/Uploads/4.jpg" class="img-polaroid"></div></div><div class="span1 captain-talk"><div class="talkbox-title-left"></div><div class="talkbox-title-left-2"></div></div><div class="span5"><div class="talkbox">告诉我你要创建的圈子名称</div></div></div>
 						
 						<input name="circle-value" type="hidden"/>
 					</div>
