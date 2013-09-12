@@ -91,6 +91,8 @@ class IndexAction extends GlobalAction {
     	$circleName = trim($_POST['circlename']);
     	$matchCircleName = '/^[a-z0-9\xa1-\xff]{2,10}$/'; //正则表达式 匹配数字字母下划线以及中文 1`10位
     	
+    	
+    	
     	if(preg_match($matchCircleName,$circleName)){//当数据正则验证通过插入数据库
     		$data['circlename'] = $circleName;//圈子名称
     		//圈子总人数
@@ -99,7 +101,7 @@ class IndexAction extends GlobalAction {
     		//圈子所在地（例如公司或者学校类型的圈子）
     		//圈子所属（父圈子）
     	}else{
-    		$dataInfo['info'] = "圈子名称只能由小于10位的数字子母以及中文组成";
+    		$dataInfo['info'] = "圈子名称只能由小于10位的数字子母以及中文组成,请重新输入.";
     	}
     	$this->ajaxReturn($dataInfo,'JSON');
     }
