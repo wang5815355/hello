@@ -88,21 +88,37 @@ class IndexAction extends GlobalAction {
      * @author wangkai
      */
     public function doCircle(){
-    	$circleName = trim($_POST['circlename']);
-    	$matchCircleName = '/^[a-z0-9\xa1-\xff]{2,10}$/'; //正则表达式 匹配数字字母下划线以及中文 1`10位
+    	$uEmail = $this->getUserName();//获取创建者email
+    	$circleGroup = M('group'); 
+    	$circleName = trim($_POST['circlename']).'';
+    	$matchCircleName = '/^[a-z0-9\x80-\xff]{1,}$/'; //正则表达式 匹配数字字母下划线以及中文 1`10位
+    	$len = mb_strlen($circleName,"utf-8");//验证圈子名称长度
     	
-    	
-    	
-    	if(preg_match($matchCircleName,$circleName)){//当数据正则验证通过插入数据库
-    		$data['circlename'] = $circleName;//圈子名称
-    		//圈子总人数
-    		//圈子类型
-    		//圈子创建人（email账号）
-    		//圈子所在地（例如公司或者学校类型的圈子）
-    		//圈子所属（父圈子）
+    	if(preg_match($matchCircleName,$circleName) && $len<=10){//当数据正则验证通过插入数据库
+    		$map['name'] = $circleName;
+    		$resultFind = $circleGroup->where($map)->find();
+    		
+    		if($resultFind!=null){//查询是否有相同名称的圈子 若存在则创建失败
+    			$dataInfo['info'] = '这个名称已经存在，换个名吧！';
+    		}else{
+    			$data['name'] = $circleName;//圈子名称
+    			$data['count'] = 1;//圈子总人数 创建时默认1
+    			$data['type'] = '0';//圈子类型 默认为0  (公司或者学校类型的圈子 0 即为 无类型)
+    			$data['createuser'] = $uEmail; //圈子创建人 当前登录创建人（email账号）
+    			$data['location'] = null;//圈子所在地（例如公司或者学校类型的圈子） 默认传null
+    			$data['fcircle'] = 0;//圈子所属（父圈子）
+    			
+    			$result = $circleGroup->add($data);
+    			if($result!=false){
+    				$dataInfo['info'] = '圈子创建成功';
+    			}else{
+    				$dataInfo['Info'] = '圈子创建失败请重试';
+    			}
+    		}
     	}else{
     		$dataInfo['info'] = "圈子名称只能由小于10位的数字子母以及中文组成,请重新输入.";
     	}
+    	
     	$this->ajaxReturn($dataInfo,'JSON');
     }
     

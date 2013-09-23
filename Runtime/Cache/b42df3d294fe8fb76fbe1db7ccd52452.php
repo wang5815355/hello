@@ -536,7 +536,7 @@ input:-moz-placeholder {
 						</div>
 					</div>
 					
-					<!-- captain context -->
+					<!-- captain context 创建圈子页面 -->
 					<div class="context-captain" style="display:none">
 						
 						<!-- usertalkinput -->
