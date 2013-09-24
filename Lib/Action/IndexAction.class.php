@@ -110,7 +110,7 @@ class IndexAction extends GlobalAction {
     			
     			$result = $circleGroup->add($data);
     			if($result!=false){
-    				$dataInfo['info'] = '圈子创建成功';
+    				$dataInfo['info'] = "圈子'".$circleName."'创建成功.";
     			}else{
     				$dataInfo['Info'] = '圈子创建失败请重试';
     			}
@@ -124,3 +124,4 @@ class IndexAction extends GlobalAction {
     
     
 }
+ 

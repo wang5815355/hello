@@ -338,6 +338,12 @@ input:-moz-placeholder {
 	left:23px;
 }
 
+.context-join{
+	width:720px;
+	float:left;
+	margin-top:32px;
+}
+
 </style>
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -363,6 +369,21 @@ input:-moz-placeholder {
 		
 		//当用户在创建圈子界面 输入圈子姓名时 获取隐藏input的value值 为hidden-circle
 		
+		
+		//点击加入圈子按钮
+		$('.join-circle').click(function(){
+			var context = $('.context').css('display');
+			var contextCaptain = $('.context-captain').css('display');
+			if(context=='block'){
+				$('.context').fadeOut(300,function(){
+					$('.context-join').fadeIn(200);
+				});
+			}else if(contextCaptain=='block'){
+				$('.context-captain').fadeOut(300,function(){
+					$('.context-join').fadeIn(200);
+				});
+			}
+		});
 		
 		//计数器 当计数器大于零时说明为第二次输入值并且点击
 		var count = 0;
@@ -552,6 +573,41 @@ input:-moz-placeholder {
 						<div class="row captain"><div class="span2 offset1"><div class="cface"><img src="__ROOT__/hello/Uploads/4.jpg" class="img-polaroid"></div></div><div class="span1 captain-talk"><div class="talkbox-title-left"></div><div class="talkbox-title-left-2"></div></div><div class="span5"><div class="talkbox">告诉我你要创建的圈子名称</div></div></div>
 						
 						<input name="circle-value" type="hidden"/>
+					</div>
+					
+					<!-- 加入圈子页面  根据圈子id号搜索 或者名称 或者创始人名称-->
+					<div class="context-join" style="display:none">
+						<div class="row-fluid">
+				            <ul class="thumbnails">
+				              <li class="span4">
+				                <div class="thumbnail">
+				                  <div class="caption">
+				                    <h4>Thumbnail label</h4>
+				                    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+				                    <p><a href="#" class="btn btn-primary">Action</a> <a href="#" class="btn">Action</a></p>
+				                  </div>
+				                </div>
+				              </li>
+				              <li class="span4">
+				                <div class="thumbnail">
+				                  <div class="caption">
+				                    <h4>Thumbnail label</h4>
+				                    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+				                    <p><a href="#" class="btn btn-primary">Action</a> <a href="#" class="btn">Action</a></p>
+				                  </div>
+				                </div>
+				              </li>
+				              <li class="span4">
+				                <div class="thumbnail">
+				                  <div class="caption">
+				                    <h4>Thumbnail label</h4>
+				                    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+				                    <p class="join_btn"><a href="#" class="btn btn-primary">Action</a> <a href="#" class="btn">Action</a></p>
+				                  </div>
+				                </div>
+				              </li>
+				            </ul>
+				          </div>
 					</div>
 					
 				</div>
