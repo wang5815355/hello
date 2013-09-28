@@ -344,6 +344,22 @@ input:-moz-placeholder {
 	margin-top:32px;
 }
 
+#circle-join-btn{
+	padding:2px 3px;
+}
+h5{
+	margin:0;
+}
+.dl-horizontal dt{
+	text-align:right;
+	width:60px;
+	font-size: 12px;
+}
+.dl-horizontal dd{
+	margin-left:2px;
+	font-size: 11px;
+}
+
 </style>
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -579,30 +595,48 @@ input:-moz-placeholder {
 					<div class="context-join" style="display:none">
 						<div class="row-fluid">
 				            <ul class="thumbnails">
-				              <li class="span4">
+				              <li class="span3">
 				                <div class="thumbnail">
 				                  <div class="caption">
 				                    <h4>Thumbnail label</h4>
-				                    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+				                    <p></p>
 				                    <p><a href="#" class="btn btn-primary">Action</a> <a href="#" class="btn">Action</a></p>
 				                  </div>
 				                </div>
 				              </li>
-				              <li class="span4">
+				              <li class="span3">
 				                <div class="thumbnail">
 				                  <div class="caption">
 				                    <h4>Thumbnail label</h4>
-				                    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+				                    <p></p>
 				                    <p><a href="#" class="btn btn-primary">Action</a> <a href="#" class="btn">Action</a></p>
 				                  </div>
 				                </div>
 				              </li>
-				              <li class="span4">
+				              <li class="span3">
 				                <div class="thumbnail">
 				                  <div class="caption">
 				                    <h4>Thumbnail label</h4>
-				                    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-				                    <p class="join_btn"><a href="#" class="btn btn-primary">Action</a> <a href="#" class="btn">Action</a></p>
+				                    <p></p>
+				                    <p class="join_btn"><a href="#" id = 'circle-join-btn' class="circle-join-btn btn btn-primary ">Action</a> <a href="#" class="btn">Action</a></p>
+				                  </div>
+				                </div>
+				              </li>
+				              <li class="span3">
+				                <div class="thumbnail">
+				                  <div class="caption">
+				                    <h4 style>Thumbnail label</h4>
+				                     <dl class="dl-horizontal">
+							            <dt>圈子编号：</dt>
+							            <dd>1</dd>
+							            <dt>成员数量：</dt>
+							            <dd>1</dd>
+							            <dt>创建人：</dt>
+							            <dd>张三</dd>
+							            <dt>创建日期：</dt>
+							            <dd>2003-9-27</dd>
+							          </dl>
+				                    <p class="join_btn"><a href="#" id = 'circle-join-btn' class="circle-join-btn btn btn-primary ">加入圈子</a> </p>
 				                  </div>
 				                </div>
 				              </li>
