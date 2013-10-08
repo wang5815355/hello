@@ -348,9 +348,34 @@ input:-moz-placeholder {
 	margin-top:32px;
 }
 
+#circle-join-btn{
+	padding:2px 3px;
+}
+h5{
+	margin:0;
+}
+.dl-horizontal dt{
+	text-align:right;
+	width:60px;
+	font-size: 12px;
+}
+.dl-horizontal dd{
+	margin-left:2px;
+	font-size: 11px;
+}
+
+input::-webkit-input-placeholder {
+    color:#999;
+}
+input:-moz-placeholder {
+    color:#999;
+}
+
 </style>
 <script type="text/javascript">
 	$(document).ready(function(){
+		$("li:eq(4)").css('marginLeft','0');
+		
 		$('.thumbnail').click(function(){
 			$('.fileSelect').click();
 		});
@@ -361,14 +386,18 @@ input:-moz-placeholder {
 		
 		//点击创建圈子之后 将现有context界面隐藏 然后吸纳实处captain对话框
 		$('.create-circle').click(function(){
+			var context = $('.context').css('display');
+			var contextJoin = $('.context-join').css('display');
 			
-			$('.context').fadeOut(300,function(){
-				//将创建圈子对话框显示出来
-				$('.context-captain').fadeIn(200,function(){
-					//将hidden value 赋值为hidden-circle
-					$(".hidden-input").val('hidden-circle');
+			if(context=='block'){
+				$('.context').fadeOut(300,function(){
+					$('.context-captain').fadeIn(200);
 				});
-			});
+			}else if(contextJoin=='block'){
+				$('.context-join').fadeOut(300,function(){
+					$('.context-captain').fadeIn(200);
+				});
+			}
 		});
 		
 		//当用户在创建圈子界面 输入圈子姓名时 获取隐藏input的value值 为hidden-circle
@@ -378,6 +407,7 @@ input:-moz-placeholder {
 		$('.join-circle').click(function(){
 			var context = $('.context').css('display');
 			var contextCaptain = $('.context-captain').css('display');
+			$('#appendedInputButton').attr('placeholder','输入圈子名称或圈子号可以查找你要加入的圈子');
 			if(context=='block'){
 				$('.context').fadeOut(300,function(){
 					$('.context-join').fadeIn(200);
@@ -395,6 +425,8 @@ input:-moz-placeholder {
 		$("#button-face").click(function(){
 			//获取当前输入框的值
 			var appendVal = $("#appendedInputButton").val().trim();
+			//或许当前输入框class属性
+			var appendClass = $('#appendedInputButton').attr('class');
 			
 			if(appendVal != ''){
 				//判断隐藏input的值
@@ -579,33 +611,24 @@ input:-moz-placeholder {
 					<div class="context-join" style="display:none">
 						<div class="row-fluid">
 				            <ul class="thumbnails">
-				              <li class="span4">
+				              <?php if(is_array($circlelist)): $i = 0; $__LIST__ = $circlelist;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?><li class="span3">
 				                <div class="thumbnail">
 				                  <div class="caption">
-				                    <h4>Thumbnail label</h4>
-				                    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-				                    <p><a href="#" class="btn btn-primary">Action</a> <a href="#" class="btn">Action</a></p>
+				                    <h5 style="color:#666"><?php echo ($vo["name"]); ?></h5>
+				                     <dl class="dl-horizontal">
+							            <dt>圈子编号：</dt>
+							            <dd><?php echo ($vo["id"]); ?></dd>
+							            <dt>成员数量：</dt>
+							            <dd><?php echo ($vo["count"]); ?></dd>
+							            <dt>创建人：</dt>
+							            <dd><?php echo ($vo["createuser"]); ?></dd>
+							            <dt>创建日期：</dt>
+							            <dd><?php echo ($vo["time"]); ?></dd>
+							          </dl>
+				                    <p class="join_btn" style="text-align:right;margin:0px;"><a href="#"  id = 'circle-join-btn' class="circle-join-btn btn btn-primary ">加入圈子</a> </p>
 				                  </div>
 				                </div>
-				              </li>
-				              <li class="span4">
-				                <div class="thumbnail">
-				                  <div class="caption">
-				                    <h4>Thumbnail label</h4>
-				                    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-				                    <p><a href="#" class="btn btn-primary">Action</a> <a href="#" class="btn">Action</a></p>
-				                  </div>
-				                </div>
-				              </li>
-				              <li class="span4">
-				                <div class="thumbnail">
-				                  <div class="caption">
-				                    <h4>Thumbnail label</h4>
-				                    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-				                    <p class="join_btn"><a href="#" class="btn btn-primary">Action</a> <a href="#" class="btn">Action</a></p>
-				                  </div>
-				                </div>
-				              </li>
+				              </li><?php endforeach; endif; else: echo "" ;endif; ?>
 				            </ul>
 				          </div>
 					</div>

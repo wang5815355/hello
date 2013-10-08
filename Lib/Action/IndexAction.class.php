@@ -9,7 +9,7 @@ class IndexAction extends GlobalAction {
     	//如果cookie中存在邮件账号则直接显示首页
     	if(cookie('username')!=null){
     		//查询当前用户的账号验证状态
-    		$userModel = M('user');
+    		$userModel = M('user');//用户表
     		$map['email'] = cookie('username');
     		$listRow = $userModel->where($map)->find();
     		$faceimage = $listRow['faceimage'];
@@ -25,6 +25,11 @@ class IndexAction extends GlobalAction {
     			$map['email'] = array('in',$friendList);
     			$friendMsgList = $userModel->where($map)->select();
     			$this->assign('friendMsgList',$friendMsgList);
+    			
+    			//查询前面8条圈子记录
+    			$circleModle = M('group');//圈子表
+    			$circleList = $circleModle->order('id desc')->limit(7)->select();
+    			$this->assign('circlelist',$circleList); // 输出模板
     		}
     		$this->display();
     	}else{//如果cookie中不存在用户账号则跳转到登录页面上
