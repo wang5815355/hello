@@ -26,15 +26,35 @@ class IndexAction extends GlobalAction {
     			$friendMsgList = $userModel->where($map)->select();
     			$this->assign('friendMsgList',$friendMsgList);
     			
-    			//查询前面8条圈子记录
+	    		//查询前面8条圈子记录
     			$circleModle = M('group');//圈子表
-    			$circleList = $circleModle->order('id desc')->limit(7)->select();
-    			$this->assign('circlelist',$circleList); // 输出模板
+	    		$circleList = $circleModle->order('id desc')->limit(7)->select();
+	    		$this->assign('circlelist',$circleList); // 输出模板
     		}
     		$this->display();
     	}else{//如果cookie中不存在用户账号则跳转到登录页面上
     		redirect('../Public/login');
     		$this->display();
+    	}
+    }
+    
+    /**
+     * 异步查询圈子
+     * @author wangkai
+     */
+    public function serchCircle(){
+    	//根据用户提交的查询条件异步查询圈子
+    	$circleModle = M('group');//圈子表
+    	$circleName = trim($_POST['circleName']);//id 或者 名字
+//     	$circleId = trim($_POST['circleId']);
+    	$map['name'] = $circleName;
+//     	$map['id'] = $circleId;
+    	
+    	if($circleName != ''){//若提交条件不为空
+    		//查询前面8条圈子记录
+    		$circleList = $circleModle->where($map)->select();
+    		$data = $circleList;
+    		$this->ajaxReturn($data,'JSON');
     	}
     }
     
