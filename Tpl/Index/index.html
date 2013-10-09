@@ -480,7 +480,7 @@ input:-moz-placeholder {
 				//搜索圈子页面的操作
 				if(hiddenInput == 'joinCircleInput'){
 					//获取输入框的查询条件如圈子id和圈子名称  post到后台 
-					$.post('__URL__/serchCircle',{circleName:hiddenInput},function(data,status){
+					$.post('__URL__/serchCircle',{circleName:appendVal},function(data,status){
 						$.each(data,function(index,content){
 							alert(content.id);
 						});
@@ -491,10 +491,7 @@ input:-moz-placeholder {
 			
 		});
 		
-		
-		
 	});
-	
 	
 	function notice(msg){
 		var m = msg;

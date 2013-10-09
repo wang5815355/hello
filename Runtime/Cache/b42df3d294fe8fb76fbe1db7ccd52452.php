@@ -388,7 +388,7 @@ input:-moz-placeholder {
 		$('.create-circle').click(function(){
 			var context = $('.context').css('display');
 			var contextJoin = $('.context-join').css('display');
-			
+			$('.hidden-input').attr('value','hidden-circle');
 			if(context=='block'){
 				$('.context').fadeOut(300,function(){
 					$('.context-captain').fadeIn(200);
@@ -402,12 +402,12 @@ input:-moz-placeholder {
 		
 		//当用户在创建圈子界面 输入圈子姓名时 获取隐藏input的value值 为hidden-circle
 		
-		
 		//点击加入圈子按钮
 		$('.join-circle').click(function(){
 			var context = $('.context').css('display');
 			var contextCaptain = $('.context-captain').css('display');
 			$('#appendedInputButton').attr('placeholder','输入圈子名称或圈子号可以查找你要加入的圈子');
+			$('.hidden-input').attr('value','joinCircleInput');
 			if(context=='block'){
 				$('.context').fadeOut(300,function(){
 					$('.context-join').fadeIn(200);
@@ -425,13 +425,13 @@ input:-moz-placeholder {
 		$("#button-face").click(function(){
 			//获取当前输入框的值
 			var appendVal = $("#appendedInputButton").val().trim();
-			//或许当前输入框class属性
-			var appendClass = $('#appendedInputButton').attr('class');
 			
 			if(appendVal != ''){
 				//判断隐藏input的值
 				var hiddenInput = $(".hidden-input").val();
 				var bfid = $(".button-face").attr("id");
+				
+				//创建圈子页面的点击头像按钮操作
 				if(hiddenInput == 'hidden-circle' && bfid != 'boff'){
 					$("#button-face").animate({opacity:'0.4'},100);
 					$(".button-face").attr('id','boff');
@@ -480,14 +480,22 @@ input:-moz-placeholder {
 					}
 					
 				}
+				
+				//搜索圈子页面的操作
+				if(hiddenInput == 'joinCircleInput'){
+					//获取输入框的查询条件如圈子id和圈子名称  post到后台 
+					$.post('__URL__/serchCircle',{circleName:appendVal},function(data,status){
+						$.each(data,function(index,content){
+							alert(content.id);
+						});
+						$(".button-face").attr('id','button-face');
+					});
+				}
 			}
 			
 		});
 		
-		
-		
 	});
-	
 	
 	function notice(msg){
 		var m = msg;
