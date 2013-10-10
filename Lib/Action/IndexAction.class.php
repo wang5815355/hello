@@ -52,7 +52,7 @@ class IndexAction extends GlobalAction {
     	if($circleName != ''){//若提交条件不为空
     		//查询前面8条圈子记录
     		$map['name|id'] =  array('like',"%".$circleName."%");
-    		$circleList = $circleModle->where($map)->select();
+    		$circleList = $circleModle->limit(7)->where($map)->select();
     		$data = $circleList;
     		
     		$this->ajaxReturn($data,'JSON');

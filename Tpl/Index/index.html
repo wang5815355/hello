@@ -496,9 +496,16 @@ input:-moz-placeholder {
 								if(data == null){
 									$('.thumbnails-ser').html("<p style='text-align:center; font-size:15px; font-weight:bold;'>不存在你要找的圈子..</p>");
 								}else{
-									$('.thumbnails-ser').html("<input name='circleMark' type='hidden' class='repend-cl'/>");
+									$('.thumbnails-ser').html("<ul class='thumbnails-ser-ui' style='margin-bottom:0px;'></ul>");
+									var ei = 0; 
 									$.each(data,function(index,content){
-										$('.repend-cl').after("<li class='span3 first-li'><div class='thumbnail'><div class='caption'><h5 style='color:#666'>"+content.name+"</h5><dl class='dl-horizontal'><dt>圈子编号：</dt><dd>"+content.id+"</dd><dt>成员数量：</dt><dd>"+content.count+"</dd><dt>创建人：</dt><dd>"+content.createuser+"</dd><dt>创建日期：</dt><dd>"+content.time+"</dd></dl><p class='join_btn' style='text-align:right;margin:0px;'><a href='#'  id = 'circle-join-btn' class='circle-join-btn btn btn-primary '>加入圈子</a> </p></div></div></li>");
+										$("li").css('marginBottom','20px');
+										var liStyle = '';
+										if(ei==4){
+											var liStyle = 'margin-left:0px';
+										}
+										$('.thumbnails-ser-ui').append("<li class='span3 first-li' style='"+liStyle+"'><div class='thumbnail'><div class='caption'><h5 style='color:#666'>"+content.name+"</h5><dl class='dl-horizontal'><dt>圈子编号：</dt><dd>"+content.id+"</dd><dt>成员数量：</dt><dd>"+content.count+"</dd><dt>创建人：</dt><dd>"+content.createuser+"</dd><dt>创建日期：</dt><dd>"+content.time+"</dd></dl><p class='join_btn' style='text-align:right;margin:0px;'><button style='font-size:12px;' type='button' class='btn btn-info'>加入圈子</button></p></div></div></li>");
+										ei = ei+1;
 									});
 									$(".button-face").animate({opacity:'1'},10,function(){
 										$(".button-face").attr('id','button-face');
@@ -659,7 +666,7 @@ input:-moz-placeholder {
 								            <dt>创建日期：</dt>
 								            <dd>{$vo.time}</dd>
 								          </dl>
-					                    <p class="join_btn" style="text-align:right;margin:0px;"><a href="#"  id = 'circle-join-btn' class="circle-join-btn btn btn-primary ">加入圈子</a> </p>
+					                    <p class="join_btn" style="text-align:right;margin:0px;"><button id='{$vo.id}' style='font-size:12px;' type="button" class="btn btn-info">加入圈子</button> </p>
 					                  </div>
 					                </div>
 					              </li>
@@ -668,7 +675,7 @@ input:-moz-placeholder {
 				            </div>
 				            
 				            <div class='thumbnails-ser' style='display:none;' >
-				            	
+				            		
 				            </div>
 				            
 				          </div>

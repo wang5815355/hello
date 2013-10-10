@@ -349,7 +349,7 @@ input:-moz-placeholder {
 }
 
 #circle-join-btn{
-	padding:2px 3px;
+	padding:2px 3px 3px;
 }
 h5{
 	margin:0;
@@ -362,6 +362,10 @@ h5{
 .dl-horizontal dd{
 	margin-left:2px;
 	font-size: 11px;
+}
+
+.first-li{
+	margin-left:0px;
 }
 
 input::-webkit-input-placeholder {
@@ -388,6 +392,7 @@ input:-moz-placeholder {
 		$('.create-circle').click(function(){
 			var context = $('.context').css('display');
 			var contextJoin = $('.context-join').css('display');
+			$('#appendedInputButton').attr('placeholder','输入你要创建的圈子名称');
 			$('.hidden-input').attr('value','hidden-circle');
 			if(context=='block'){
 				$('.context').fadeOut(300,function(){
@@ -482,15 +487,40 @@ input:-moz-placeholder {
 				}
 				
 				//搜索圈子页面的操作
-				if(hiddenInput == 'joinCircleInput'){
+				if(hiddenInput == 'joinCircleInput' && bfid != 'boff'){
+					$("#button-face").animate({opacity:'0.4'},100);
+					$(".button-face").attr('id','boff');
+					
 					//获取输入框的查询条件如圈子id和圈子名称  post到后台 
-					$.post('__URL__/serchCircle',{circleName:appendVal},function(data,status){
-						$.each(data,function(index,content){
-							alert(content.id);
+					$('.thumbnails-hi').fadeOut(100,function(){
+						$('.thumbnails-ser').html("<input name='circleMark' type='hidden' class='repend-cl'/>");
+						$('.thumbnails-ser').fadeIn(200,function(){
+							$('.thumbnails-ser').html("<p style='text-align:center;'><img src='__ROOT__/hello/Public/img/ajax-loader.gif' class='loader-gif'></p>");
+							$.post('__URL__/serchCircle',{circleName:appendVal},function(data,status){
+								if(data == null){
+									$('.thumbnails-ser').html("<p style='text-align:center; font-size:15px; font-weight:bold;'>不存在你要找的圈子..</p>");
+								}else{
+									$('.thumbnails-ser').html("<ul class='thumbnails-ser-ui' style='margin-bottom:0px;'></ul>");
+									var ei = 0; 
+									$.each(data,function(index,content){
+										$("li").css('marginBottom','20px');
+										var liStyle = '';
+										if(ei==4){
+											var liStyle = 'margin-left:0px';
+										}
+										$('.thumbnails-ser-ui').append("<li class='span3 first-li' style='"+liStyle+"'><div class='thumbnail'><div class='caption'><h5 style='color:#666'>"+content.name+"</h5><dl class='dl-horizontal'><dt>圈子编号：</dt><dd>"+content.id+"</dd><dt>成员数量：</dt><dd>"+content.count+"</dd><dt>创建人：</dt><dd>"+content.createuser+"</dd><dt>创建日期：</dt><dd>"+content.time+"</dd></dl><p class='join_btn' style='text-align:right;margin:0px;'><button style='font-size:12px;' type='button' class='btn btn-info'>加入圈子</button></p></div></div></li>");
+										ei = ei+1;
+									});
+									$(".button-face").animate({opacity:'1'},10,function(){
+										$(".button-face").attr('id','button-face');
+									});
+								}
+							});
+							
 						});
-						$(".button-face").attr('id','button-face');
 					});
 				}
+				
 			}
 			
 		});
@@ -618,26 +648,34 @@ input:-moz-placeholder {
 					<!-- 加入圈子页面  根据圈子id号搜索 或者名称 或者创始人名称-->
 					<div class="context-join" style="display:none">
 						<div class="row-fluid">
-				            <ul class="thumbnails">
-				              <?php if(is_array($circlelist)): $i = 0; $__LIST__ = $circlelist;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?><li class="span3">
-				                <div class="thumbnail">
-				                  <div class="caption">
-				                    <h5 style="color:#666"><?php echo ($vo["name"]); ?></h5>
-				                     <dl class="dl-horizontal">
-							            <dt>圈子编号：</dt>
-							            <dd><?php echo ($vo["id"]); ?></dd>
-							            <dt>成员数量：</dt>
-							            <dd><?php echo ($vo["count"]); ?></dd>
-							            <dt>创建人：</dt>
-							            <dd><?php echo ($vo["createuser"]); ?></dd>
-							            <dt>创建日期：</dt>
-							            <dd><?php echo ($vo["time"]); ?></dd>
-							          </dl>
-				                    <p class="join_btn" style="text-align:right;margin:0px;"><a href="#"  id = 'circle-join-btn' class="circle-join-btn btn btn-primary ">加入圈子</a> </p>
-				                  </div>
-				                </div>
-				              </li><?php endforeach; endif; else: echo "" ;endif; ?>
-				            </ul>
+				            
+				            <div class="thumbnails-hi">
+					            <ul class="thumbnails">
+					              <?php if(is_array($circlelist)): $i = 0; $__LIST__ = $circlelist;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?><li class="span3">
+					                <div class="thumbnail">
+					                  <div class="caption">
+					                    <h5 style="color:#666"><?php echo ($vo["name"]); ?></h5>
+					                     <dl class="dl-horizontal">
+								            <dt>圈子编号：</dt>
+								            <dd><?php echo ($vo["id"]); ?></dd>
+								            <dt>成员数量：</dt>
+								            <dd><?php echo ($vo["count"]); ?></dd>
+								            <dt>创建人：</dt>
+								            <dd><?php echo ($vo["createuser"]); ?></dd>
+								            <dt>创建日期：</dt>
+								            <dd><?php echo ($vo["time"]); ?></dd>
+								          </dl>
+					                    <p class="join_btn" style="text-align:right;margin:0px;"><button id='<?php echo ($vo["id"]); ?>' style='font-size:12px;' type="button" class="btn btn-info">加入圈子</button> </p>
+					                  </div>
+					                </div>
+					              </li><?php endforeach; endif; else: echo "" ;endif; ?>
+					            </ul>
+				            </div>
+				            
+				            <div class='thumbnails-ser' style='display:none;' >
+				            		
+				            </div>
+				            
 				          </div>
 					</div>
 					
