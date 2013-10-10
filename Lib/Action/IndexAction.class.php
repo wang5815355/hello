@@ -47,13 +47,14 @@ class IndexAction extends GlobalAction {
     	$circleModle = M('group');//圈子表
     	$circleName = trim($_POST['circleName']);//id 或者 名字
 //     	$circleId = trim($_POST['circleId']);
-    	$map['name'] = $circleName;
 //     	$map['id'] = $circleId;
     	
     	if($circleName != ''){//若提交条件不为空
     		//查询前面8条圈子记录
+    		$map['name|id'] =  array('like',"%".$circleName."%");
     		$circleList = $circleModle->where($map)->select();
     		$data = $circleList;
+    		
     		$this->ajaxReturn($data,'JSON');
     	}
     }
