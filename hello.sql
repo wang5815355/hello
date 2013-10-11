@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2013 年 08 月 27 日 14:53
+-- 生成日期: 2013 年 10 月 11 日 16:34
 -- 服务器版本: 5.5.8
 -- PHP 版本: 5.3.3
 
@@ -14,18 +14,6 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --
 
 -- --------------------------------------------------------
--- 圈子表
-CREATE TABLE  `hello_db`.`hello_group` (
-`id` INT( 20 ) NOT NULL COMMENT  '圈子id',
-`name` INT NOT NULL COMMENT  '圈子名称',
-`count` INT NOT NULL COMMENT  '圈子总人数',
-`type` INT NOT NULL COMMENT  '圈子类型',
-`createuser` INT NOT NULL COMMENT  '圈子创建人',
-`type2` INT NOT NULL COMMENT  '圈子类型',
-`location` INT NOT NULL COMMENT  '圈子所在地（例如公司或者学校类型的圈子）',
-`fcircle` INT NOT NULL COMMENT  '圈子所属（父圈子）',
-`time` INT NOT NULL COMMENT  '创建时间'
-) ENGINE = MYISAM CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT =  '圈子表';
 
 --
 -- 表的结构 `hello_friend`
@@ -43,6 +31,58 @@ CREATE TABLE IF NOT EXISTS `hello_friend` (
 -- 转存表中的数据 `hello_friend`
 --
 
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `hello_group`
+--
+
+CREATE TABLE IF NOT EXISTS `hello_group` (
+  `name` varchar(11) DEFAULT NULL COMMENT '圈子名称',
+  `password` varchar(20) DEFAULT NULL COMMENT '圈子密码（可以为空，设置密码后只有知道密码的人才能加入这个圈子）',
+  `count` int(20) DEFAULT NULL COMMENT '圈子总人数',
+  `type` tinyint(2) DEFAULT NULL COMMENT '圈子类型',
+  `createuser` varchar(50) DEFAULT NULL COMMENT '圈子创建人（email账号）',
+  `location` int(11) DEFAULT NULL COMMENT '圈子所在地（例如公司或者学校类型的圈子）',
+  `fcircle` int(11) DEFAULT NULL COMMENT '圈子所属（父圈子）',
+  `time` varchar(11) DEFAULT NULL COMMENT '创建时间',
+  `id` int(40) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='圈子表' AUTO_INCREMENT=5 ;
+
+--
+-- 转存表中的数据 `hello_group`
+--
+
+INSERT INTO `hello_group` (`name`, `password`, `count`, `type`, `createuser`, `location`, `fcircle`, `time`, `id`) VALUES
+('111', NULL, 1, 0, '393867916@qq.com', NULL, 0, NULL, 4);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `hello_grouprelationship`
+--
+
+CREATE TABLE IF NOT EXISTS `hello_grouprelationship` (
+  `id` int(50) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `circleid` varchar(50) NOT NULL COMMENT '圈子id',
+  `uemail` varchar(50) NOT NULL COMMENT '用户email',
+  `status` char(1) DEFAULT NULL COMMENT '圈子状态（1，为待审核状态2，加入成功，3，审核未通过）',
+  `isCreater` char(1) DEFAULT NULL COMMENT '是否创始人（1,代表是创始人，空则代表不是）',
+  `time` varchar(20) NOT NULL COMMENT '加入圈子时间',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
+
+--
+-- 转存表中的数据 `hello_grouprelationship`
+--
+
+INSERT INTO `hello_grouprelationship` (`id`, `circleid`, `uemail`, `status`, `isCreater`, `time`) VALUES
+(4, '1', '393867916@qq.com', NULL, '1', '1381499645'),
+(5, '1', '393867916@qq.com', NULL, '1', '1381499693'),
+(6, '3', '393867916@qq.com', NULL, '1', '1381500045'),
+(7, '4', '393867916@qq.com', NULL, '1', '1381500857');
 
 -- --------------------------------------------------------
 

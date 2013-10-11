@@ -194,6 +194,7 @@ class IndexAction extends GlobalAction {
     			$data['createuser'] = $uEmail; //圈子创建人 当前登录创建人（email账号）
     			$data['location'] = null;//圈子所在地（例如公司或者学校类型的圈子） 默认传null
     			$data['fcircle'] = 0;//圈子所属（父圈子）
+    			$data['time'] = time();//时间
     			
     			$result = $circleGroup->add($data);
     			if($result!=false){
