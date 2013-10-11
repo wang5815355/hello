@@ -28,7 +28,22 @@ class IndexAction extends GlobalAction {
     			
 	    		//查询前面8条圈子记录
     			$circleModle = M('group');//圈子表
+    			$grModel = M('grouprelationship');//圈子关系表
+    			//获取当前用户登录email账号 
+    			$uEmail = $this->getUserName();
 	    		$circleList = $circleModle->order('id desc')->limit(7)->select();
+	    		//查询当前圈子是否已经加入
+	    		foreach($circleList as $k=>$v){
+	    			$circleId = $circleList[$k]['id'];
+	    			$mapGr['circleid'] = $circleId;
+	    			$mapGr['uemail'] = $uEmail;
+	    			$resultGr = $grModel->where($mapGr)->find();
+	    			if($resultGr != null){
+	    				$circleList[$k]['isJo'] = 1;//是否已加入圈子标记 1代表已加入 0代表未加入
+	    			}else{
+	    				$circleList[$k]['isJo'] = 0;//是否已加入圈子标记0
+	    			}
+	    		}
 	    		$this->assign('circlelist',$circleList); // 输出模板
     		}
     		$this->display();
@@ -36,6 +51,38 @@ class IndexAction extends GlobalAction {
     		redirect('../Public/login');
     		$this->display();
     	}
+    }
+    
+    /**
+     * 加入圈子
+     * @author wangkai
+     */
+    public function doJoinCircle(){
+    	 $circleId = trim($_POST['circleId']);//要加入的圈子id
+    	 $uEmail = $this->getUserName();//获取当前登录用户邮箱 
+    	 $grModel = M('grouprelationship');
+    	 $data['circleid'] = $circleId;
+    	 $data['uemail'] = $uEmail;
+    	 $data['time'] = time()."";
+    	 
+    	 //检测是否已加入该圈子
+    	 $map['circleid'] = $circleId;
+    	 $map['uemail'] = $uEmail;
+    	 $resultIsJo = $grModel->where($map)->find();
+    	 
+    	 if($resultIsJo == null){
+    	 	$result = $grModel->add($data);
+    	 	$dataInfo['info'] = '2';
+    	 	if($result != false){
+    	 		$dataInfo['info'] = '1';//创建圈子成功返回1
+    	 	}else{
+    	 		$dataInfo['info'] = '-1';//创建圈子失败返回-1
+    	 	}
+    	 }else{
+    	 	$dataInfo['info'] = '-100';//该圈子已加入不能重复加入 返回-100
+    	 }
+    	
+    	 $this->ajaxReturn($dataInfo,'JSON');  
     }
     
     /**
