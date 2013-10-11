@@ -100,6 +100,20 @@ class IndexAction extends GlobalAction {
     		//查询前面8条圈子记录
     		$map['name|id'] =  array('like',"%".$circleName."%");
     		$circleList = $circleModle->limit(7)->where($map)->select();
+    		//查询当前圈子是否已经加入
+    		foreach($circleList as $k=>$v){
+    			$grModel = M(grouprelationship);
+    			$circleId = $circleList[$k]['id'];
+    			$mapGr['circleid'] = $circleId;
+    			$uEmail = $this->getUserName();
+    			$mapGr['uemail'] = $uEmail;
+    			$resultGr = $grModel->where($mapGr)->find();
+    			if($resultGr != null){
+    				$circleList[$k]['isJo'] = 1;//是否已加入圈子标记 1代表已加入 0代表未加入
+    			}else{
+    				$circleList[$k]['isJo'] = 0;//是否已加入圈子标记0
+    			}
+    		}
     		$data = $circleList;
     		
     		$this->ajaxReturn($data,'JSON');
@@ -183,6 +197,13 @@ class IndexAction extends GlobalAction {
     			
     			$result = $circleGroup->add($data);
     			if($result!=false){
+    				//圈子创建成功同时在圈子所属关系当中 将圈子创始人email账号加入
+    				$grModel = M('grouprelationship');
+    				$dataGr['circleid'] = $result;
+    				$dataGr['uemail'] = $uEmail;
+    				$dataGr['time'] = time();
+    				$dataGr['isCreater'] = '1';
+    				$grModel->add($dataGr);
     				$dataInfo['info'] = "圈子'".$circleName."'创建成功.";
     			}else{
     				$dataInfo['Info'] = '圈子创建失败请重试';

@@ -499,6 +499,9 @@ input:-moz-placeholder {
 							$.post('__URL__/serchCircle',{circleName:appendVal},function(data,status){
 								if(data == null){
 									$('.thumbnails-ser').html("<p style='text-align:center; font-size:15px; font-weight:bold;'>不存在你要找的圈子..</p>");
+									$(".button-face").animate({opacity:'1'},10,function(){
+										$(".button-face").attr('id','button-face');
+									});
 								}else{
 									$('.thumbnails-ser').html("<ul class='thumbnails-ser-ui' style='margin-bottom:0px;'></ul>");
 									var ei = 0; 
@@ -508,7 +511,13 @@ input:-moz-placeholder {
 										if(ei==4){
 											var liStyle = 'margin-left:0px';
 										}
-										$('.thumbnails-ser-ui').append("<li class='span3 first-li' style='"+liStyle+"'><div class='thumbnail'><div class='caption'><h5 style='color:#666'>"+content.name+"</h5><dl class='dl-horizontal'><dt>圈子编号：</dt><dd>"+content.id+"</dd><dt>成员数量：</dt><dd>"+content.count+"</dd><dt>创建人：</dt><dd>"+content.createuser+"</dd><dt>创建日期：</dt><dd>"+content.time+"</dd></dl><p class='join_btn' style='text-align:right;margin:0px;'><button style='font-size:12px;' type='button' class='btn btn-info'>加入圈子</button></p></div></div></li>");
+										//是否已经加入该圈子
+										if(content.isJo == 1){
+											var isJo = "<div style='text-align:right;font-size:13px; font-weight:bold;'>已加入</div>";
+										}else{
+											var isJo = "<button id='<?php echo ($vo["id"]); ?>' style='font-size:12px;' type='button' class='btn btn-info' onclick='$.doJoin("+content.id+",this)'>加入圈子</button>";
+										}
+										$('.thumbnails-ser-ui').append("<li class='span3 first-li' style='"+liStyle+"'><div class='thumbnail'><div class='caption'><h5 style='color:#666'>"+content.name+"</h5><dl class='dl-horizontal'><dt>圈子编号：</dt><dd>"+content.id+"</dd><dt>成员数量：</dt><dd>"+content.count+"</dd><dt>创建人：</dt><dd>"+content.createuser+"</dd><dt>创建日期：</dt><dd>"+content.time+"</dd></dl><p class='join_btn' style='text-align:right;margin:0px;'>"+isJo+"</p></div></div></li>");
 										ei = ei+1;
 									});
 									$(".button-face").animate({opacity:'1'},10,function(){
@@ -524,6 +533,19 @@ input:-moz-placeholder {
 			}
 			
 		});
+		
+		//加入根据圈子id号加入圈子
+		$.doJoin = function(circleId,tagThis){
+			$(tagThis).html("<img src='__ROOT__/hello/Public/img/ajax-loader.gif' class='loader-gif'>");
+			$.post('__URL__/doJoinCircle',{circleId:circleId},function(data){
+				//若异步返回值为1 则加入圈子成功
+				if(data['info']==1){
+					$(tagThis).parent().html("<div style='text-align:right;font-size:13px; font-weight:bold; padding:5px 0 5px;'>已加入</div>");
+				}else{
+					alert(data['info']);
+				}
+			});
+		}
 		
 	});
 	
@@ -665,7 +687,9 @@ input:-moz-placeholder {
 								            <dt>创建日期：</dt>
 								            <dd><?php echo ($vo["time"]); ?></dd>
 								          </dl>
-					                    <p class="join_btn" style="text-align:right;margin:0px;"><button id='<?php echo ($vo["id"]); ?>' style='font-size:12px;' type="button" class="btn btn-info">加入圈子</button> </p>
+					                    <p class="join_btn" style="text-align:right;margin:0px; font-size:13px; font-weight:bold">
+					                    	<?php if($vo["isJo"] == 1 ): ?><div style="text-align:right;font-size:13px; font-weight:bold;">已加入</div><?php else: ?> <button id='<?php echo ($vo["id"]); ?>' style='font-size:12px;' type="button" class="btn btn-info" onclick="$.doJoin(<?php echo ($vo["id"]); ?>,this)">加入圈子</button><?php endif; ?>
+					                    </p>
 					                  </div>
 					                </div>
 					              </li><?php endforeach; endif; else: echo "" ;endif; ?>
