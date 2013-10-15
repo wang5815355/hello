@@ -54,23 +54,23 @@ class IndexAction extends GlobalAction {
     }
     
     /**
-     * 查询当前登录账号创建以及登录的圈子
+     * 查询当前登录账号创建以及加入的圈子
      * @author wangkai
      */
     public function myCircle(){
     	//查询我已加入的圈子 
     	$grModel = M('grouprelationship');
     	$groupModel = M('group');
-    	$userName = $this->userName();
+    	$userName = $this->getUserName();
     	$map['uemail'] = $userName;
-    	$list = $gr->where($map)->select();
+    	$list = $grModel->order('isCreater desc ,id asc')->where($map)->select();
     	
     	//跟据圈子id查找圈子名称
     	foreach ($list as $k => $v){
-    		$circleid = $list[$k]['$circleid'];
+    		$circleid = $list[$k]['circleid'];
     		$mapG['id'] = $circleid;
-    		$circleName = $groupModel->where($map)->find();
-    		$map['uemail'] = $circleName;
+    		$circleName = $groupModel->where($mapG)->find();
+    		$list[$k]['circlename'] = $circleName['name']; 
     	}
     	
     	$data = $list;
@@ -101,6 +101,7 @@ class IndexAction extends GlobalAction {
     	 	$count = $grModel->where($mapC)->count();
     	 	$result = $grModel->add($data);
     	 	$dataInfo['info'] = '2';
+    	 	
     	 	if($result != false){
     	 		//创建圈子成功之后 将圈子总人数+1
     	 		$dataCir['id'] = $circleId;
