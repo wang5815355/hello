@@ -54,6 +54,29 @@ class IndexAction extends GlobalAction {
     }
     
     /**
+     * 查询圈子密码 
+     * @author wangkai
+     */
+    public function upcirpass(){
+    	$password = trim($_POST['cirpassword']);//用户设置的圈子密码
+    	$circlrid =	trim($_POST['circleid']);
+    	$matchPassword = '/^[A-Za-z0-9]{6,20}$/';//密码验证， 6至20位数字字母下划线正则表达式
+    	$matchCircleid = '/^[0-9]{1,50}$/';//ID号只能为1至50位纯数字
+    	$gModel = M('group');
+    	
+    	if(preg_match($matchCircleid,$circlrid)){
+    		//检测当前圈子id是否当前登录用户创建的圈子 若是才可以修改密码
+    		$map['id'] = $circlrid;
+    		$map['createuser'] = $password;
+    		$gModel->where()->find();
+    	}
+    	
+    	$data['id'] = $circlrid;
+    	$data['password'] = $password;
+    	
+    }
+        
+    /**
      * 查询当前登录账号创建以及加入的圈子
      * @author wangkai
      */
@@ -71,6 +94,8 @@ class IndexAction extends GlobalAction {
     		$mapG['id'] = $circleid;
     		$circleName = $groupModel->where($mapG)->find();
     		$list[$k]['circlename'] = $circleName['name']; 
+    		$list[$k]['count'] = $circleName['count'];
+    		$list[$k]['time'] = date("Y年m月d日  H:i:s",$circleName['time']);
     	}
     	
     	$data = $list;

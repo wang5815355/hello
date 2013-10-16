@@ -249,7 +249,7 @@ input:-moz-placeholder {
 			position:relative; 
 			top:15px; 
 			left:-11px;
-		}
+}
 .talkbox-title-left-2{
 			width: 0;
 			height: 0;
@@ -371,6 +371,57 @@ input:-moz-placeholder {
     color:#999;
 }
 
+.alert-info-uppass{
+	width: 198px;
+	padding: 3px 10px;
+	font-size: 11px;
+	float: left;
+	color: #3a87ad;
+	background-color: #d9edf7;
+	border-color: #bce8f1;
+}
+.btn-upcirpass{
+	background: rgb(30, 149, 229);
+	letter-spacing: 2px;
+	color: rgba(0, 59, 126, .8);
+	box-shadow: 0 1px 0 rgba(0, 0, 0, .05),0 1px 0 rgba(255, 255, 255, .15) inset;
+	border: 1px solid #147DCD;
+	cursor: pointer;
+	display: inline-block;
+	font-size: 14px;
+	font-weight: bold;
+	font-family: 微软雅黑;
+	line-height: 18px;
+	text-shadow: 1px 1px 1px rgba(255, 255, 255, .2);
+	padding: 10px 26px 10px;
+	text-align: center;
+	vertical-align: middle;
+	border-radius: 5px;
+	padding: 4px 14px 4px 15px;
+	font-size: 11px;
+	border-radius: 3px;
+	margin-left: 21px;
+}
+.btn-upcirpass:HOVER {
+	background: rgb(35,152,217);
+	color: rgba(0, 59, 126, .8);
+}
+.lable-info-register:HOVER {
+	cursor: pointer;
+	background: rgba(38, 165, 235,.6);
+}
+
+.lable-info-register, .lable-info-password {
+	margin-top:1px;
+	margin-left:8px;
+	float: right;
+	background: rgb(38, 165, 235);
+}
+tr{
+	font-size:12px;font-family:微软雅黑;
+	font-weight: normal;
+	color:#999;
+}
 </style>
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -388,8 +439,9 @@ input:-moz-placeholder {
 		$('.create-circle').click(function(){
 			$('#appendedInputButton').attr('placeholder','输入你要创建的圈子名称');
 			$('.hidden-input').attr('value','hidden-circle');
+			
 			$('.context-all').fadeOut(0);
-			$('.context-captain').fadeIn(400);
+			$('.context-captain').fadeIn(200);
 		});
 		
 		//当用户在创建圈子界面 输入圈子姓名时 获取隐藏input的value值 为hidden-circle
@@ -399,7 +451,7 @@ input:-moz-placeholder {
 			$('#appendedInputButton').attr('placeholder','输入圈子名称或圈子号可以查找你要加入的圈子');
 			$('.hidden-input').attr('value','joinCircleInput');
 			$('.context-all').fadeOut(0);
-			$('.context-join').fadeIn(600);
+			$('.context-join').fadeIn(150);
 		});
 		
 		//计数器 当计数器大于零时说明为第二次输入值并且点击
@@ -461,7 +513,6 @@ input:-moz-placeholder {
 							});
 						});
 					}
-					
 				}
 				
 				//搜索圈子页面的操作
@@ -518,11 +569,41 @@ input:-moz-placeholder {
 		$.doCirMngOut = function circleMngMouseout(tagThis){
 			$(tagThis).attr('class','icon-wrench icon-white');
 		}
-		$.doCirMng = function circleMng(circlid,tagThis){
+		$.doCirMng = function circleMng(circleid,count,time,tagThis){
 			$('.context-all').fadeOut(0);
 			$('.context-cirman').fadeIn(200);
 			$('.captain-cirman').fadeIn(200);
+			$('#td-circleid').html(circleid);
+			$('#td-count').html(count);
+			$('#td-time').html(""+time);
+			$('.label-info-cirinfoshow').css('opacity','0.6');
+			$('.label-info-uppass').css('opacity','1');
+			$('.register').css('display','none');
+			$('.cirmman-info').css('display','block');
 		}
+		
+		//查看圈子信息
+		$('.label-info-cirinfoshow').click(function(){
+			$('.label-info-cirinfoshow').css('opacity','0.6');
+			$('.label-info-uppass').css('opacity','1');
+			$('.register').fadeOut(100,function(){
+				$('.cirmman-info').fadeIn(200);
+			});
+		});
+		
+		//设置圈子密码界面
+		$('.label-info-uppass').click(function(){
+			$('.label-info-uppass').css('opacity','0.6');
+			$('.label-info-cirinfoshow').css('opacity','1');
+			$('.cirmman-info').fadeOut(100,function(){
+				$('.register').fadeIn(200);
+			});
+		});
+		
+		//新密码提交
+		$('.alert-info-uppass').click(function(){
+			$.post('__URL__/upcirpass')
+		});
 		
 		//搜索当前登录用户已加入的圈子
 		$('.s-mycircle').click(function(){
@@ -530,7 +611,7 @@ input:-moz-placeholder {
 				$('.group-center').remove();
 				$.each(data,function(index,content){
 					if(content.isCreater=='1'){
-						$('.toolbar').append("<div class='group group-center' style='background:rgba(28,151,223,0.6); color:rgba(250,250,250,0.8);'>"+content.circlename+"<i class='icon-wrench icon-white' style='float:right; cursor:pointer; margin-top:3px;' onmouseout='$.doCirMngOut(this)' onmouseover='$.doCirMngOver(this)' onclick='$.doCirMng("+content.circleid+",this)'></i></div>");
+						$('.toolbar').append("<div class='group group-center' style='background:rgba(28,151,223,0.6); color:rgba(250,250,250,0.8);'>"+content.circlename+"<i class='icon-wrench icon-white' style='float:right; cursor:pointer; margin-top:3px;' onmouseout='$.doCirMngOut(this)' onmouseover='$.doCirMngOver(this)' onclick=\"$.doCirMng("+content.circleid+","+content.count+",'"+content.time+"',this)\"></i></div>");
 					}else{
 						$('.toolbar').append("<div class='group group-center'>"+content.circlename+"</div>");
 					}
@@ -553,6 +634,9 @@ input:-moz-placeholder {
 				}
 			});
 		}
+		
+		//圈子管理对话框
+		
 		
 	});
 	
@@ -718,7 +802,55 @@ input:-moz-placeholder {
 					
 					<div class="context-all context-cirman" style="display:none">
 						<!-- captaintalkinput -->
-						<div class="row captain-cirman" style="display:none"><div class="span2 offset1"><div class="cface"><img src="__ROOT__/hello/Uploads/4.jpg" class="img-polaroid"></div></div><div class="span1 captain-talk"><div class="talkbox-title-left"></div><div class="talkbox-title-left-2"></div></div><div class="span5"><div class="talkbox">告诉我你要创建的圈子名称</div></div></div>
+						<div class="row captain-cirman" style="display:none"><div class="span2 offset1"><div class="cface"><img src="__ROOT__/hello/Uploads/4.jpg" class="img-polaroid"></div></div><div class="span1 captain-talk"><div class="talkbox-title-left"></div><div class="talkbox-title-left-2"></div></div><div class="span5"><div class="talkbox">管理你的圈子 
+							<span class="label label-info lable-info-register label-info-uppass">设置密码</span>
+							<span class="label label-info lable-info-register label-info-cirinfoshow">圈子信息</span>  
+							
+							<div class="cirmman-info" style="margin-top:28px;">
+								<table class="table table-bordered table-striped">
+						            <colgroup>
+						              <col class="span1">
+						              <col class="span7">
+						            </colgroup>
+						            <tbody>
+						              <tr>
+						                <td >
+						                  	圈子编号:
+						                </td>
+						                <td id="td-circleid">
+						                  	
+						                </td>
+						              </tr>
+						              <tr>
+						                <td >
+						                	成员数量:
+						                </td>
+						                <td id="td-count">
+						                
+						                </td>
+						              </tr>
+						              <tr>
+						                <td >
+						                	创建日期:
+						                </td>
+						                <td id="td-time">
+						                	
+						                </td>
+						              </tr>
+						            </tbody>
+						          </table>
+							</div>
+							
+							<div class="register" style="display:none; margin-left: 35px;margin-top: 25px;">
+									<div class="controls controls-row">
+								      <input class="span4 rtext rPassword" type="password" placeholder="圈子密码">
+								    </div>
+								    <div class="controls controls-row">
+								      <button type="button" class="btn btn-primary btn-upcirpass" id="registerBtn">提交</button>
+								      <div class="alert alert-info alert-info-uppass">若想取消圈子密码，提交空密码即可</div>
+								    </div>
+							</div>
+						</div></div></div>
 					</div>
 					
 				</div>
