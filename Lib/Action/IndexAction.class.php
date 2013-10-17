@@ -57,23 +57,29 @@ class IndexAction extends GlobalAction {
      * 查询圈子密码 
      * @author wangkai
      */
-    public function upcirpass(){
+    public function upCirpass(){
     	$password = trim($_POST['cirpassword']);//用户设置的圈子密码
     	$circlrid =	trim($_POST['circleid']);
     	$matchPassword = '/^[A-Za-z0-9]{6,20}$/';//密码验证， 6至20位数字字母下划线正则表达式
     	$matchCircleid = '/^[0-9]{1,50}$/';//ID号只能为1至50位纯数字
     	$gModel = M('group');
+    	$competence = false;
     	
     	if(preg_match($matchCircleid,$circlrid)){
     		//检测当前圈子id是否当前登录用户创建的圈子 若是才可以修改密码
     		$map['id'] = $circlrid;
     		$map['createuser'] = $password;
-    		$gModel->where()->find();
+    		$groupResult = $gModel->where($map)->find();
+    		
+    		if($groupResult!=null){
+    			$competence = true;//创建该圈子的用户
+    		}
     	}
     	
     	$data['id'] = $circlrid;
     	$data['password'] = $password;
     	
+    	$this->ajaxReturn($data,'JSON');
     }
         
     /**
