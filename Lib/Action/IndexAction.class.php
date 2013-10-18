@@ -65,21 +65,30 @@ class IndexAction extends GlobalAction {
     	$gModel = M('group');
     	$competence = false;
     	
-    	if(preg_match($matchCircleid,$circlrid)){
+    	if(preg_match($matchCircleid,$circlrid) && preg_match($matchCircleid,$circlrid)){
     		//检测当前圈子id是否当前登录用户创建的圈子 若是才可以修改密码
     		$map['id'] = $circlrid;
-    		$map['createuser'] = $password;
-    		$groupResult = $gModel->where($map)->find();
-    		
-    		if($groupResult!=null){
-    			$competence = true;//创建该圈子的用户
+    		$map['createuser'] = $this->getUserName();
+    		if($password == '' || $password == null){
+    			$password = null;
     		}
+    		$data['password'] = $password;
+    		$gModelUpRe = $gModel->where($map)->save($data);
+    		
+    		if($gModelUpRe != false){
+    			if($password == null){
+    				$dataInfo['info'] = '密码取消成功，他人不再需要密码加入';
+    			}
+    			$dataInfo['info'] = '密码设置成功，他人需要密码才可加入'; 
+    		}else{
+    			$dataInfo['info'] = "密码值或状态未改变成功";
+    		}
+    	}else{
+    		$dataInfo['info'] = '密码只能为 6至20位数字字母下划线正则表达式';
     	}
     	
-    	$data['id'] = $circlrid;
-    	$data['password'] = $password;
     	
-    	$this->ajaxReturn($data,'JSON');
+    	$this->ajaxReturn($dataInfo,'JSON');
     }
         
     /**

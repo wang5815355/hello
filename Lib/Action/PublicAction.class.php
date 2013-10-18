@@ -70,7 +70,7 @@ class PublicAction extends GlobalAction {
 			}
 		}
 		
-		$this->ajaxReturn($data,'JSON');
+		$this->ajaxReturn($dataInfo,'JSON');
 	}
 	
 	/**

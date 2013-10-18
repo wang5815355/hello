@@ -584,6 +584,7 @@ tr{
 			$('.label-info-uppass').css('opacity','1');
 			$('.register').css('display','none');
 			$('.cirmman-info').css('display','block');
+			$('.circleid-hidden').val(circleid);
 		}
 		
 		//查看圈子信息
@@ -605,8 +606,13 @@ tr{
 		});
 		
 		//新密码提交
-		$('.alert-info-uppass').click(function(){
-			$.post('__URL__/upcirpass')
+		$('.btn-upcirpass').click(function(){
+			var circleid = $('.circleid-hidden').val();
+			var password = $('rPassword').val();
+			
+			$.post('__URL__/upcirpass',{circleid:circleid,password:password},function(data){
+				alert(data['info']);
+			});
 		});
 		
 		//搜索当前登录用户已加入的圈子
@@ -842,6 +848,7 @@ tr{
 							<div class="register" style="display:none; margin-left: 35px;margin-top: 25px;">
 									<div class="controls controls-row">
 								      <input class="span4 rtext rPassword" type="password" placeholder="圈子密码">
+								      <input type="hidden" class="circleid-hidden" value="">
 								    </div>
 								    <div class="controls controls-row">
 								      <button type="button" class="btn btn-primary btn-upcirpass" id="registerBtn">提交</button>
