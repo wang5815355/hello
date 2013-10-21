@@ -426,6 +426,8 @@ tr{
 	font-weight: normal;
 	color:#999;
 }
+
+
 </style>
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -608,10 +610,14 @@ tr{
 		//新密码提交
 		$('.btn-upcirpass').click(function(){
 			var circleid = $('.circleid-hidden').val();
-			var password = $('rPassword').val();
+			var password = $('.rPassword').val();
 			
-			$.post('__URL__/upcirpass',{circleid:circleid,password:password},function(data){
-				alert(data['info']);
+			$('.btn-upcirpass').attr('disabled',true);
+			$('.alert-info-uppass').html("<img src='__ROOT__/hello/Public/img/ajax-loader.gif' class='loader-gif'></p>");
+			$.post('__URL__/upcirpass',{circleid:circleid,cirpassword:password},function(data){
+				$('.alert-info-uppass').html(data['info']);
+				$('.btn-upcirpass').html('提交');
+				$('.btn-upcirpass').attr('disabled',false);
 			});
 		});
 		
@@ -633,16 +639,20 @@ tr{
 		
 		
 		//加入根据圈子id号加入圈子
-		$.doJoin = function(circleId,tagThis){
-			$(tagThis).html("<img src='__ROOT__/hello/Public/img/ajax-loader.gif' class='loader-gif'>");
-			$.post('__URL__/doJoinCircle',{circleId:circleId},function(data){
-				//若异步返回值为1 则加入圈子成功
-				if(data['info']==1){
-					$(tagThis).parent().html("<div style='text-align:right;font-size:13px; font-weight:bold; padding:5px 0 5px;'>已加入</div>");
-				}else{
-					alert(data['info']);
-				}
-			});
+		$.doJoin = function(circleId,tagThis,modelMark){
+			if(modelMark == 1){
+				$('.modal').modal('toggle');
+			}else{
+				$(tagThis).html("<img src='__ROOT__/hello/Public/img/ajax-loader.gif' class='loader-gif'>");
+				$.post('__URL__/doJoinCircle',{circleId:circleId},function(data){
+					//若异步返回值为1 则加入圈子成功
+					if(data['info']==1){
+						$(tagThis).parent().html("<div style='text-align:right;font-size:13px; font-weight:bold; padding:5px 0 5px;'>已加入</div>");
+					}else{
+						alert(data['info']);
+					}
+				});
+			}
 		}
 		
 		//圈子管理对话框
@@ -768,6 +778,21 @@ tr{
 						<input name="circle-value" type="hidden"/>
 					</div>
 					
+					<!-- 加入圈子需要设置密码 模态对话框 -->
+					<div class="modal hide fade">
+					  <div class="modal-header">
+					    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					    <h3>对话框标题</h3>
+					  </div>
+					  <div class="modal-body">
+					    <p>One fine body…</p>
+					  </div>
+					  <div class="modal-footer">
+					    <a href="#" class="btn">关闭</a>
+					    <a href="#" class="btn btn-primary">Save changes</a>
+					  </div>
+					</div>
+					
 					<!-- 加入圈子页面  根据圈子id号搜索 或者名称 或者创始人名称-->
 					<div class="context-join context-all" style="display:none">
 						<div class="row-fluid">
@@ -789,7 +814,8 @@ tr{
 								            <dd><?php echo ($vo["time"]); ?></dd>
 								          </dl>
 					                    <p class="join_btn" style="text-align:right;margin:0px; font-size:13px; font-weight:bold">
-					                    	<?php if($vo["isJo"] == 1 ): ?><div style="text-align:right;font-size:13px; font-weight:bold;">已加入</div><?php else: ?> <button id='<?php echo ($vo["id"]); ?>' style='font-size:12px;' type="button" class="btn btn-info" onclick="$.doJoin(<?php echo ($vo["id"]); ?>,this)">加入圈子</button><?php endif; ?>
+					                    	<?php if($vo["isJo"] == 1 ): ?><div style="text-align:right;font-size:13px; font-weight:bold;">已加入</div><?php else: ?> 
+					                    		<?php if($vo["password"] != null): ?><button id='<?php echo ($vo["id"]); ?>' style='font-size:12px;' type="button" class='btn btn-info' data-toggle='modal' onclick='$.doJoin(<?php echo ($vo["id"]); ?>,this,1)'>加入圈子</button> <?php else: ?><button id='<?php echo ($vo["id"]); ?>' style='font-size:12px;' type="button" class="btn btn-info" onclick="$.doJoin(<?php echo ($vo["id"]); ?>,this)">加入圈子</button><?php endif; endif; ?>
 					                    </p>
 					                  </div>
 					                </div>
