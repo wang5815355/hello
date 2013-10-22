@@ -546,9 +546,9 @@ tr{
 										if(content.isJo == 1){
 											var isJo = "<div style='text-align:right;font-size:13px; font-weight:bold;'>已加入</div>";
 										}else if(content.password != ''){
-											var isJo = "<button id='{$vo.id}' style='font-size:12px;' type='button' class='btn btn-info' onclick='$.doJoin("+content.id+",this,1)'>加入圈子</button>";
+											var isJo = "<button id=circle-"+content.id+" style='font-size:12px;' type='button' class='btn btn-info' onclick='$.doJoin("+content.id+",this,1)'>加入圈子</button>";
 										}else{
-											var isJo = "<button id='{$vo.id}' style='font-size:12px;' type='button' class='btn btn-info' onclick='$.doJoin("+content.id+",this,2)'>加入圈子</button>";
+											var isJo = "<button id=circle-"+content.id+" style='font-size:12px;' type='button' class='btn btn-info' onclick='$.doJoin("+content.id+",this,2)'>加入圈子</button>";
 										}
 										$('.thumbnails-ser-ui').append("<li class='span3 first-li' style='"+liStyle+"'><div class='thumbnail'><div class='caption'><h5 style='color:#666'>"+content.name+"</h5><dl class='dl-horizontal'><dt>圈子编号：</dt><dd>"+content.id+"</dd><dt>成员数量：</dt><dd>"+content.count+"</dd><dt>创建人：</dt><dd>"+content.createuser+"</dd><dt>创建日期：</dt><dd>"+content.time+"</dd></dl><p class='join_btn' style='text-align:right;margin:0px;'>"+isJo+"</p></div></div></li>");
 										ei = ei+1;
@@ -697,10 +697,10 @@ tr{
 					$('#btn-joincir-passwordup').attr('disabled',false);
 					$('#btn-joincir-passwordup').html('提交');
 				}else{
-					$('#circle-'+circleId).parent().html("<div style='text-align:right;font-size:13px; font-weight:bold; padding:5px 0 5px;'>已加入</div>");
+					alert('nihao');
+					$('#circle-9').parent().html("<div style='text-align:right;font-size:13px; font-weight:bold; padding:5px 0 5px;'>已加入</div>");
 					$('#alert-info-uppass-join').html('加入成功!');
 					$('.modal').modal('hide');
-					$
 				}
 			});
 		});
