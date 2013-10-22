@@ -123,6 +123,7 @@ class IndexAction extends GlobalAction {
      */
     public function doJoinCircle(){
     	 $circleId = trim($_POST['circleId']);//要加入的圈子id
+    	 $passWord = trim($_POST['passWord']);
     	 $uEmail = $this->getUserName();//获取当前登录用户邮箱 
     	 $grModel = M('grouprelationship');
     	 $circleModel = M('group');
@@ -135,26 +136,52 @@ class IndexAction extends GlobalAction {
     	 $map['uemail'] = $uEmail;
     	 $resultIsJo = $grModel->where($map)->find();
     	 
-    	 if($resultIsJo == null){
-    	 	$mapC['circleId'] = $circleId; 
-    	 	//统计当前圈子一共有多少人
-    	 	$count = $grModel->where($mapC)->count();
-    	 	$result = $grModel->add($data);
-    	 	$dataInfo['info'] = '2';
-    	 	
-    	 	if($result != false){
-    	 		//创建圈子成功之后 将圈子总人数+1
-    	 		$dataCir['id'] = $circleId;
-    	 		$dataCir['count'] = $count+1;//统计当前 圈子人数 加1
-    	 		$circleModel->save($dataCir);
-    	 		$dataInfo['info'] = '1';//创建圈子成功返回1
+    	 if($resultIsJo == null){//未加入该圈子
+    	 	//检测圈子是否需要密码才能加入
+    	 	$mapPaVe['id'] = $circleId;
+    	 	$resultIfPass = $circleModel->where($mapPaVe)->getField('password');
+    	 	if($resultIfPass != null && $resultIfPass != ''){//如果该圈子设有密码 
+    	 		
+    	 		if($resultIfPass == $passWord){//用户提交密码与圈子密码相符合 则加入该圈子
+    	 			$mapC['circleId'] = $circleId;
+    	 			//统计当前圈子一共有多少人
+    	 			$count = $grModel->where($mapC)->count();
+    	 			$result = $grModel->add($data);
+    	 			$dataInfo['info'] = '2';
+    	 			 
+    	 			if($result != false){
+    	 				//创建圈子成功之后 将圈子总人数+1
+    	 				$dataCir['id'] = $circleId;
+    	 				$dataCir['count'] = $count+1;//统计当前 圈子人数 加1
+    	 				$circleModel->save($dataCir);
+    	 				$dataInfo['info'] = '1';//创建圈子成功返回1
+    	 			}else{
+    	 				$dataInfo['info'] = '-1';//创建圈子失败返回-1
+    	 			}
+    	 		}else{
+    	 			$dataInfo['info'] = '3';//圈子密码不正确
+    	 		}
     	 	}else{
-    	 		$dataInfo['info'] = '-1';//创建圈子失败返回-1
+    	 		$mapC['circleId'] = $circleId;
+    	 		//统计当前圈子一共有多少人
+    	 		$count = $grModel->where($mapC)->count();
+    	 		$result = $grModel->add($data);
+    	 		$dataInfo['info'] = '2';
+    	 		
+    	 		if($result != false){
+    	 			//创建圈子成功之后 将圈子总人数+1
+    	 			$dataCir['id'] = $circleId;
+    	 			$dataCir['count'] = $count+1;//统计当前 圈子人数 加1
+    	 			$circleModel->save($dataCir);
+    	 			$dataInfo['info'] = '1';//创建圈子成功返回1
+    	 		}else{
+    	 			$dataInfo['info'] = '-1';//创建圈子失败返回-1
+    	 		}
     	 	}
     	 }else{
     	 	$dataInfo['info'] = '-100';//该圈子已加入不能重复加入 返回-100
     	 }
-    	
+    	 
     	 $this->ajaxReturn($dataInfo,'JSON');  
     }
     
