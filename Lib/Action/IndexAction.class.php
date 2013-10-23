@@ -38,6 +38,11 @@ class IndexAction extends GlobalAction {
 	    			$mapGr['circleid'] = $circleId;
 	    			$mapGr['uemail'] = $uEmail;
 	    			$resultGr = $grModel->where($mapGr)->find();
+		    		
+		    		if($circleList[$k]['password'] != null){//将存在密码的圈子密码隐藏为000
+	    				$circleList[$k]['password'] = '000';
+	    			}
+	    			
 	    			if($resultGr != null){
 	    				$circleList[$k]['isJo'] = 1;//是否已加入圈子标记 1代表已加入 0代表未加入
 	    			}else{
@@ -136,7 +141,11 @@ class IndexAction extends GlobalAction {
     	 $map['uemail'] = $uEmail;
     	 $resultIsJo = $grModel->where($map)->find();
     	 
-    	 if($resultIsJo == null){//未加入该圈子
+    	 //检测已加入多少个别人创建的圈子
+    	 $resultJoCount = $grModel->where("uemail = '".$uEmail."'and isCreater is NULL")->count();//返回已加入的圈子数
+    	 $resultJoCount = $resultJoCount['tp_count'];
+    	 
+    	 if($resultIsJo == null && $resultJoCount < 8){//未加入该圈子
     	 	//检测圈子是否需要密码才能加入
     	 	$mapPaVe['id'] = $circleId;
     	 	$resultIfPass = $circleModel->where($mapPaVe)->getField('password');
@@ -154,7 +163,8 @@ class IndexAction extends GlobalAction {
     	 				$dataCir['id'] = $circleId;
     	 				$dataCir['count'] = $count+1;//统计当前 圈子人数 加1
     	 				$circleModel->save($dataCir);
-    	 				$dataInfo['info'] = '1';//创建圈子成功返回1
+    	 				$dataInfo['info'] = '1'.$resultJoCount;//创建圈子成功返回1
+    	 				
     	 			}else{
     	 				$dataInfo['info'] = '-1';//创建圈子失败返回-1
     	 			}
@@ -178,7 +188,9 @@ class IndexAction extends GlobalAction {
     	 			$dataInfo['info'] = '-1';//创建圈子失败返回-1
     	 		}
     	 	}
-    	 }else{
+    	 }else if($resultIsJo == null && $resultJoCount >= 8){
+    	 	$dataInfo['info'] = '-200';//加入圈子数量暂时不能超过8个
+    	 }else {
     	 	$dataInfo['info'] = '-100';//该圈子已加入不能重复加入 返回-100
     	 }
     	 
@@ -204,6 +216,9 @@ class IndexAction extends GlobalAction {
     		foreach($circleList as $k=>$v){
     			$grModel = M(grouprelationship);
     			$circleId = $circleList[$k]['id'];
+    			if($circleList[$k]['password'] != null){
+    				$circleList[$k]['password'] = '000';
+    			}
     			$mapGr['circleid'] = $circleId;
     			$uEmail = $this->getUserName();
     			$mapGr['uemail'] = $uEmail;

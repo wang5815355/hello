@@ -545,10 +545,10 @@ tr{
 										//是否已经加入该圈子
 										if(content.isJo == 1){
 											var isJo = "<div style='text-align:right;font-size:13px; font-weight:bold;'>已加入</div>";
-										}else if(content.password != ''){
-											var isJo = "<button id=circle-"+content.id+" style='font-size:12px;' type='button' class='btn btn-info' onclick='$.doJoin("+content.id+",this,1)'>加入圈子</button>";
+										}else if(content.password != null){
+											var isJo = "<button  style='font-size:12px;' type='button' class='btn btn-info circle-"+content.id+"' onclick='$.doJoin("+content.id+",this,1)'>加入圈子</button>";
 										}else{
-											var isJo = "<button id=circle-"+content.id+" style='font-size:12px;' type='button' class='btn btn-info' onclick='$.doJoin("+content.id+",this,2)'>加入圈子</button>";
+											var isJo = "<button  style='font-size:12px;' type='button' class='btn btn-info circle-"+content.id+"'' onclick='$.doJoin("+content.id+",this,2)'>加入圈子</button>";
 										}
 										$('.thumbnails-ser-ui').append("<li class='span3 first-li' style='"+liStyle+"'><div class='thumbnail'><div class='caption'><h5 style='color:#666'>"+content.name+"</h5><dl class='dl-horizontal'><dt>圈子编号：</dt><dd>"+content.id+"</dd><dt>成员数量：</dt><dd>"+content.count+"</dd><dt>创建人：</dt><dd>"+content.createuser+"</dd><dt>创建日期：</dt><dd>"+content.time+"</dd></dl><p class='join_btn' style='text-align:right;margin:0px;'>"+isJo+"</p></div></div></li>");
 										ei = ei+1;
@@ -645,12 +645,18 @@ tr{
 				$('#input-joinCirId').val(circleId);
 				$('.hide-join-pass1').css('display','block');
 				$('.hide-join-pass2').css('display','none');
+				$('#alert-info-uppass-join').html('提交后若页面长时间无反应请刷新重试');
+				$('#btn-joincir-passwordup').html('提交');
+				$('#btn-joincir-passwordup').attr('disabled',false);
 			}else if(modelMark == 2){
 				$('.modal').modal('toggle');
 				$('#input-joinCirpass').val('');
 				$('#input-joinCirId').val(circleId);
 				$('.hide-join-pass1').css('display','none');
 				$('.hide-join-pass2').css('display','block');
+				$('#btn-joincir-true').html('确认');
+				$('#btn-joincir-true').attr('disabled',false);
+				$('#alert-info-nopass-info').remove();
 			}else{
 				$(tagThis).html("<img src='__ROOT__/hello/Public/img/ajax-loader.gif' class='loader-gif'>");
 				$.post('__URL__/doJoinCircle',{circleId:circleId},function(data){
@@ -665,22 +671,26 @@ tr{
 		}
 		
 		//当不需要密码就可以加入的圈子 确认按钮处理
-		$('#btn-joincir-true').click(function(){
+		$('#btn-joincir-true').on('click',function(){
 			var circleId = $('#input-joinCirId').val();
 			$('#btn-joincir-true').attr('disabled','true');
 			$('#btn-joincir-true').html("<img src='__ROOT__/hello/Public/img/ajax-loader.gif' class='loader-gif'>");
-			$('#circle-'+circleId).html("<img src='__ROOT__/hello/Public/img/ajax-loader.gif' class='loader-gif'>");
+			//$('#circle-'+circleId).html("<img src='__ROOT__/hello/Public/img/ajax-loader.gif' class='loader-gif'>");
 			$.post('__URL__/doJoinCircle',{circleId:circleId},function(data){
 				//若异步返回值为1 则加入圈子成功
 				if(data['info']==1){
-					$('#circle-'+circleId).parent().html("<div style='text-align:right;font-size:13px; font-weight:bold; padding:5px 0 5px;'>已加入</div>");
+					$('.circle-'+circleId).parent().html("<div style='text-align:right;font-size:13px; font-weight:bold; padding:5px 0 5px;'>已加入</div>");
 					$('#btn-joincir-true').html('加入成功');
 					$('.modal').modal('hide');
+					$('.s-mycircle').click();
+				}else if(data['info']=='-200'){
+					$('#btn-joincir-true').before('<div class="alert alert-info alert-info-uppass" id="alert-info-nopass-info" style="margin-left:125px;font-size:13px;text-align:left;width:258px;text-align:center;">加入非自己创建圈子个数暂时不能超过8个</div>');
 				}else{
 					alert(data['info']);
 				}
 			});
 		});
+		
 		
 		//但圈子需要密码时  用户加入圈子时点击按钮提交圈子密码
 		$('#btn-joincir-passwordup').click(function(){
@@ -689,18 +699,20 @@ tr{
 			var circleId = $('#input-joinCirId').val();
 			$('#btn-joincir-passwordup').attr('disabled','true');
 			$('#btn-joincir-passwordup').html("<img src='__ROOT__/hello/Public/img/ajax-loader.gif' class='loader-gif'>");
-			$('#alert-info-uppass-join').html("<img src='__ROOT__/hello/Public/img/ajax-loader.gif' class='loader-gif'>");
+			//$('#alert-info-uppass-join').html("<img src='__ROOT__/hello/Public/img/ajax-loader.gif' class='loader-gif'>");
 			
 			$.post('__URL__/doJoinCircle',{passWord:passWord,circleId:circleId},function(data){
 				if(data['info'] == 3){
 					$('#alert-info-uppass-join').html('密码不正确，加入失败');
 					$('#btn-joincir-passwordup').attr('disabled',false);
 					$('#btn-joincir-passwordup').html('提交');
+				}else if(data['info']=='-200'){
+					$('#alert-info-uppass-join').html('加入非自己创建圈子个数暂时不能超过8个');
 				}else{
-					alert('nihao');
-					$('#circle-9').parent().html("<div style='text-align:right;font-size:13px; font-weight:bold; padding:5px 0 5px;'>已加入</div>");
+					$('.circle-'+circleId).parent().html("<div style='text-align:right;font-size:13px; font-weight:bold; padding:5px 0 5px;'>已加入</div>");
 					$('#alert-info-uppass-join').html('加入成功!');
 					$('.modal').modal('hide');
+					$('.s-mycircle').click();
 				}
 			});
 		});
@@ -853,7 +865,7 @@ tr{
 						    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 						    <h3 id="h3-joinCirInfo" style="color:#999;">确认加入该圈子吗？</h3>
 						  </div>
-						  <div class="modal-footer" style="height:40px;padding: 14px 15px 1px;">
+						  <div class="modal-footer" style="height:45px;padding: 14px 15px 1px;">
 						    <button type="button" class="btn btn-primary btn-joincir-ture" id='btn-joincir-true'>确认</button>
 						  </div>
 						</div>
@@ -882,7 +894,7 @@ tr{
 								            <dd>{$vo.time}</dd>
 								          </dl>
 					                    <p class="join_btn" style="text-align:right;margin:0px; font-size:13px; font-weight:bold">
-					                    	<if condition='$vo.isJo eq 1 '><div style='text-align:right;font-size:13px; font-weight:bold;'>已加入</div><else /><neq name='vo.password' value=''><button id='circle-{$vo.id}' style='font-size:12px;' type="button" class='btn btn-info' data-toggle='modal' onclick='$.doJoin({$vo.id},this,1)'>加入圈子</button><else /><button id='circle-{$vo.id}' style='font-size:12px;' type='button' class='btn btn-info' onclick='$.doJoin({$vo.id},this,2)'>加入圈子</button></neq></if>
+					                    	<if condition='$vo.isJo eq 1 '><div style='text-align:right;font-size:13px; font-weight:bold;'>已加入</div><else /><neq name='vo.password' value=''><button id='circle-{$vo.id}' style='font-size:12px;' type="button" class='btn btn-info circle-{$vo.id}' data-toggle='modal' onclick='$.doJoin({$vo.id},this,1)'>加入圈子</button><else /><button id='circle-{$vo.id}' style='font-size:12px;' type='button' class='btn btn-info circle-{$vo.id}' onclick='$.doJoin({$vo.id},this,2)'>加入圈子</button></neq></if>
 					                    </p>
 					                  </div>
 					                </div>
