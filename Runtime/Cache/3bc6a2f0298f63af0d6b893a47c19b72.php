@@ -490,6 +490,10 @@ tr{
 									//将圈子名称异步提交至action处理程序
 									$.post('__URL__/doCircle',{circlename:circleName},function(data,status){
 										$(".context-captain").append("<div class='row captain' style='display:none'><div class='span2 offset1'><div class='cface'><img src='__ROOT__/hello/Uploads/4.jpg' class='img-polaroid'></div></div><div class='span1 captain-talk'><div class='talkbox-title-left'></div><div class='talkbox-title-left-2'></div></div><div class='span5'><div class='talkbox'>"+data['info']+"</div></div></div>");
+										if(data['status'] == 1){
+											$('.s-mycircle').click();
+										}
+										
 										$(".captain").fadeIn(200,function(){
 											$(".button-face").animate({opacity:'1'},10,function(){
 												$(".button-face").attr('id','button-face');
