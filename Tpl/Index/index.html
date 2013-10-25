@@ -450,15 +450,20 @@ tr{
 			$('.submit').click();
 		});
 		
+		//查询用户点击圈子的圈子所包含所有人
+		$.doSerCirFrien = function SerCirFrien(circleId,tagThis){
+			$('.context-all').fadeOut(0);
+		}
+		
 		//搜索当前登录用户已加入的圈子
 		$('#s-mycircle').click(function(){
 			$.post('__URL__/myCircle',{},function(data){
 				$('.group-center').remove();
 				$.each(data,function(index,content){
 					if(content.isCreater=='1'){
-						$('.toolbar').append("<div class='group group-center group-center-blue' style=''>"+content.circlename+"<i class='icon-wrench icon-white' style='float:right; cursor:pointer; margin-top:3px;' onmouseout='$.doCirMngOut(this)' onmouseover='$.doCirMngOver(this)' onclick=\"$.doCirMng("+content.circleid+","+content.count+",'"+content.time+"',this)\"></i></div>");
+						$('.toolbar').append("<div class='group group-center group-center-blue' onclick='$.doSerCirFrien("+content.circleid+",this)'>"+content.circlename+"<i class='icon-wrench icon-white' style='float:right; cursor:pointer; margin-top:3px;' onmouseout='$.doCirMngOut(this)' onmouseover='$.doCirMngOver(this)' onclick=\"$.doCirMng("+content.circleid+","+content.count+",'"+content.time+"',this)\"></i></div>");
 					}else{
-						$('.toolbar').append("<div class='group group-center'>"+content.circlename+"</div>");
+						$('.toolbar').append("<div class='group group-center' onclick='$.doSerCirFrien("+content.circleid+",this)'>"+content.circlename+"</div>");
 					}
 					
 				});
@@ -664,7 +669,6 @@ tr{
 			});
 		});
 		
-		
 		//加入根据圈子id号加入圈子
 		$.doJoin = function(circleId,tagThis,modelMark){
 			//如果modelMark为1 则说明圈子需要密码 若为2 则不需要
@@ -807,7 +811,54 @@ tr{
 				</div>
 				
 				<div class="content">
+					<!-- 已加入的好友的展示首页 -->
 					<div class="context context-all">
+						<volist name="friendMsgList" id="vo">
+							<div class="friend">
+								<div class="f-face">
+									<img src="/hello/Uploads/1.jpg" class="f-face-img">
+								</div>
+								<div class="f-bottom">
+									<p class="muted">{$vo.uname}&nbsp&nbsp{$vo.phonenumber}</p>
+								</div>
+							</div>
+						</volist>
+						<div class="friend">
+								<div class="f-face">
+									<img src="/hello/Uploads/1.jpg" class="f-face-img">
+								</div>
+								<div class="f-bottom">
+									<p class="muted">王凯&nbsp&nbsp123123123</p>
+								</div>
+						</div>
+						<div class="friend">
+								<div class="f-face">
+									<img src="/hello/Uploads/1.jpg" class="f-face-img">
+								</div>
+								<div class="f-bottom">
+									<p class="muted">王凯&nbsp&nbsp123123123</p>
+								</div>
+						</div>
+						<div class="friend">
+								<div class="f-face">
+									<img src="/hello/Uploads/1.jpg" class="f-face-img">
+								</div>
+								<div class="f-bottom">
+									<p class="muted">王凯&nbsp&nbsp123123123</p>
+								</div>
+						</div>
+						<div class="friend">
+								<div class="f-face">
+									<img src="/hello/Uploads/1.jpg" class="f-face-img">
+								</div>
+								<div class="f-bottom">
+									<p class="muted">王凯&nbsp&nbsp123123123</p>
+								</div>
+						</div>
+					</div>
+					
+					<!-- 搜索当前页面 -->
+					<div class="context context-all" style='display:none;'>
 						<volist name="friendMsgList" id="vo">
 							<div class="friend">
 								<div class="f-face">
