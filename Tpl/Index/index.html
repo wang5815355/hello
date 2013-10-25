@@ -216,8 +216,9 @@ input:-moz-placeholder {
 	font-weight:bold;
 	font-size:12px;	
 	width:150px;
-	margin:4px;
+	margin-top:3px;
 }
+
 .group-top{
 	background:rgb(28,151,223);
 	color: rgba(250,250,250,.8);
@@ -422,7 +423,19 @@ tr{
 	font-weight: normal;
 	color:#999;
 }
+.group-center{
+	padding: 7px 15px 5px;
+	border-radius: 0px;
+}
 
+.group-center-blue{
+	background:rgba(28,151,223,0.6); color:rgba(250,250,250,0.8);
+}
+.group-center:HOVER{
+	background:rgb(28,151,223);
+	color: rgba(250,250,250,.8);
+	cursor: pointer;
+}
 
 </style>
 <script type="text/javascript">
@@ -436,6 +449,36 @@ tr{
 		$('.fileSelect').change(function(){
 			$('.submit').click();
 		});
+		
+		//搜索当前登录用户已加入的圈子
+		$('#s-mycircle').click(function(){
+			$.post('__URL__/myCircle',{},function(data){
+				$('.group-center').remove();
+				$.each(data,function(index,content){
+					if(content.isCreater=='1'){
+						$('.toolbar').append("<div class='group group-center group-center-blue' style=''>"+content.circlename+"<i class='icon-wrench icon-white' style='float:right; cursor:pointer; margin-top:3px;' onmouseout='$.doCirMngOut(this)' onmouseover='$.doCirMngOver(this)' onclick=\"$.doCirMng("+content.circleid+","+content.count+",'"+content.time+"',this)\"></i></div>");
+					}else{
+						$('.toolbar').append("<div class='group group-center'>"+content.circlename+"</div>");
+					}
+					
+				});
+			});
+		});
+		
+		function showMyCircle(){
+			$.post('__URL__/myCircle',{},function(data){
+				$('.group-center').remove();
+				$.each(data,function(index,content){
+					if(content.isCreater=='1'){
+						$('.toolbar').append("<div class='group group-center' style='background:rgba(28,151,223,0.6); color:rgba(250,250,250,0.8);'>"+content.circlename+"<i class='icon-wrench icon-white' style='float:right; cursor:pointer; margin-top:3px;' onmouseout='$.doCirMngOut(this)' onmouseover='$.doCirMngOver(this)' onclick=\"$.doCirMng("+content.circleid+","+content.count+",'"+content.time+"',this)\"></i></div>");
+					}else{
+						$('.toolbar').append("<div class='group group-center'>"+content.circlename+"</div>");
+					}
+					
+				});
+			});
+		}
+		$('#s-mycircle').click();
 		
 		//点击创建圈子之后 将现有context界面隐藏 然后吸纳实处captain对话框
 		$('.create-circle').click(function(){
@@ -486,10 +529,7 @@ tr{
 									//将圈子名称异步提交至action处理程序
 									$.post('__URL__/doCircle',{circlename:circleName},function(data,status){
 										$(".context-captain").append("<div class='row captain' style='display:none'><div class='span2 offset1'><div class='cface'><img src='__ROOT__/hello/Uploads/4.jpg' class='img-polaroid'></div></div><div class='span1 captain-talk'><div class='talkbox-title-left'></div><div class='talkbox-title-left-2'></div></div><div class='span5'><div class='talkbox'>"+data['info']+"</div></div></div>");
-										if(data['status'] == 1){
-											$('.s-mycircle').click();
-										}
-										
+										$('#s-mycircle').click();
 										$(".captain").fadeIn(200,function(){
 											$(".button-face").animate({opacity:'1'},10,function(){
 												$(".button-face").attr('id','button-face');
@@ -511,6 +551,7 @@ tr{
 								$.post('__URL__/doCircle',{circlename:circleName},function(data,status){
 									$(".context-captain").append("<div class='row captain' style='display:none'><div class='span2 offset1'><div class='cface'><img src='__ROOT__/hello/Uploads/4.jpg' class='img-polaroid'></div></div><div class='span1 captain-talk'><div class='talkbox-title-left'></div><div class='talkbox-title-left-2'></div></div><div class='span5'><div class='talkbox'>"+data['info']+"</div></div></div>");
 									$(".captain").fadeIn(200,function(){
+										$('#s-mycircle').click();
 										$(".button-face").animate({opacity:'1'},10,function(){
 											$(".button-face").attr('id','button-face');
 										});
@@ -623,22 +664,6 @@ tr{
 			});
 		});
 		
-		//搜索当前登录用户已加入的圈子
-		$('.s-mycircle').click(function(){
-			$.post('__URL__/myCircle',{},function(data){
-				$('.group-center').remove();
-				$.each(data,function(index,content){
-					if(content.isCreater=='1'){
-						$('.toolbar').append("<div class='group group-center' style='background:rgba(28,151,223,0.6); color:rgba(250,250,250,0.8);'>"+content.circlename+"<i class='icon-wrench icon-white' style='float:right; cursor:pointer; margin-top:3px;' onmouseout='$.doCirMngOut(this)' onmouseover='$.doCirMngOver(this)' onclick=\"$.doCirMng("+content.circleid+","+content.count+",'"+content.time+"',this)\"></i></div>");
-					}else{
-						$('.toolbar').append("<div class='group group-center'>"+content.circlename+"</div>");
-					}
-					
-				});
-			});
-		});
-		$('.s-mycircle').click();
-		
 		
 		//加入根据圈子id号加入圈子
 		$.doJoin = function(circleId,tagThis,modelMark){
@@ -686,7 +711,7 @@ tr{
 					$('.circle-'+circleId).parent().html("<div style='text-align:right;font-size:13px; font-weight:bold; padding:5px 0 5px;'>已加入</div>");
 					$('#btn-joincir-true').html('加入成功');
 					$('.modal').modal('hide');
-					$('.s-mycircle').click();
+					$('#s-mycircle').click();
 				}else if(data['info']=='-200'){
 					$('#btn-joincir-true').before('<div class="alert alert-info alert-info-uppass" id="alert-info-nopass-info" style="margin-left:125px;font-size:13px;text-align:left;width:258px;text-align:center;">加入非自己创建圈子个数暂时不能超过8个</div>');
 				}else{
@@ -716,7 +741,7 @@ tr{
 					$('.circle-'+circleId).parent().html("<div style='text-align:right;font-size:13px; font-weight:bold; padding:5px 0 5px;'>已加入</div>");
 					$('#alert-info-uppass-join').html('加入成功!');
 					$('.modal').modal('hide');
-					$('.s-mycircle').click();
+					$('#s-mycircle').click();
 				}
 			});
 		});
@@ -975,7 +1000,7 @@ tr{
 							<span class="finfo create-circle">创建</span>
 							<span class="finfo join-circle">加入</span>
 						</div>
-						<button class="s-mycircle" style="display:none;"></button>
+						<button class="s-mycircle" id="s-mycircle" style="display:none;"></button>
 					</div>
 				</div>
 			</div>

@@ -297,11 +297,11 @@ class IndexAction extends GlobalAction {
     	$len = mb_strlen($circleName,"utf-8");//验证圈子名称长度
     	
     //检测当前用户创建圈子个数 若超过八个则不能创建
-    	$mapGC['uemail']  =  $uEmail;
+    	$mapGC['createuser']  =  $uEmail;
     	$resultGC = $circleGroup->where($mapGC)->count();
     	$resultGC = $resultGC['tp_count'];
     	
-    	if(preg_match($matchCircleName,$circleName) && $len<=10 && $resultGC <= 8){//当数据正则验证通过插入数据库
+    	if(preg_match($matchCircleName,$circleName) && $len<=10 && $resultGC < 8){//当数据正则验证通过插入数据库
     		$map['name'] = $circleName;
     		$resultFind = $circleGroup->where($map)->find();
     		
@@ -331,8 +331,8 @@ class IndexAction extends GlobalAction {
     				$dataInfo['info'] = '圈子创建失败请重试';
     			}
     		}
-    	}else if(preg_match($matchCircleName,$circleName) && $len<=10 && $resultGC > 8){
-    		$dataInfo['info'] = "创建失败,暂时不能创建8个以上的圈子";
+    	}else if(preg_match($matchCircleName,$circleName) && $len<=10 && $resultGC >= 8){
+    		$dataInfo['info'] = "创建失败,暂时不能创建8个以上的圈子".$resultGC;
     	}else{
     		$dataInfo['info'] = "圈子名称只能由小于10位的数字子母以及中文组成,请重新输入.";
     	}
