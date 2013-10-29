@@ -368,7 +368,7 @@
      	     					  //如果账号正确，则记录账号，并且将输入框type改成password
      	     					  $('#dialog>div:last-child').fadeIn(400,function(){
      	     						  //加载完毕后 登录状态status不为3（登陆成功） 即显示“发送”按钮
-     	     						  if(data['status']!='3'){
+     	     						  if(data['status'] != '3'){
      	     							$('.btn').attr("disabled",false);
        	     						    $('.btn').fadeTo(300,1);
      	     						  }else{
@@ -388,7 +388,7 @@
          	    			  function(data,status){
          					  $('#dialog').append("<div class= 'row captain' style='display:none'><div class= 'span2 offset1'><div class= 'cface'><img src='__ROOT__/hello/Uploads/1.jpg' class= 'img-polaroid'></div></div><div class= 'span1 captain-talk' ><div class= 'talkbox-title-left' ></div><div class= 'talkbox-title-left-2' ></div></div><div class= 'span5' ><div class= 'talkbox' >&nbsp</div></div></div>");
          					  //如果账号正确，则记录账号，并且将输入框type改成password
-         					  if(data['status']=='1'){
+         					  if(data['status']== '1'){
          						 $("#email").val(inputValue);
          						 $("#appendedInputButton").val("");
          						 $("#appendedInputButton").attr('type','password');

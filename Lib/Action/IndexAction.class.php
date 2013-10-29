@@ -58,6 +58,34 @@ class IndexAction extends GlobalAction {
     	}
     }
     
+	/**
+	 * 查询当前用户点击自己所加入或者创建的圈子的所有成员
+	 * @author wangkai
+	 */
+    public function serchCirclePersion(){
+    	//根据用户email账号查询用户是否加入该圈子 若加入才可以查询
+    	$uemail = $this->getUserName();
+    	$circleid = $_POST['circleId'];//获取需要查询的圈子id号
+    	$matchCircleid = '/^[0-9]{1,50}$/';//ID号只能为1至50位纯数字
+		    	
+    	if(preg_match($matchCircleid,$circleid)){//圈子id格式正确
+    		$grModel = M('grouprelationship');
+    		$map['uemail'] = $uemail;
+    		$map['circleid'] = $circleid;
+    		
+    		$grResult = $grModel->where($map)->find();//验证所查询圈子是否为自己已加入的圈子
+    		if($grResult != null){
+    			//查询该圈子的成员
+    			$mapCirid['circleid'] = $circleid;
+   				$list = $grModel->limit(11)->where($mapCirid)->select();
+   				$dataInfo['data'] = $list;
+    		}
+    		
+    	}
+    	
+    	$this->ajaxReturn($dataInfo,'JSON');
+    }     
+    
     /**
      * 查询圈子密码 
      * @author wangkai
@@ -155,6 +183,11 @@ class IndexAction extends GlobalAction {
     	 			$mapC['circleId'] = $circleId;
     	 			//统计当前圈子一共有多少人
     	 			$count = $grModel->where($mapC)->count();
+    	 			//获取当前需要加入圈子的用户姓名
+    	 			$userInfo = $this->getUinfo();
+    	 			$data['uname'] = $userInfo['uname'];
+    	 			$data['phonenumber'] = $userInfo['phonenumber'];
+    	 			
     	 			$result = $grModel->add($data);
     	 			$dataInfo['info'] = '2';
     	 			 
@@ -175,6 +208,10 @@ class IndexAction extends GlobalAction {
     	 		$mapC['circleId'] = $circleId;
     	 		//统计当前圈子一共有多少人
     	 		$count = $grModel->where($mapC)->count();
+    	 		$userInfo = $this->getUinfo();
+    	 		$data['uname'] = $userInfo['uname'];
+    	 		$data['phonenumber'] = $userInfo['phonenumber'];
+    	 		
     	 		$result = $grModel->add($data);
     	 		$dataInfo['info'] = '2';
     	 		

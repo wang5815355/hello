@@ -447,7 +447,7 @@ tr{
 		$("li:eq(4)").css('marginLeft','0');
 		
 		$('.thumbnail').click(function(){
-			$('.fileSelect').click();
+			$('.fileSelect').click(); 
 		});
 		
 		$('.fileSelect').change(function(){
@@ -457,6 +457,14 @@ tr{
 		//查询用户点击圈子的圈子所包含所有人
 		$.doSerCirFrien = function SerCirFrien(circleId,tagThis){
 			$('.context-all').fadeOut(0);
+			$('.context-current-cir').fadeIn(100);
+			var circleId = circleId;
+			$('.friend-cir').remove();
+			$.post('__URL__/serchCirclePersion',{circleId:circleId},function(data){
+				$.each(data['data'],function(index,content){
+					$('.context-current-cir').append("<div class='friend friend-cir'><div class='f-face'><img src='/hello/Uploads/1.jpg' class='f-face-img'></div><div class='f-bottom'><p class='muted'>"+content.uname+"&nbsp&nbsp"+content.phonenumber+"</p></div></div>");
+				});
+			});
 		}
 		
 		//搜索当前登录用户已加入的圈子
@@ -628,6 +636,7 @@ tr{
 			$(tagThis).attr('class','icon-wrench icon-white');
 		}
 		$.doCirMng = function circleMng(circleid,count,time,tagThis){
+			event.stopPropagation();
 			$('.context-all').fadeOut(0);
 			$('.context-cirman').fadeIn(200);
 			$('.captain-cirman').fadeIn(200);
@@ -857,48 +866,9 @@ tr{
 						</div>
 					</div>
 					
-					<!-- 搜索当前页面 -->
-					<div class="context context-all" style='display:none;'>
-						<?php if(is_array($friendMsgList)): $i = 0; $__LIST__ = $friendMsgList;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?><div class="friend">
-								<div class="f-face">
-									<img src="/hello/Uploads/1.jpg" class="f-face-img">
-								</div>
-								<div class="f-bottom">
-									<p class="muted"><?php echo ($vo["uname"]); ?>&nbsp&nbsp<?php echo ($vo["phonenumber"]); ?></p>
-								</div>
-							</div><?php endforeach; endif; else: echo "" ;endif; ?>
-						<div class="friend">
-								<div class="f-face">
-									<img src="/hello/Uploads/1.jpg" class="f-face-img">
-								</div>
-								<div class="f-bottom">
-									<p class="muted">王凯&nbsp&nbsp123123123</p>
-								</div>
-						</div>
-						<div class="friend">
-								<div class="f-face">
-									<img src="/hello/Uploads/1.jpg" class="f-face-img">
-								</div>
-								<div class="f-bottom">
-									<p class="muted">王凯&nbsp&nbsp123123123</p>
-								</div>
-						</div>
-						<div class="friend">
-								<div class="f-face">
-									<img src="/hello/Uploads/1.jpg" class="f-face-img">
-								</div>
-								<div class="f-bottom">
-									<p class="muted">王凯&nbsp&nbsp123123123</p>
-								</div>
-						</div>
-						<div class="friend">
-								<div class="f-face">
-									<img src="/hello/Uploads/1.jpg" class="f-face-img">
-								</div>
-								<div class="f-bottom">
-									<p class="muted">王凯&nbsp&nbsp123123123</p>
-								</div>
-						</div>
+					<!-- 搜索某圈子成员页面 -->
+					<div class="context context-all context-current-cir" style='display:none;'>
+						
 					</div>
 					
 					<!-- captain context 创建圈子页面 -->
