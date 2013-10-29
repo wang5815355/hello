@@ -137,13 +137,15 @@ class IndexAction extends GlobalAction {
     	$list = $grModel->order('isCreater desc ,id asc')->where($map)->select();
     	
     	//跟据圈子id查找圈子名称
-    	foreach ($list as $k => $v){
-    		$circleid = $list[$k]['circleid'];
-    		$mapG['id'] = $circleid;
-    		$circleName = $groupModel->where($mapG)->find();
-    		$list[$k]['circlename'] = $circleName['name']; 
-    		$list[$k]['count'] = $circleName['count'];
-    		$list[$k]['time'] = date("Y年m月d日  H:i:s",$circleName['time']);
+    	if($list != null){
+    		foreach ($list as $k => $v){
+    			$circleid = $list[$k]['circleid'];
+    			$mapG['id'] = $circleid;
+    			$circleName = $groupModel->where($mapG)->find();
+    			$list[$k]['circlename'] = $circleName['name'];
+    			$list[$k]['count'] = $circleName['count'];
+    			$list[$k]['time'] = date("Y年m月d日  H:i:s",$circleName['time']);
+    		}
     	}
     	
     	$data = $list;
