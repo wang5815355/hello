@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2013 年 10 月 11 日 16:34
+-- 生成日期: 2013 年 10 月 29 日 10:45
 -- 服务器版本: 5.5.8
 -- PHP 版本: 5.3.3
 
@@ -49,14 +49,26 @@ CREATE TABLE IF NOT EXISTS `hello_group` (
   `time` varchar(11) DEFAULT NULL COMMENT '创建时间',
   `id` int(40) NOT NULL AUTO_INCREMENT COMMENT '主键id',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='圈子表' AUTO_INCREMENT=5 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='圈子表' AUTO_INCREMENT=61 ;
 
 --
 -- 转存表中的数据 `hello_group`
 --
 
 INSERT INTO `hello_group` (`name`, `password`, `count`, `type`, `createuser`, `location`, `fcircle`, `time`, `id`) VALUES
-('111', NULL, 1, 0, '393867916@qq.com', NULL, 0, NULL, 4);
+('111', NULL, 1, 0, '393867916@qq.com', NULL, 0, NULL, 4),
+('圈子first', NULL, 4, 0, '393867916@qq.com', NULL, 0, '1381737998', 5),
+('你好吧', 'wang5815355', 6, 0, '393867916@qq.com', NULL, 0, '1381806336', 6),
+('你好', NULL, 6, 0, '393867916@qq.com', NULL, 0, '1381825278', 7),
+('你好吗', '7107993', 7, 0, '393867916@qq.com', NULL, 0, '1381825393', 8),
+('你好吗？', 'wang5815355', 6, 0, '393867916@qq.com', NULL, 0, '1381826665', 9),
+('创建个圈子行不行', NULL, 7, 0, '393867916@qq.com', NULL, 0, '1383032030', 59),
+('创建四个', NULL, 8, 0, '39386792@qq.com', NULL, 0, '1382687390', 58),
+('创建第四个', NULL, 7, 0, '39386792@qq.com', NULL, 0, '1382686768', 57),
+('创建第三个', NULL, 10, 0, '39386792@qq.com', NULL, 0, '1382686759', 56),
+('创建222', NULL, 9, 0, '39386792@qq.com', NULL, 0, '1382686686', 55),
+('创建一个', NULL, 10, 0, '39386792@qq.com', NULL, 0, '1382686659', 54),
+('一二三四五六七八九十', NULL, 11, 0, '393867916@qq.com', NULL, 0, '1383032144', 60);
 
 -- --------------------------------------------------------
 
@@ -68,21 +80,25 @@ CREATE TABLE IF NOT EXISTS `hello_grouprelationship` (
   `id` int(50) NOT NULL AUTO_INCREMENT COMMENT '主键id',
   `circleid` varchar(50) NOT NULL COMMENT '圈子id',
   `uemail` varchar(50) NOT NULL COMMENT '用户email',
+  `uname` varchar(20) DEFAULT NULL COMMENT '用户姓名',
+  `phonenumber` varchar(20) DEFAULT NULL COMMENT '用户手机号',
   `status` char(1) DEFAULT NULL COMMENT '圈子状态（1，为待审核状态2，加入成功，3，审核未通过）',
   `isCreater` char(1) DEFAULT NULL COMMENT '是否创始人（1,代表是创始人，空则代表不是）',
   `time` varchar(20) NOT NULL COMMENT '加入圈子时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=187 ;
 
 --
 -- 转存表中的数据 `hello_grouprelationship`
 --
 
-INSERT INTO `hello_grouprelationship` (`id`, `circleid`, `uemail`, `status`, `isCreater`, `time`) VALUES
-(4, '1', '393867916@qq.com', NULL, '1', '1381499645'),
-(5, '1', '393867916@qq.com', NULL, '1', '1381499693'),
-(6, '3', '393867916@qq.com', NULL, '1', '1381500045'),
-(7, '4', '393867916@qq.com', NULL, '1', '1381500857');
+INSERT INTO `hello_grouprelationship` (`id`, `circleid`, `uemail`, `uname`, `phonenumber`, `status`, `isCreater`, `time`) VALUES
+(180, '60', '393867916@qq.com', '王凯', '15820781327', NULL, NULL, '1383042583'),
+(181, '59', '393867916@qq.com', '王凯', '15820781327', NULL, NULL, '1383042591'),
+(182, '58', '393867916@qq.com', '王凯', '15820781327', NULL, NULL, '1383042595'),
+(183, '55', '393867916@qq.com', '王凯', '15820781327', NULL, NULL, '1383042597'),
+(184, '56', '393867916@qq.com', '王凯', '15820781327', NULL, NULL, '1383042599'),
+(186, '57', '393867916@qq.com', '王凯', '15820781327', NULL, NULL, '1383043243');
 
 -- --------------------------------------------------------
 
@@ -100,7 +116,7 @@ CREATE TABLE IF NOT EXISTS `hello_user` (
   `auth` char(1) NOT NULL DEFAULT '0' COMMENT '账号认证状态（3,未认证且非首次登陆0,未认证首次登陆1,已邮箱认证，且首次登陆。2,已认证且非首次登陆）',
   `regtime` datetime NOT NULL COMMENT '注册时间',
   PRIMARY KEY (`uid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='用户注册表' AUTO_INCREMENT=43 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='用户注册表' AUTO_INCREMENT=44 ;
 
 --
 -- 转存表中的数据 `hello_user`
@@ -137,4 +153,5 @@ INSERT INTO `hello_user` (`uid`, `uname`, `email`, `password`, `phonenumber`, `f
 (39, '王凯', '39386755886@qq.com', '00fbfeb9353ca2055ddc129b2f0a01', '15820781327', NULL, '0', '0000-00-00 00:00:00'),
 (40, '王凯', '393864447916@qq.com', '00fbfeb9353ca2055ddc129b2f0a01', '15820781327', NULL, '0', '0000-00-00 00:00:00'),
 (41, '王凯', '393822264447916@qq.com', '33a173a86a3c0bd6ff8a84f32432e6', '15820781327', NULL, '0', '0000-00-00 00:00:00'),
-(42, '王凯', '3938222642447916@qq.com', '040bd08a4290267535cd247b8ba2ec', '15820781327', NULL, '0', '0000-00-00 00:00:00');
+(42, '王凯', '3938222642447916@qq.com', '040bd08a4290267535cd247b8ba2ec', '15820781327', NULL, '0', '0000-00-00 00:00:00'),
+(43, '王凯', '39386792@qq.com', '00fbfeb9353ca2055ddc129b2f0a01', '15820781327', 'thumb_5264fa9e91a28.JPG', '3', '0000-00-00 00:00:00');
