@@ -58,6 +58,36 @@ class IndexAction extends GlobalAction {
     	}
     }
     
+    /**
+     * 用户提交加好友申请
+     * @author wangkai
+     */
+    public function applyFriend(){
+    	$uemail1 = $this->getUserName();//登录用户
+    	$uemail2 = $_POST['uemail2'];//申请好友
+    	$circleId = $_POST['circleId']; //提交申请的圈子id
+    	$matchCircleid = '/^[0-9]{1,50}$/';//ID号只能为1至50位纯数字
+    	//圈子id正则表达式
+    	
+    	//根据申请email查询该用户姓名
+    	$userModel = M('user');
+    	$mapU['uemail'] = array('in',$uemail1+','+uemail2);
+    	$userResult = $userModel->where($mapU)->find();
+    	$uname = $userResult['uname'];
+    	
+    	if(preg_match($matchCircleid,$circleid) && $uname != null){//圈子id格式正确 且申请好友信息正确
+    		//查询当前登录用户是否和被申请用户在同一个圈子
+    		$grModel = M('grouprelathionship');
+    		$mapGr['uemail'] = uemail1;
+    		$mapGr['circleid'] = $circleId;
+    		$resultIsCount = $grModel->count()->where($mapGr)->find();
+    		if($resultIsCount == 2){//当存在两条记录说明申请人和被申请人在同一个圈子当中
+    			
+    		}
+    	}
+    	
+    }
+    
 	/**
 	 * 查询当前用户点击自己所加入或者创建的圈子的所有成员
 	 * @author wangkai
@@ -78,11 +108,22 @@ class IndexAction extends GlobalAction {
     			//查询该圈子的成员
     			$mapCirid['circleid'] = $circleid;
    				$list = $grModel->limit(11)->where($mapCirid)->select();
-   				$dataInfo['data'] = $list;
+   				
+   				//查询该用户是否为你的好友
+   				foreach($list as $k=>$v){
+   					$mapAf['uemail1'] = $uemail;//当前登录用户
+   					$mapAf['uemail2'] = $list[$k]['uemail'];//其他用户
+   					$appInfoModel = M('friendapply');
+   					$isFriend = $appInfoModel->where($mapAf)->getField('status');
+   					if($isFriend == null){//1代表已成为好友
+   						$list[$k]['appstatus'] = '-1';//还未提交好友申请
+   					}
+   				}
+   				
     		}
     		
     	}
-    	
+    	$dataInfo['data'] = $list;
     	$this->ajaxReturn($dataInfo,'JSON');
     }     
     
@@ -101,7 +142,8 @@ class IndexAction extends GlobalAction {
     	if(preg_match($matchCircleid,$circlrid) && preg_match($matchPassword,$password)){
     		//检测当前圈子id是否当前登录用户创建的圈子 若是才可以修改密码
     		$map['id'] = $circlrid;
-    		$map['createuser'] = $this->getUserName();
+    		$map['createuser'] = $this->getUserName(); 
+    		
     		if($password == '' || $password == null){
     			$password = null;
     		}
