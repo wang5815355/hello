@@ -63,26 +63,43 @@ class IndexAction extends GlobalAction {
      * @author wangkai
      */
     public function applyFriend(){
-    	$uemail1 = $this->getUserName();//登录用户
-    	$uemail2 = $_POST['uemail2'];//申请好友
+    	$uemail1 = $this->getUserName();//登录用户email
+    	$uemail2 = $_POST['uemail2'];//被申请好友
     	$circleId = $_POST['circleId']; //提交申请的圈子id
     	$matchCircleid = '/^[0-9]{1,50}$/';//ID号只能为1至50位纯数字
     	//圈子id正则表达式
     	
-    	//根据申请email查询该用户姓名
-    	$userModel = M('user');
-    	$mapU['uemail'] = array('in',$uemail1+','+uemail2);
-    	$userResult = $userModel->where($mapU)->find();
-    	$uname = $userResult['uname'];
+    	//获取当前登录用户姓名
+    	$uInfo = $this->getUinfo();
+    	$uname = $uInfo['uname'];
     	
     	if(preg_match($matchCircleid,$circleid) && $uname != null){//圈子id格式正确 且申请好友信息正确
     		//查询当前登录用户是否和被申请用户在同一个圈子
     		$grModel = M('grouprelathionship');
-    		$mapGr['uemail'] = uemail1;
+    		$mapGr['uemail'] = array('in',$uemail1+','+$uemail2);
     		$mapGr['circleid'] = $circleId;
     		$resultIsCount = $grModel->count()->where($mapGr)->find();
+    		
     		if($resultIsCount == 2){//当存在两条记录说明申请人和被申请人在同一个圈子当中
     			
+    			//查询是否存在相同的申请人和被申请人记录 若存在且申请处理情况且status为2（申请未通过） 时不必添加新纪录 直接将status改为0（未处理）
+    			$faModel = M('friendrelationship');
+    			$mapFa['uemail1'] = $uemail2;//被申请好友email
+    			$resultIsFa = $faModel->where($mapFa)->find();
+    			
+    			if($resultIsFa != null && $resultIsFa['status'] == '2'){
+    				$dataFa['status'] = '0';
+    				$faModel->where($mapFa)->save($dataFa);
+    			}else{//如果不存在则直接添加新纪录
+    				$dataF['uemail1'] = $uemail2;
+    				$dataF['uemail2'] = $uemail1;
+    				$dataF['uname2'] = $uname;
+    				$dataF['info'] = '';
+    				$dataF['status'] = '0';
+    				$dataF['circleid'] = $circleId;
+    				$dataF['time'] = time();
+    				$faModel->add($dataFa); 
+    			}
     		}
     	}
     	
@@ -162,7 +179,6 @@ class IndexAction extends GlobalAction {
     		$dataInfo['info'] = '密码只能由6至20位数字字母下划线组成'.$password.$circlrid;
     	}
     	
-    	
     	$this->ajaxReturn($dataInfo,'JSON');
     }
         
@@ -187,6 +203,7 @@ class IndexAction extends GlobalAction {
     			$list[$k]['circlename'] = $circleName['name'];
     			$list[$k]['count'] = $circleName['count'];
     			$list[$k]['time'] = date("Y年m月d日  H:i:s",$circleName['time']);
+    			
     		}
     	}
     	

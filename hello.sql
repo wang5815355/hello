@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2013 年 10 月 29 日 10:45
+-- 生成日期: 2013 年 10 月 31 日 11:25
 -- 服务器版本: 5.5.8
 -- PHP 版本: 5.3.3
 
@@ -29,6 +29,29 @@ CREATE TABLE IF NOT EXISTS `hello_friend` (
 
 --
 -- 转存表中的数据 `hello_friend`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `hello_friendapply`
+--
+
+CREATE TABLE IF NOT EXISTS `hello_friendapply` (
+  `id` int(50) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `uemail1` varchar(40) NOT NULL COMMENT '被申请人email',
+  `uemail2` varchar(40) NOT NULL COMMENT '申请人email',
+  `uname2` varchar(20) NOT NULL COMMENT '申请人姓名',
+  `info` varchar(20) DEFAULT NULL COMMENT '申请备注信息',
+  `status` char(1) NOT NULL COMMENT '申请信息处理状态（0,代表未处理.1,申请通过2,申请未通过）',
+  `circleid` varchar(50) NOT NULL COMMENT '提交申请的circleid',
+  `time` varchar(20) NOT NULL COMMENT '申请时间',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- 转存表中的数据 `hello_friendapply`
 --
 
 
@@ -67,7 +90,7 @@ INSERT INTO `hello_group` (`name`, `password`, `count`, `type`, `createuser`, `l
 ('创建第四个', NULL, 7, 0, '39386792@qq.com', NULL, 0, '1382686768', 57),
 ('创建第三个', NULL, 10, 0, '39386792@qq.com', NULL, 0, '1382686759', 56),
 ('创建222', NULL, 9, 0, '39386792@qq.com', NULL, 0, '1382686686', 55),
-('创建一个', NULL, 10, 0, '39386792@qq.com', NULL, 0, '1382686659', 54),
+('创建一个', NULL, 7, 0, '39386792@qq.com', NULL, 0, '1382686659', 54),
 ('一二三四五六七八九十', NULL, 11, 0, '393867916@qq.com', NULL, 0, '1383032144', 60);
 
 -- --------------------------------------------------------
@@ -86,7 +109,7 @@ CREATE TABLE IF NOT EXISTS `hello_grouprelationship` (
   `isCreater` char(1) DEFAULT NULL COMMENT '是否创始人（1,代表是创始人，空则代表不是）',
   `time` varchar(20) NOT NULL COMMENT '加入圈子时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=187 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=188 ;
 
 --
 -- 转存表中的数据 `hello_grouprelationship`
@@ -98,6 +121,7 @@ INSERT INTO `hello_grouprelationship` (`id`, `circleid`, `uemail`, `uname`, `pho
 (182, '58', '393867916@qq.com', '王凯', '15820781327', NULL, NULL, '1383042595'),
 (183, '55', '393867916@qq.com', '王凯', '15820781327', NULL, NULL, '1383042597'),
 (184, '56', '393867916@qq.com', '王凯', '15820781327', NULL, NULL, '1383042599'),
+(187, '54', '393867916@qq.com', '王凯', '15820781327', NULL, NULL, '1383118778'),
 (186, '57', '393867916@qq.com', '王凯', '15820781327', NULL, NULL, '1383043243');
 
 -- --------------------------------------------------------
@@ -155,3 +179,25 @@ INSERT INTO `hello_user` (`uid`, `uname`, `email`, `password`, `phonenumber`, `f
 (41, '王凯', '393822264447916@qq.com', '33a173a86a3c0bd6ff8a84f32432e6', '15820781327', NULL, '0', '0000-00-00 00:00:00'),
 (42, '王凯', '3938222642447916@qq.com', '040bd08a4290267535cd247b8ba2ec', '15820781327', NULL, '0', '0000-00-00 00:00:00'),
 (43, '王凯', '39386792@qq.com', '00fbfeb9353ca2055ddc129b2f0a01', '15820781327', 'thumb_5264fa9e91a28.JPG', '3', '0000-00-00 00:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `hello_userrelationship`
+--
+
+CREATE TABLE IF NOT EXISTS `hello_userrelationship` (
+  `id` int(50) NOT NULL COMMENT '主键id',
+  `uemail1` varchar(40) NOT NULL COMMENT '用户1id',
+  `uname1` varchar(20) NOT NULL COMMENT '用户1姓名',
+  `uphonenumber1` varchar(20) NOT NULL COMMENT '用户1电话号码',
+  `uemail2` varchar(40) NOT NULL COMMENT '用户2id',
+  `uname2` varchar(20) NOT NULL COMMENT '用户2姓名',
+  `uphonenumber2` varchar(20) NOT NULL COMMENT '用户2电话号码',
+  `time` varchar(20) NOT NULL COMMENT '时间'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='好友关系表';
+
+--
+-- 转存表中的数据 `hello_userrelationship`
+--
+
