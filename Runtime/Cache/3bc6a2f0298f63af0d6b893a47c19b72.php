@@ -461,15 +461,33 @@ tr{
 			$('.friend-cir').remove();
 			$.post('__URL__/serchCirclePersion',{circleId:circleId},function(data){
 				$.each(data['data'],function(index,content){
-					if(content.appstatus != '1' && content.appstatus != '2'){
-						var html = "<button class='btn btn-mini btn-primary' type='button' style='float:right; margin-bottom:3px;'>加为好友</button>";
-					}else if(content.appstatus == '0' ){
+					if(content.appstatus != '1' && content.appstatus != '0' && content.appstatus != '-2'){
+						var html = "<button class='btn btn-mini btn-primary' type='button' style='float:right; margin-bottom:3px;' onclick=\"$.doFriendApply("+circleId+",'"+content.uemail+"',this)\">加为好友</button>";
+					}else if(content.appstatus == '0'){
 						var html = "<div style='text-align:right;font-size:13px; font-weight:bold; margin-right:11px; color:rgb(190,190,190);'>申请已提交</div>";
 					}else if(content.appstatus == '1'){
 						var html = "<div style='text-align:right;font-size:13px; font-weight:bold; margin-right:11px; color:rgb(190,190,190);'>我的好友</div>";
+					}else if(content.appstatus == '-2'){
+						var html = "<div style='text-align:right;font-size:13px; font-weight:bold; margin-right:11px; color:rgb(190,190,190); padding:3px;'>我自己</div>";
 					}
-					$('.context-current-cir').append("<div class='friend friend-cir'><div class='f-face'><img src='/hello/Uploads/1.jpg' class='f-face-img'></div><div class='f-bottom'><p class='muted'>"+content.uname+"&nbsp&nbsp"+content.phonenumber+"</p><p>"+html+"</p></div></div>");
+					$('.context-current-cir').append("<div class='friend friend-cir'><div class='f-face'><img src='/hello/Uploads/1.jpg' class='f-face-img'></div><div class='f-bottom'><p class='muted'>"+content.uname+"&nbsp&nbsp</p><p class='muted muted-phone'>"+content.phonenumber+"</p><p>"+html+"</p></div></div>");
 				});
+			});
+		}
+		
+		//点击加为好友按钮时 ，提交被申请好友id号以及所在圈子id号
+		$.doFriendApply = function friendApplyClick(circleid,uemail,tagThis){
+			$(tagThis).html("<img src='__ROOT__/hello/Public/img/ajax-loader.gif' class='loader-gif'>");
+			$(tagThis).attr('class','btn btn-mini btn-primary disabled');
+			
+			var uemail2 = uemail;
+			$.post("__URL__/applyFriend",{circleid:circleid,uemail2:uemail2},function(data){
+				if(data['info'] == '1'){
+					$(tagThis).parent().html("<div style='text-align:right;font-size:13px; font-weight:bold; margin-right:11px; color:rgb(190,190,190);'>申请已提交</div>");
+				}else{
+					$(tagThis).html("失败,点击重试");
+					$(tagThis).attr('class','btn btn-mini btn-primary');
+				}
 			});
 		}
 		
@@ -878,7 +896,8 @@ tr{
 									<img src="/hello/Uploads/1.jpg" class="f-face-img">
 								</div>
 								<div class="f-bottom">
-									<p class="muted">王凯&nbsp&nbsp123123123</p>
+									<p class="muted">王凯&nbsp&nbsp</p>
+									<p class='muted muted-phone'>123123123</p>
 								</div>
 								<div>
 									<p>
