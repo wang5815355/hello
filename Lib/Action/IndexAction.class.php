@@ -59,6 +59,47 @@ class IndexAction extends GlobalAction {
     }
     
     /**
+     * 用户消息提示中心每隔5到10秒实时更新（好友申请信息等信息数量）
+     * @author wangkai
+     */
+    public function getNewMsgNum(){
+    	$uemail = $this->getUserName();//获取当前登录用户的email账号 
+    	//查询是否有新的好友申请信息并且统计新信息数目
+    	$faModel = M('friendapply');
+    	$mapFa['uemail1'] = $uemail;//被申请人为当前登录用户自己的信息
+    	$mapFa['msgreadstatus'] = '0';//还未被阅读过的信息
+    	$resultFaNum = $faModel->where($mapFa)->count();
+    	if($resultFaNum != null){
+    		$dataInFo['info'] = $resultFaNum;//新申请数目
+    	}
+    	$this->ajaxReturn($dataInFo,'JSON');
+    }
+    
+    /**
+     * 更新好友申请信息表 将所有信息查看状态为0的信息改为1（已查看）
+     * @author wangkai
+     */
+    public function upAppMsgStatus(){
+    	$uemail = $this->getUserName();//获取当前登录用户的email账号
+    	$msgreadstatus = $_POST['status'];//信息查看状态
+    	if($msgreadstatus == '1'){
+    		$faModel = M('friendapply');
+    		$dataFa['msgreadstatus'] = '1';
+    		$mapFa['uemail1'] = $uemail;
+    		$mapFa['msgreadstatus'] = '0';
+    		$faModel->where($mapFa)->save($dataFa);
+    	}
+    }
+    
+    /**
+     * 查询新的好友申请信息
+     * @author wangkai
+     */
+    public function queryNewFriendApp(){
+    	
+    }
+    
+    /**
      * 用户提交加好友申请
      * @author wangkai
      */

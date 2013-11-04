@@ -156,7 +156,7 @@ input:-moz-placeholder {
 	float:right;
 	margin-top:30px;
 }
-.context,.context-captain,.context-cirman{
+.context,.context-captain,.context-cirman,.context-msgcenter{
 	width:720px;
 	height:300px;
 	float:left;
@@ -440,6 +440,16 @@ tr{
 	cursor: pointer;
 }
 
+.envelop-alert{
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	border-radius: 8px;
+	position:relative;
+	left:43px;
+	top:-5px;
+	z-index:10;
+}
+
 </style>
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -464,9 +474,9 @@ tr{
 					if(content.appstatus != '1' && content.appstatus != '0' && content.appstatus != '-2'){
 						var html = "<button class='btn btn-mini btn-primary' type='button' style='float:right; margin-bottom:3px;' onclick=\"$.doFriendApply("+circleId+",'"+content.uemail+"',this)\">加为好友</button>";
 					}else if(content.appstatus == '0'){
-						var html = "<div style='text-align:right;font-size:13px; font-weight:bold; margin-right:11px; color:rgb(190,190,190);'>申请已提交</div>";
+						var html = "<div style='text-align:right;font-size:13px; font-weight:bold; margin-right:11px; color:rgb(190,190,190); padding:3px;'>申请已提交</div>";
 					}else if(content.appstatus == '1'){
-						var html = "<div style='text-align:right;font-size:13px; font-weight:bold; margin-right:11px; color:rgb(190,190,190);'>我的好友</div>";
+						var html = "<div style='text-align:right;font-size:13px; font-weight:bold; margin-right:11px; color:rgb(190,190,190); padding:3px;'>我的好友</div>";
 					}else if(content.appstatus == '-2'){
 						var html = "<div style='text-align:right;font-size:13px; font-weight:bold; margin-right:11px; color:rgb(190,190,190); padding:3px;'>我自己</div>";
 					}
@@ -567,6 +577,7 @@ tr{
 								$(".context-captain").append("<div class='row user' id='user'><div class='span5 offset2'><div class='talkbox-user'>"+circleName+"</div></div><div class='span1'><div class='talkbox-title-left-user-i'></div><div class='talkbox-title-left-2-user-i'></div></div></div>");
 								$(".user").fadeIn(200,function(){
 									//将圈子名称异步提交至action处理程序
+									alert('测试一下');
 									$.post('__URL__/doCircle',{circlename:circleName},function(data,status){
 										$(".context-captain").append("<div class='row captain' style='display:none'><div class='span2 offset1'><div class='cface'><img src='__ROOT__/hello/Uploads/4.jpg' class='img-polaroid'></div></div><div class='span1 captain-talk'><div class='talkbox-title-left'></div><div class='talkbox-title-left-2'></div></div><div class='span5'><div class='talkbox'>"+data['info']+"</div></div></div>");
 										$('#s-mycircle').click();
@@ -786,6 +797,22 @@ tr{
 			});
 		});
 		
+		//计时器 每5秒请求一次服务器查询新消息数目
+		var scrollTimer;
+		getNewMsgNum();
+		scrollTimer = self.setInterval("getNewMsgNum()",5000);
+		
+		//点击信息中心按钮时 查看新的好友申请信息
+		$(".btn-msgcenter").click(function(){
+			$('.hidden-input').val('hidden-msgcenter');
+			$('#appendedInputButton').attr('placeholder','');
+			$('.context-all').fadeOut(0);
+			$('.context-msgcenter').fadeIn(200);
+			
+			//同时将 所有查看状态为0的信息查看状态设置为1
+			var status = '1';
+			$.post('__URL__/upAppMsgStatus',{status:status});
+		});
 	});
 	
 	function notice(msg){
@@ -796,6 +823,18 @@ tr{
 			alert('数据保存失败');
 		}
 	}
+
+	//请求服务器端查询有多少未查看的新好友请求信息
+	function getNewMsgNum(){
+		$.post('__URL__/getNewMsgNum',function(data){
+			if(data['info'] != '0'){
+				$('.envelop-alert').css('display','block');
+				$('.envelop-alert').html('$nbsp'+data['info']);
+			}else{
+				$('.envelop-alert').css('display','none');
+			}
+		});
+	}
 	
 	
 </script>
@@ -804,6 +843,8 @@ tr{
 <body>
 	<div class="logo">
 		<div class="image">Hello</div>
+		<div class="btn-group head-buttons" style="float:right;margin-right:19px;"><button class="btn btn-success btn-msgcenter"><i class="icon-envelope"></i></button></div>
+		<div class="envelop-alert" style="height:16px; width:16px; background:orange;float:right; font-size:12px; color:white; font-weight:bold; vertical-align:middle; display:none;">&nbsp1</div>
 	</div>
 	<div class="container">
 		<div class="slides">
@@ -908,6 +949,11 @@ tr{
 									</p>
 								</div>
 						</div>
+					</div>
+					
+					<!-- msgcenter 信息中心显示页面-->
+					<div class="context-msgcenter context-all" style="display:none;">
+						<div class="row normal-user" style="margin-top:40px;"><div class="span2 offset1"><div class="cface"><img src="__ROOT__/hello/Uploads/4.jpg" class="img-polaroid"></div></div><div class="span1 captain-talk"><div class="talkbox-title-left"></div><div class="talkbox-title-left-2"></div></div><div class="span5"><div class="talkbox">告诉我你要创建的圈子名称</div></div></div>
 					</div>
 					
 					<!-- captain context 创建圈子页面 -->

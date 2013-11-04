@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2013 年 10 月 31 日 11:25
+-- 生成日期: 2013 年 11 月 04 日 09:59
 -- 服务器版本: 5.5.8
 -- PHP 版本: 5.3.3
 
@@ -45,15 +45,18 @@ CREATE TABLE IF NOT EXISTS `hello_friendapply` (
   `uname2` varchar(20) NOT NULL COMMENT '申请人姓名',
   `info` varchar(20) DEFAULT NULL COMMENT '申请备注信息',
   `status` char(1) NOT NULL COMMENT '申请信息处理状态（0,代表未处理.1,申请通过2,申请未通过）',
+  `msgreadstatus` char(1) NOT NULL DEFAULT '0' COMMENT '信息查看状态（0，代表未被查看，1，代表已被查看）',
   `circleid` varchar(50) NOT NULL COMMENT '提交申请的circleid',
   `time` varchar(20) NOT NULL COMMENT '申请时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
 -- 转存表中的数据 `hello_friendapply`
 --
 
+INSERT INTO `hello_friendapply` (`id`, `uemail1`, `uemail2`, `uname2`, `info`, `status`, `msgreadstatus`, `circleid`, `time`) VALUES
+(4, '3938679167@qq.com', '393867916@qq.com', '王凯', '', '0', '0', '60', '1383533109');
 
 -- --------------------------------------------------------
 
@@ -91,7 +94,7 @@ INSERT INTO `hello_group` (`name`, `password`, `count`, `type`, `createuser`, `l
 ('创建第三个', NULL, 10, 0, '39386792@qq.com', NULL, 0, '1382686759', 56),
 ('创建222', NULL, 9, 0, '39386792@qq.com', NULL, 0, '1382686686', 55),
 ('创建一个', NULL, 7, 0, '39386792@qq.com', NULL, 0, '1382686659', 54),
-('一二三四五六七八九十', NULL, 11, 0, '393867916@qq.com', NULL, 0, '1383032144', 60);
+('一二三四五六七八九十', NULL, 8, 0, '393867916@qq.com', NULL, 0, '1383032144', 60);
 
 -- --------------------------------------------------------
 
@@ -109,7 +112,7 @@ CREATE TABLE IF NOT EXISTS `hello_grouprelationship` (
   `isCreater` char(1) DEFAULT NULL COMMENT '是否创始人（1,代表是创始人，空则代表不是）',
   `time` varchar(20) NOT NULL COMMENT '加入圈子时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=188 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=189 ;
 
 --
 -- 转存表中的数据 `hello_grouprelationship`
@@ -122,7 +125,8 @@ INSERT INTO `hello_grouprelationship` (`id`, `circleid`, `uemail`, `uname`, `pho
 (183, '55', '393867916@qq.com', '王凯', '15820781327', NULL, NULL, '1383042597'),
 (184, '56', '393867916@qq.com', '王凯', '15820781327', NULL, NULL, '1383042599'),
 (187, '54', '393867916@qq.com', '王凯', '15820781327', NULL, NULL, '1383118778'),
-(186, '57', '393867916@qq.com', '王凯', '15820781327', NULL, NULL, '1383043243');
+(186, '57', '393867916@qq.com', '王凯', '15820781327', NULL, NULL, '1383043243'),
+(188, '60', '3938679167@qq.com', '王凯超级', '15820781327', NULL, NULL, '1383297338');
 
 -- --------------------------------------------------------
 
@@ -140,7 +144,7 @@ CREATE TABLE IF NOT EXISTS `hello_user` (
   `auth` char(1) NOT NULL DEFAULT '0' COMMENT '账号认证状态（3,未认证且非首次登陆0,未认证首次登陆1,已邮箱认证，且首次登陆。2,已认证且非首次登陆）',
   `regtime` datetime NOT NULL COMMENT '注册时间',
   PRIMARY KEY (`uid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='用户注册表' AUTO_INCREMENT=44 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='用户注册表' AUTO_INCREMENT=46 ;
 
 --
 -- 转存表中的数据 `hello_user`
@@ -178,7 +182,9 @@ INSERT INTO `hello_user` (`uid`, `uname`, `email`, `password`, `phonenumber`, `f
 (40, '王凯', '393864447916@qq.com', '00fbfeb9353ca2055ddc129b2f0a01', '15820781327', NULL, '0', '0000-00-00 00:00:00'),
 (41, '王凯', '393822264447916@qq.com', '33a173a86a3c0bd6ff8a84f32432e6', '15820781327', NULL, '0', '0000-00-00 00:00:00'),
 (42, '王凯', '3938222642447916@qq.com', '040bd08a4290267535cd247b8ba2ec', '15820781327', NULL, '0', '0000-00-00 00:00:00'),
-(43, '王凯', '39386792@qq.com', '00fbfeb9353ca2055ddc129b2f0a01', '15820781327', 'thumb_5264fa9e91a28.JPG', '3', '0000-00-00 00:00:00');
+(43, '王凯', '39386792@qq.com', '00fbfeb9353ca2055ddc129b2f0a01', '15820781327', 'thumb_5264fa9e91a28.JPG', '3', '0000-00-00 00:00:00'),
+(44, '王凯超人', '39386791666@qq', '33a173a86a3c0bd6ff8a84f32432e6', '15820781327', NULL, '0', '0000-00-00 00:00:00'),
+(45, '王凯超级', '3938679167@qq.com', '00fbfeb9353ca2055ddc129b2f0a01', '15820781327', 'thumb_527371249ce87.jpg', '3', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
