@@ -415,11 +415,14 @@ input:-moz-placeholder {
 	background: rgba(38, 165, 235,.6);
 }
 
-.lable-info-register, .lable-info-password {
+.lable-info-register,.lable-info-password,.lable-info-agreefa,.lable-info-load{
 	margin-top:1px;
 	margin-left:8px;
 	float: right;
 	background: rgb(38, 165, 235);
+}
+.lable-info-agreefa{
+	cursor:pointer;
 }
 tr{
 	font-size:12px;font-family:微软雅黑;
@@ -811,9 +814,45 @@ tr{
 			
 			//同时将 所有查看状态为0的信息查看状态设置为1
 			var status = '1';
-			$.post('__URL__/upAppMsgStatus',{status:status});
+			$(".envelop-alert").css('display','none');
+			$(".normal-user").remove();
+			$(".p-applymsg").remove();
+			$.post('__URL__/upAppMsgStatus',{status:status},function(data){
+				if(data['status'] == '1'){
+					$.each(data['info'],function(index,content){
+						$('.context-msgcenter').append("<div class='row normal-user' style='margin-top:40px;'><div class='span2 offset1'><div class='cface'><img src='__ROOT__/hello/Uploads/4.jpg' class='img-polaroid'></div></div><div class='span1 captain-talk'><div class='talkbox-title-left'></div><div class='talkbox-title-left-2'></div></div><div class='span5'><div class='talkbox'>我是<span style='color:#888'>"+content.uname2+"</span>在圈子<span style='color:#999'>"+content.circlename+"</span>中申请和你成为好友！<span class='label label-info lable-info-agreefa' id='lable-info-agreefa' style='float:none; margin-left:0;' onclick=\"applyAgree('"+content.uemail2+"')\">同意</span></div></div></div>");
+					});
+					
+				}else{
+					$('.context-msgcenter').append("<p class='p-applymsg' style='text-align:center; font-size:15px; font-weight:bold; color:#999; margin-left:100px;'>暂时没有任何好友申请信息..</p>");
+				}
+			});
 		});
+		
 	});
+	
+	//点击同意好友申请
+	var applyAgreeMark = 1;
+	function applyAgree(uemail){
+		if(applyAgreeMark == 1){
+			applyAgreeMark = 0;
+			$('#lable-info-agreefa').html("<img src='__ROOT__/hello/Public/img/ajax-loader.gif' class='loader-gif'>");
+			$.post('__URL__/applyAgree',{uemail:uemail},function(data){
+				if(data['status'] == '1'){
+					$('#lable-info-agreefa').html('成功');
+					$('#lable-info-agreefa').parent().parent().parent().fadeOut(600,function(){
+						var childrenLen = $('.context-msgcenter').children().length;
+						if(childrenLen == 1){
+							$('.context-msgcenter').append("<p class='p-applymsg' style='text-align:center; font-size:15px; font-weight:bold; color:#999; margin-left:100px;'>暂时没有任何好友申请信息..</p>");
+						}
+					});
+				}else{
+					$('#lable-info-agreefa').html('重试');
+					applyAgreeMark = 1;
+				}
+			});
+		}
+	}
 	
 	function notice(msg){
 		var m = msg;
@@ -829,9 +868,9 @@ tr{
 		$.post('__URL__/getNewMsgNum',function(data){
 			if(data['info'] != '0'){
 				$('.envelop-alert').css('display','block');
-				$('.envelop-alert').html('$nbsp'+data['info']);
+				$('.envelop-alert').html('&nbsp'+data['info']);
 			}else{
-				$('.envelop-alert').css('display','none');
+				$('.envelop-alert').css('display','none'); 
 			}
 		});
 	}
@@ -953,7 +992,7 @@ tr{
 					
 					<!-- msgcenter 信息中心显示页面-->
 					<div class="context-msgcenter context-all" style="display:none;">
-						<div class="row normal-user" style="margin-top:40px;"><div class="span2 offset1"><div class="cface"><img src="__ROOT__/hello/Uploads/4.jpg" class="img-polaroid"></div></div><div class="span1 captain-talk"><div class="talkbox-title-left"></div><div class="talkbox-title-left-2"></div></div><div class="span5"><div class="talkbox">告诉我你要创建的圈子名称</div></div></div>
+						
 					</div>
 					
 					<!-- captain context 创建圈子页面 -->

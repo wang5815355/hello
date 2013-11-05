@@ -76,27 +76,33 @@ class IndexAction extends GlobalAction {
     }
     
     /**
-     * 更新好友申请信息表 将所有信息查看状态为0的信息改为1（已查看）
+     * 更新好友申请信息表 将所有信息查看状态为0的信息改为1（已查看）并且查询新好友信息
      * @author wangkai
      */
     public function upAppMsgStatus(){
     	$uemail = $this->getUserName();//获取当前登录用户的email账号
-    	$msgreadstatus = $_POST['status'];//信息查看状态
+    	$msgreadstatus = $_POST['status'];
+    	$faModel = M('friendapply');
+    	
     	if($msgreadstatus == '1'){
-    		$faModel = M('friendapply');
     		$dataFa['msgreadstatus'] = '1';
     		$mapFa['uemail1'] = $uemail;
     		$mapFa['msgreadstatus'] = '0';
     		$faModel->where($mapFa)->save($dataFa);
     	}
-    }
-    
-    /**
-     * 查询新的好友申请信息
-     * @author wangkai
-     */
-    public function queryNewFriendApp(){
     	
+    	//查询头五条未处理好友信息
+    	$mapFa2['uemail1'] = $uemail;
+    	$mapFa2['status'] = '0';
+    	$faList = $faModel->limit(5)->where($mapFa2)->select();
+    	if($faList != null){
+    		$dataInfo['info'] = $faList;
+    		$dataInfo['status'] = '1';// 查询成功
+    	}else{
+    		$dataInfo['status'] = '-1';//查询失败
+    	}
+    	
+		$this->ajaxReturn($dataInfo,'JSON');    	
     }
     
     /**
@@ -135,12 +141,18 @@ class IndexAction extends GlobalAction {
     					$dataInfo['info'] = '1';
     				}
     			}else if($resultIsFa == null){//还未存在该申请记录
+    				$grModel = M('group');
+    				//查询当前圈子名称
+    				$mapGr['id'] = $circleId;
+    				$grReName = $grModel->where($mapGr)->getField('name');
+    				
     				$dataF['uemail1'] = $uemail2;
     				$dataF['uemail2'] = $uemail1;
     				$dataF['uname2'] = $uname;
     				$dataF['info'] = '';
     				$dataF['status'] = '0';
     				$dataF['circleid'] = $circleId;
+    				$dataF['circlename'] = $grReName;                                       
     				$dataF['time'] = time();
     				$resultAdd = $faModel->add($dataF); 
     				if($resultAdd != false){
@@ -155,6 +167,64 @@ class IndexAction extends GlobalAction {
     	}
     	
     	$this->ajaxReturn($dataInfo,'JSON');
+    }
+    
+    /**
+     * 同意用户申请自己成为好友
+     * @author wangkai
+     */
+    public function applyAgree(){
+    	$uemail2 = $_POST['uemail'];//申请人的email
+    	$uemail1 = $this->getUserName();//被申请人的email
+    	$matchEmail = "/^[_.0-9a-z-a-z-]+@([0-9a-z][0-9a-z-]+.)+[a-z]{2,4}$/"; //email正则表达式
+    	
+    	//email通过正则表达式验证
+    	if(preg_match($matchEmail,$uemail1)){
+    		$faModel = M('friendapply');//好友申请 信息表
+    		$ufModel = M('userrelationship');//好友关系表
+    		$faModel->startTrans();
+    		
+    		//将好友申请信息表中的申请处理状态status设为1 （申请通过）
+    		$mapFa['uemail1'] = $uemail1;
+    		$mapFa['uemail2'] = $uemail2;
+    		$dataFa['status'] = '1';
+    		$faModel->where($mapFa)->save($dataFa);
+    		
+    		//查询是否存在相同关系记录
+    		$mapUf['uemail1'] = array('in',array($uemail1,$uemail2));
+    		$mapUf['uemail2'] = array('in',array($uemail1,$uemail2));
+    		$ufIsRe = $ufModel->where($mapUf)->find();
+    		
+    		if($ufIsRe == null){
+    			//获取当前登录用户信息
+    			$uinfo = $this->getUinfo();
+    			//查询申请人用户信息
+    			$uModel = M('user');
+    			$mapU['email'] = $uemail2;
+    			$uinfo2 = $uModel->where($mapU)->find();
+    			
+    			//添加申请人与被申请人好友关系记录
+    			$dataUf['uemail1'] = $uinfo['email'];//当前登录用户的信息
+    			$dataUf['uname1'] = $uinfo['uname'];//当前登录用户的姓名
+    			$dataUf['uphonenumber1'] = $uinfo['phonenumber'];
+    			$dataUf['uemail2'] = $uinfo2['email'];
+    			$dataUf['uname2'] = $uinfo2['uname'];
+    			$dataUf['uphonenumber2'] = $uinfo2['phonenumber'];
+    			$dataUf['time'] = time();
+    			
+    			$resultUf = $ufModel->add($dataUf);
+    			if($resultUf != false){
+    				$faModel->commit();//事务提交
+    				$dataInfo['status'] = '1';//添加好友记录成功
+    			}else{
+    				$dataInfo['status'] = '-1';//添加好友记录失败
+    				$faModel->rollback();//事务回滚
+    			}
+    			
+    			$this->ajaxReturn($dataInfo,'JSON');
+    		}
+		    		
+    	}
     }
     
 	/**
