@@ -12,6 +12,23 @@ body{
 	background: rgb(241,241,241);
 	font-family: 微软雅黑;
 }
+
+/*滚动条样式=========================*/
+::-webkit-scrollbar {
+    width: 12px;
+}
+ 
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+    border-radius: 6px;
+}
+ 
+::-webkit-scrollbar-thumb {
+    border-radius: 6px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+}
+/*=====================================*/
+
 .faceimg {
 	width:180px;
 	height:180px;
@@ -203,7 +220,7 @@ input:-moz-placeholder {
 }
 .f-bottom{
 	margin-top:1px;
-	border-top: 1px solid rgb(255,255,255);
+	/*border-top: 1px solid rgb(255,255,255);*/
 }
 .group{
 	background: rgb(248, 248, 248);
@@ -467,12 +484,24 @@ tr{
 		});
 		
 		//查询用户点击圈子的圈子所包含所有人  
-		$.doSerCirFrien = function SerCirFrien(circleId,tagThis){
+		$.doSerCirFrien = function SerCirFrien(pagechange,pagenum,circleId,tagThis){
 			$('.context-all').fadeOut(0);
 			$('.context-current-cir').fadeIn(100);
 			var circleId = circleId;
 			$('.friend-cir').remove();
-			$.post('__URL__/serchCirclePersion',{circleId:circleId},function(data){
+			$('.well').remove();
+			
+			//当pagechange分页状态为1的时候 则是用户点击了上一页 为2时
+			if(pagechange == 1){
+				pagenum = pagenum + 1;
+			}else if(pagechange == 2){
+				pagenum = pagenum - 1;
+			}else if(pagechange == 0){
+				pagenum = pagenum;
+			}
+			
+			var pagenumcurrent = 
+			$.post('__URL__/serchCirclePersion',{circleId:circleId,pagenum:pagenum},function(data){
 				$.each(data['data'],function(index,content){
 					if(content.appstatus != '1' && content.appstatus != '0' && content.appstatus != '-2'){
 						var html = "<button class='btn btn-mini btn-primary' type='button' style='float:right; margin-bottom:3px;' onclick=\"$.doFriendApply("+circleId+",'"+content.uemail+"',this)\">加为好友</button>";
@@ -485,6 +514,19 @@ tr{
 					}
 					$('.context-current-cir').append("<div class='friend friend-cir'><div class='f-face'><img src='/hello/Uploads/1.jpg' class='f-face-img'></div><div class='f-bottom'><p class='muted'>"+content.uname+"&nbsp&nbsp</p><p class='muted muted-phone'>"+content.phonenumber+"</p><p>"+html+"</p></div></div>");
 				});
+				if(data['pageif'] == '-1'){
+				}else{
+					var pageoldhtml = '';
+					var pagenexthtml = '';
+					if(data['pageold'] == '1'){
+						var pageoldhtml = "<button type='button' class='btn btn-small btn-block btn-primary' onclick=\"$.doSerCirFrien(2,"+pagenum+","+circleId+",this)\">上一页</button>";
+					}
+					if(data['pagenext'] == '1'){
+						var pagenexthtml = "<button type='button' class='btn btn-small btn-block' onclick=\"$.doSerCirFrien(1,"+pagenum+","+circleId+",this)\">下一页</button>";
+					}
+					var infohtml = "<div class='alert alert-info' style='font-size:11px; border-color:#d9edf7;margin-bottom:6px; padding:3px 5px;'>共"+data['pagenumCount']+"页&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp第<span style=' font-weight:bold; font-size:13px;'>"+pagenum+"</span>页</div>";
+					$('.context-current-cir').append("<div class='well' style='width: 124px;  padding:6px; margin-left:42px; margin-top:30px;float:left; '>"+infohtml+pageoldhtml+pagenexthtml+"</div>");
+				}
 			});
 		}
 		
@@ -510,9 +552,9 @@ tr{
 				$('.group-center').remove();
 				$.each(data,function(index,content){
 					if(content.isCreater=='1'){
-						$('.toolbar').append("<div class='group group-center group-center-blue' onclick='$.doSerCirFrien("+content.circleid+",this)'>"+content.circlename+"<i class='icon-wrench icon-white' style='float:right; cursor:pointer; margin-top:3px;' onmouseout='$.doCirMngOut(this)' onmouseover='$.doCirMngOver(this)' onclick=\"$.doCirMng("+content.circleid+","+content.count+",'"+content.time+"',this)\"></i></div>");
+						$('.toolbar').append("<div class='group group-center group-center-blue' onclick='$.doSerCirFrien(0,1,"+content.circleid+",this)'>"+content.circlename+"<i class='icon-wrench icon-white' style='float:right; cursor:pointer; margin-top:3px;' onmouseout='$.doCirMngOut(this)' onmouseover='$.doCirMngOver(this)' onclick=\"$.doCirMng("+content.circleid+","+content.count+",'"+content.time+"',this)\"></i></div>");
 					}else{
-						$('.toolbar').append("<div class='group group-center' onclick='$.doSerCirFrien("+content.circleid+",this)'>"+content.circlename+"</div>");
+						$('.toolbar').append("<div class='group group-center' onclick='$.doSerCirFrien(0,1,"+content.circleid+",this)'>"+content.circlename+"</div>");
 					}
 					
 				});
@@ -803,7 +845,7 @@ tr{
 		//计时器 每5秒请求一次服务器查询新消息数目
 		var scrollTimer;
 		getNewMsgNum();
-		scrollTimer = self.setInterval("getNewMsgNum()",5000);
+		scrollTimer = self.setInterval("getNewMsgNum()",7000);
 		
 		//点击信息中心按钮时 查看新的好友申请信息
 		$(".btn-msgcenter").click(function(){
@@ -824,10 +866,34 @@ tr{
 					});
 					
 				}else{
-					$('.context-msgcenter').append("<p class='p-applymsg' style='text-align:center; font-size:15px; font-weight:bold; color:#999; margin-left:100px;'>暂时没有任何好友申请信息..</p>");
+					$('.context-msgcenter').append("<p class='p-applymsg' style='text-align:center; font-size:15px; font-weight:bold; color:#999; margin-left:100px;'>暂时没有任何信息..</p>");
 				}
 			});
 		});
+		
+		/*查询所有好友申请信息*/
+		function queryFrApp(){
+			$('.hidden-input').val('hidden-msgcenter');
+			$('#appendedInputButton').attr('placeholder','');
+			$('.context-all').fadeOut(0);
+			$('.context-msgcenter').fadeIn(200);
+			
+			//同时将 所有查看状态为0的信息查看状态设置为1
+			var status = '1';
+			$(".envelop-alert").css('display','none');
+			$(".normal-user").remove();
+			$(".p-applymsg").remove();
+			$.post('__URL__/upAppMsgStatus',{status:status},function(data){
+				if(data['status'] == '1'){
+					$.each(data['info'],function(index,content){
+						$('.context-msgcenter').append("<div class='row normal-user' style='margin-top:40px;'><div class='span2 offset1'><div class='cface'><img src='__ROOT__/hello/Uploads/4.jpg' class='img-polaroid'></div></div><div class='span1 captain-talk'><div class='talkbox-title-left'></div><div class='talkbox-title-left-2'></div></div><div class='span5'><div class='talkbox'>我是<span style='color:#888'>"+content.uname2+"</span>在圈子<span style='color:#999'>"+content.circlename+"</span>中申请和你成为好友！<span class='label label-info lable-info-agreefa' id='lable-info-agreefa' style='float:none; margin-left:0;' onclick=\"applyAgree('"+content.uemail2+"')\">同意</span></div></div></div>");
+					});
+					
+				}else{
+					$('.context-msgcenter').append("<p class='p-applymsg' style='text-align:center; font-size:15px; font-weight:bold; color:#999; margin-left:100px;'>暂时没有任何信息..</p>");
+				}
+			});
+		}
 		
 	});
 	
@@ -843,7 +909,8 @@ tr{
 					$('#lable-info-agreefa').parent().parent().parent().fadeOut(600,function(){
 						var childrenLen = $('.context-msgcenter').children().length;
 						if(childrenLen == 1){
-							$('.context-msgcenter').append("<p class='p-applymsg' style='text-align:center; font-size:15px; font-weight:bold; color:#999; margin-left:100px;'>暂时没有任何好友申请信息..</p>");
+							//$('.context-msgcenter').append("<p class='p-applymsg' style='text-align:center; font-size:15px; font-weight:bold; color:#999; margin-left:100px;'>暂时没有任何好友申请信息..</p>");
+							queryFrApp();
 						}
 					});
 				}else{
@@ -988,10 +1055,11 @@ tr{
 									</p>
 								</div>
 						</div>
+						<input type="hidden"  class="circle-per-page" value="1"/>
 					</div>
 					
 					<!-- msgcenter 信息中心显示页面-->
-					<div class="context-msgcenter context-all" style="display:none;">
+					<div class="context-msgcenter context-all" style="display:none; overflow:auto;overflow-x:hidden;overflow-y:auto;">
 						
 					</div>
 					
@@ -1027,7 +1095,7 @@ tr{
 						  	<input id="input-joinCirId" type="hidden" value="">
 						  </div>
 						  <div class="modal-footer" style="height:40px;">
-						  	<div class="alert alert-info alert-info-uppass" id="alert-info-uppass-join" style="margin-left:125px;font-size:13px;text-align:left;width:258px;text-align:center;">提交后若页面长时间无反应请刷新重试</div>
+						  	<div class=" alert-info alert-info-uppass" id="alert-info-uppass-join" style="margin-left:125px;font-size:13px;text-align:left;width:258px;text-align:center;">提交后若页面长时间无反应请刷新重试</div>
 						    <button type="button" class="btn btn-primary btn-joincir-passwordup" id='btn-joincir-passwordup'>提交</button>
 						  </div>
 						</div>
@@ -1135,9 +1203,9 @@ tr{
 					</div>
 					
 				</div>
-				<div class="toolbar">
+				<div class="toolbar" style="height:150px;">
 					<div class="group group-top">
-						<div class="group-word">我的组织
+						<div class="group-word">我的圈子
 							<span class="finfo create-circle">创建</span>
 							<span class="finfo join-circle">加入</span>
 						</div>

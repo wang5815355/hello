@@ -235,9 +235,11 @@ class IndexAction extends GlobalAction {
     	//根据用户email账号查询用户是否加入该圈子 若加入才可以查询
     	$uemail = $this->getUserName();
     	$circleid = $_POST['circleId'];//获取需要查询的圈子id号
+    	$pagenum = $_POST['pagenum'];//当前页数
+    	$pagecount = 4;//每页记录数
     	$matchCircleid = '/^[0-9]{1,50}$/';//ID号只能为1至50位纯数字
 		    	
-    	if(preg_match($matchCircleid,$circleid)){//圈子id格式正确
+    	if(preg_match($matchCircleid,$circleid) && preg_match($matchCircleid,$pagenum)){//圈子id格式正确
     		$grModel = M('grouprelationship');
     		$map['uemail'] = $uemail;
     		$map['circleid'] = $circleid;
@@ -246,7 +248,33 @@ class IndexAction extends GlobalAction {
     		if($grResult != null){
     			//查询该圈子的成员
     			$mapCirid['circleid'] = $circleid;
-   				$list = $grModel->limit(11)->where($mapCirid)->select();
+    			if($pagenum>1){
+    				$pageFirst = ($pagenum - 1) * $pagecount ;//当前页其实记录id
+    			}else{
+    				$pageFirst = 0;
+    			}
+    			$count = $grModel->where($mapCirid)->count();// 查询满足要求的总记录数
+   				$list = $grModel->limit($pageFirst,$pagecount)->where($mapCirid)->select();
+   				$pagenumCount = ceil($count/$pagecount);//总页数
+   				
+   				if($pagenum < $pagenumCount){//若当前页数比总页数小 则显示下一页按钮
+   					$dataInfo['pagenext'] = '1'; 
+   				}else{
+   					$dataInfo['pagenext'] = '-1';
+   				}
+   				
+   				if($pagenum > 1){//若当前页面大于1 则显示上一页按钮
+   					$dataInfo['pageold'] = '1';
+   				}else{
+   					$dataInfo['pageold'] = '-1';
+   				}
+   				
+   				if($pagenumCount <= 1){//若总页数小于2页则不显示翻页组件
+   					$dataInfo['pageif'] = '-1';
+   				}else{
+   					$dataInfo['pageif'] = '1';
+   				}
+   				$dataInfo['pagenumCount'] = $pagenumCount;//总页数
    				
    				//查询该用户是否为你的好友
    				foreach($list as $k=>$v){
