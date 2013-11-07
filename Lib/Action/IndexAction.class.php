@@ -59,6 +59,77 @@ class IndexAction extends GlobalAction {
     }
     
     /**
+     * 首页查询全部好友
+     * @author wangkai2013117
+     */
+    public function queryMyFriend(){
+    	$urModel = M('userrelationship');
+    	$uemail = $this->getUserName();//当前登录用户账号
+    	$pagenum = $_POST['pagenum'];//当前页数
+    	
+    	if($_POST['condition'] != null){//好友查询条件赋值
+    		$condition = $_POST['condition'];
+    	}
+    	
+    	$pagecount = 5;//每页记录数
+    	$matchCircleid = '/^[0-9]{1,50}$/';//ID号只能为1至50位纯数字
+		
+    	if(preg_match($matchCircleid,$pagenum)){
+    		
+	    	//查询好友关系表查看当前登录用户所有好友
+	    	$map['uemail1|uemail2'] = $uemail;
+	    	$urList = $urModel->where($map)->select();
+	    	
+	    	if($pagenum>1){
+	    		$pageFirst = ($pagenum - 1) * $pagecount ;//当前页其实记录id
+	    	}else{
+	    		$pageFirst = 0;
+	    	}
+	    	
+	    	if($_POST['condition'] != null){//好友查询条件赋值
+	    		$map['uname1|uname2|uphonenumber1|uphonenumber2'] = array('like','%'.$condition.'%');
+	    	}
+	    	
+	    	$count = $urModel->where($map)->count();// 查询满足要求的总记录数
+	    	$urList = $urModel->limit($pageFirst,$pagecount)->where($map)->select();
+	    	$pagenumCount = ceil($count/$pagecount);//总页数
+	    		
+	    	if($pagenum < $pagenumCount){//若当前页数比总页数小 则显示下一页按钮
+	    		$dataInfo['pagenext'] = '1';
+	    	}else{
+	    		$dataInfo['pagenext'] = '-1';
+	    	}
+	    		
+	    	if($pagenum > 1){//若当前页面大于1 则显示上一页按钮
+	    		$dataInfo['pageold'] = '1';
+	    	}else{
+	    		$dataInfo['pageold'] = '-1';
+	    	}
+	    		
+	    	if($pagenumCount <= 1){//若总页数小于2页则不显示翻页组件
+	    		$dataInfo['pageif'] = '-1';
+	    	}else{
+	    		$dataInfo['pageif'] = '1';
+	    	}
+	    	$dataInfo['pagenumCount'] = $pagenumCount;//总页数
+	    	
+	    	if($urList != null){
+	    		foreach($urList as $k=>$v){
+	    			if($urList[$k]['uemail1'] = $uemail){
+	    				$urList[$k]['uemail1'] = $urList[$k]['uemail2'];
+	    				$urList[$k]['uname1'] = $urList[$k]['uname2'];
+	    				$urList[$k]['uphonenumber1'] = $urList[$k]['uphonenumber2'];
+	    				$urList[$k]['faceimage1'] = $urList[$k]['faceimage2'];
+	    			}
+	    		}
+	    		$dataInfo['info'] = $urList;
+	    	}
+    	}	
+    	
+    	$this->ajaxReturn($dataInfo,'JSON');
+    }
+    
+    /**
      * 用户消息提示中心每隔5到10秒实时更新（好友申请信息等信息数量）
      * @author wangkai
      */
@@ -207,9 +278,11 @@ class IndexAction extends GlobalAction {
     			$dataUf['uemail1'] = $uinfo['email'];//当前登录用户的信息
     			$dataUf['uname1'] = $uinfo['uname'];//当前登录用户的姓名
     			$dataUf['uphonenumber1'] = $uinfo['phonenumber'];
+    			$dataUf['faceimage1'] = $uinfo['faceimage'];
     			$dataUf['uemail2'] = $uinfo2['email'];
     			$dataUf['uname2'] = $uinfo2['uname'];
     			$dataUf['uphonenumber2'] = $uinfo2['phonenumber'];
+    			$dataUf['faceimage2'] = $uinfo2['faceimage'];
     			$dataUf['time'] = time();
     			
     			$resultUf = $ufModel->add($dataUf);
@@ -217,8 +290,8 @@ class IndexAction extends GlobalAction {
     				$faModel->commit();//事务提交
     				$dataInfo['status'] = '1';//添加好友记录成功
     			}else{
-    				$dataInfo['status'] = '-1';//添加好友记录失败
-    				$faModel->rollback();//事务回滚
+    				$dataInfo['status'] = '-1';//添加好友记录失败  
+    				$faModel->rollback();//事务回滚 
     			}
     			
     			$this->ajaxReturn($dataInfo,'JSON');

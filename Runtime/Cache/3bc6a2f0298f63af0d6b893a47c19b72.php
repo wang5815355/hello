@@ -473,6 +473,9 @@ tr{
 </style>
 <script type="text/javascript">
 	$(document).ready(function(){
+		//调用首页查询所有好友方法
+		queryMyFriend(0,1,null);
+		
 		$("li:eq(4)").css('marginLeft','0');
 		
 		$('.thumbnail').click(function(){
@@ -819,7 +822,6 @@ tr{
 			});
 		});
 		
-		
 		//但圈子需要密码时  用户加入圈子时点击按钮提交圈子密码
 		$('#btn-joincir-passwordup').click(function(){
 			//获取密码和圈子id号
@@ -872,6 +874,18 @@ tr{
 					$('.context-msgcenter').append("<p class='p-applymsg' style='text-align:center; font-size:15px; font-weight:bold; color:#999; margin-left:100px;'>暂时没有任何信息..</p>");
 				}
 			});
+			
+			
+		});
+		
+		//在查询自己全部好友页面 当输入框值改变的时候
+		$('#appendedInputButton').keyup(function(){
+			var condition = $('#appendedInputButton').val().trim();
+			var hiddenInput = $(".hidden-input").val();
+			if($('.smyfri-hidden-value').val() != condition && hiddenInput == 'normal'){
+				$('.smyfri-hidden-value').val(condition);
+				queryMyFriend(0,1,condition);
+			}
 		});
 		
 		/*查询所有好友申请信息*/
@@ -899,6 +913,42 @@ tr{
 		}
 		
 	});
+	
+	//首页查询所有好友
+	function queryMyFriend(pagechange,pagenum,condition){
+		$('.well').remove();
+		$('.friend').remove();
+		$('#appendedInputButton').attr('placeholder','输入电话或姓名查找自己的好友');
+		
+		//当pagechange分页状态为1的时候 则是用户点击了上一页 为2时
+		if(pagechange == 1){
+			pagenum = pagenum + 1;
+		}else if(pagechange == 2){
+			pagenum = pagenum - 1;
+		}else if(pagechange == 0){
+			pagenum = pagenum;
+		}
+		
+		$.post('__URL__/queryMyFriend',{pagenum:pagenum,condition:condition},function(data){
+			$.each(data['info'],function(index,content){
+				$('.context-showfriend').append("<div class='friend'><div class='f-face'><img src='/hello/Uploads/1.jpg' class='f-face-img'></div><div class='f-bottom'><p class='muted'>"+content.uname1+"&nbsp;&nbsp;</p><p class='muted muted-phone'>"+content.uphonenumber1+"</p></div></div>");
+			});
+			
+			if(data['pageif'] == '-1'){
+			}else{
+				var pageoldhtml = '';
+				var pagenexthtml = '';
+				if(data['pageold'] == '1'){
+					var pageoldhtml = "<button type='button' class='btn btn-small btn-block btn-primary' onclick=\"queryMyFriend(2,"+pagenum+")\">上一页</button>";
+				}
+				if(data['pagenext'] == '1'){
+					var pagenexthtml = "<button type='button' class='btn btn-small btn-block' onclick=\"queryMyFriend(1,"+pagenum+")\">下一页</button>";
+				}
+				var infohtml = "<div class='alert alert-info' style='font-size:11px; border-color:#d9edf7;margin-bottom:6px; padding:3px 5px;'>共"+data['pagenumCount']+"页&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp第<span style=' font-weight:bold; font-size:13px;'>"+pagenum+"</span>页</div>";
+				$('.context-showfriend').append("<div class='well' style='width: 124px;  padding:6px; margin-left:42px; margin-top:30px;float:left; '>"+infohtml+pageoldhtml+pagenexthtml+"</div>");
+			}
+		});
+	}
 	
 	//点击同意好友申请
 	var applyAgreeMark = 1;
@@ -996,47 +1046,8 @@ tr{
 				
 				<div class="content">
 					<!-- 已加入的好友的展示首页 -->
-					<div class="context context-all">
-						<?php if(is_array($friendMsgList)): $i = 0; $__LIST__ = $friendMsgList;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?><div class="friend">
-								<div class="f-face">
-									<img src="/hello/Uploads/1.jpg" class="f-face-img">
-								</div>
-								<div class="f-bottom">
-									<p class="muted"><?php echo ($vo["uname"]); ?>&nbsp&nbsp<?php echo ($vo["phonenumber"]); ?></p>
-								</div>
-							</div><?php endforeach; endif; else: echo "" ;endif; ?>
-						<div class="friend">
-								<div class="f-face">
-									<img src="/hello/Uploads/1.jpg" class="f-face-img">
-								</div>
-								<div class="f-bottom">
-									<p class="muted">王凯&nbsp&nbsp123123123</p>
-								</div>
-						</div>
-						<div class="friend">
-								<div class="f-face">
-									<img src="/hello/Uploads/1.jpg" class="f-face-img">
-								</div>
-								<div class="f-bottom">
-									<p class="muted">王凯&nbsp&nbsp123123123</p>
-								</div>
-						</div>
-						<div class="friend">
-								<div class="f-face">
-									<img src="/hello/Uploads/1.jpg" class="f-face-img">
-								</div>
-								<div class="f-bottom">
-									<p class="muted">王凯&nbsp&nbsp123123123</p>
-								</div>
-						</div>
-						<div class="friend">
-								<div class="f-face">
-									<img src="/hello/Uploads/1.jpg" class="f-face-img">
-								</div>
-								<div class="f-bottom">
-									<p class="muted">王凯&nbsp&nbsp123123123</p>
-								</div>
-						</div>
+					<div class="context context-all context-showfriend">
+						<input class='smyfri-hidden-value' value='' type='hidden'/>
 					</div>
 					
 					<!-- 搜索某圈子成员页面 -->
