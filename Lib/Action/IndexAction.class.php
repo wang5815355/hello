@@ -65,10 +65,13 @@ class IndexAction extends GlobalAction {
     public function queryMyFriend(){
     	$urModel = M('userrelationship');
     	$uemail = $this->getUserName();//当前登录用户账号
+    	$uinfo = $this->getUinfo();//获取当前登录用户信息
+    	$uphone = $uinfo['phonenumber']; //当前登录用户手机号 
+    	$uname = $uinfo['uname'];//当前登录用户姓名
     	$pagenum = $_POST['pagenum'];//当前页数
     	
     	if($_POST['condition'] != null){//好友查询条件赋值
-    		$condition = $_POST['condition'];
+    		$condition = trim($_POST['condition']);
     	}
     	
     	$pagecount = 5;//每页记录数
@@ -86,8 +89,19 @@ class IndexAction extends GlobalAction {
 	    		$pageFirst = 0;
 	    	}
 	    	
+	    	
+	    	
 	    	if($_POST['condition'] != null){//好友查询条件赋值
-	    		$map['uname1|uname2|uphonenumber1|uphonenumber2'] = array('like','%'.$condition.'%');
+	    		//如果当前登录用户的手机号和姓名中有匹配查询条件的情况 则需要两个用户同时匹配条件
+	    		if(stripos($uname,$condition) !== false && stripos($uphone,$condition) === false){
+	    			$map['_string'] = "(uname1 like '%".$condition."%' and uname2 like '%".$condition."%') or (uphonenumber1 like '%".$condition."%' or uphonenumber2 like '%".$condition."%')";
+	    		}else if(stripos($uname,$condition) === false && stripos($uphone,$condition) !== false){
+	    			$map['_string'] = "(uphonenumber1 like '%".$condition."%' and uphonenumber2 like '%".$condition."%') or (uname1 like '%".$condition."%' or uname1 like '%".$condition."%')";
+	    		}else if(stripos($uname,$condition) !== false && stripos($uphone,$condition) !== false){
+	    			$map['_string'] = "(uphonenumber1 like '%".$condition."%' and uphonenumber2 like '%".$condition."%') or (uname1 like '%".$condition."%' and uname1 like '%".$condition."%')";
+	    		}else if(stripos($uname,$condition) === false && stripos($uphone,$condition) === false){
+	    			$map['uname1|uname2|uphonenumber1|uphonenumber2'] = array("like","%".$condition."%");
+	    		}
 	    	}
 	    	
 	    	$count = $urModel->where($map)->count();// 查询满足要求的总记录数
