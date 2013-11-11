@@ -9,6 +9,8 @@ body{
 	font-family: 微软雅黑;
 }
 
+
+
 /*滚动条样式=========================*/
 ::-webkit-scrollbar {
     width: 12px;
@@ -77,7 +79,25 @@ p {
 	float:left;
 	height:30px;
 	line-height: 1;
+	padding:5px;
+	padding-bottom:6px;
+	margin-top:-6px;
+	margin-left:-5px;
 }
+.image:HOVER{
+	background: rgb(28,151,223);
+	color:white;
+	padding:5px;
+	padding-bottom:6px;
+	cursor:pointer;
+	-webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+	-moz-box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+	box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+
 .logo{
 	padding:11px 0 0 18px;
 	height:41px;
@@ -134,7 +154,7 @@ input:-moz-placeholder {
 	height: 0;
 	border-top: 10px solid transparent;
 	border-bottom: 10px solid transparent;
-	border-left: 10px solid rgb(180,180,180);
+	border-left: 10px solid rgb(210,210,210);
 	position: relative;
 	top: 12px;
 	left: -1px;
@@ -169,7 +189,7 @@ input:-moz-placeholder {
 	float:right;
 	margin-top:30px;
 }
-.context,.context-captain,.context-cirman,.context-msgcenter{
+.context,.context-captain,.context-cirman,.context-msgcenter,.context-usercenter{
 	width:720px;
 	height:300px;
 	float:left;
@@ -489,6 +509,8 @@ tr{
 			var circleId = circleId;
 			$('.friend-cir').remove();
 			$('.well').remove();
+			$('#appendedInputButton').attr('placeholder','');
+			$(".hidden-input").val('circle-person');
 			
 			//当pagechange分页状态为1的时候 则是用户点击了上一页 为2时
 			if(pagechange == 1){
@@ -531,6 +553,26 @@ tr{
 				}
 			});
 		}
+		
+		//点击logo返回首页
+		$('.image').click(function(){
+			$('.context-all').fadeOut(0);
+			$('.context-showfriend').fadeIn(100);
+			
+			$('#appendedInputButton').attr('placeholder','输入电话或姓名查找自己的好友');
+			$(".hidden-input").val('normal');
+			queryMyFriend(0,1,null);
+		});
+		
+		//点击用户个人中心usercenter按钮 进入用户个人资料修改编辑页面
+		$('.btn-usercenter').click(function(){
+			$('.context-all').fadeOut(0);
+			$('.context-usercenter').fadeIn(100);
+			
+			$('.alter-info-usercenter').css('display','none');
+			$('#appendedInputButton').attr('placeholder','');
+			$(".hidden-input").val('user-center');
+		});
 		
 		//点击加为好友按钮时 ，提交被申请好友id号以及所在圈子id号
 		$.doFriendApply = function friendApplyClick(circleid,uemail,tagThis){
@@ -772,6 +814,7 @@ tr{
 				$('#input-joinCirId').val(circleId);
 				$('.hide-join-pass1').css('display','block');
 				$('.hide-join-pass2').css('display','none');
+				$('.hide-join-pass3').css('display','none');
 				$('#alert-info-uppass-join').html('提交后若页面长时间无反应请刷新重试');
 				$('#btn-joincir-passwordup').html('提交');
 				$('#btn-joincir-passwordup').attr('disabled',false);
@@ -781,6 +824,7 @@ tr{
 				$('#input-joinCirId').val(circleId);
 				$('.hide-join-pass1').css('display','none');
 				$('.hide-join-pass2').css('display','block');
+				$('.hide-join-pass3').css('display','none');
 				$('#btn-joincir-true').html('确认');
 				$('#btn-joincir-true').attr('disabled',false);
 				$('#alert-info-nopass-info').remove();
@@ -914,7 +958,7 @@ tr{
 	function queryMyFriend(pagechange,pagenum,condition){
 		$('.well').remove();
 		$('.friend').remove();
-		$('p').remove();
+		$('.showfriend-p').remove();
 		$('#appendedInputButton').attr('placeholder','输入电话或姓名查找自己的好友');
 		var condition = condition;
 		
@@ -933,7 +977,7 @@ tr{
 					$('.context-showfriend').append("<div class='friend'><div class='f-face'><img src='/hello/Uploads/1.jpg' class='f-face-img'></div><div class='f-bottom'><p class='muted'>"+content.uname1+"&nbsp;&nbsp;</p><p class='muted muted-phone'>"+content.uphonenumber1+"</p></div></div>");
 				});
 			}else{
-				$('.context-showfriend').append("<p style='text-align:center; font-size:15px; font-weight:bold; color:#999; margin-left:100px;'>你好友里面没这个人，你傻吧你</P>");
+				$('.context-showfriend').append("<p class='showfriend-p' style='text-align:center; font-size:15px; font-weight:bold; color:#999; margin-left:100px;'>你好友里面没这个人，你傻吧你</P>");
 			}
 			
 			if(data['pageif'] == '-1'){
@@ -958,7 +1002,31 @@ tr{
 				$('.context-showfriend').append("<div class='well' style='width: 124px;  padding:6px; margin-left:42px; margin-top:30px;float:left; '>"+infohtml+pageoldhtml+pagenexthtml+"</div>");
 			}
 		});
-	}
+		
+		//点击用户中心 资料修改按钮btn-usercenter
+		$('.btn-usercenter-change').click(function(){
+			$('.alter-info-usercenter').css('display','none');
+			var phonenumber = $('#inputphone-usercenter').val().trim();
+			$('.btn-usercenter-change').attr('class','btn btn-usercenter-change disabled');
+			$('.btn-usercenter-change').html("<img src='__ROOT__/hello/Public/img/ajax-loader.gif' class='loader-gif'>");
+			$.post('__URL__/alterUserMsg',{phonenumber:phonenumber},function(data){
+				$('.btn-usercenter-change').attr('class','btn btn-usercenter-change');
+				$('.btn-usercenter-change').html("确定修改");
+				$('.alter-info-usercenter').html(data['info']);
+				$('.alter-info-usercenter').fadeIn(200);
+			});
+		});
+		
+		
+		//点击退出按钮
+		$('.warning').click(function(){
+			$('.modal').modal('toggle');
+			$('.hide-join-pass1').css('display','none');
+			$('.hide-join-pass2').css('display','none');
+			$('.hide-join-pass3').css('display','block');
+		});
+		
+	}                                                                                                                                                            
 	
 	//点击同意好友申请
 	var applyAgreeMark = 1;
@@ -1012,9 +1080,8 @@ tr{
 <body>
 	<div class="logo">
 		<div class="image">Hello</div>
-		<div class="btn-group head-buttons" style="float:right;margin-right:19px;"><button class="btn btn-success btn-usercenter"><i class="icon-user"></i></button><button class="btn btn-success btn-msgcenter"><i class="icon-envelope"></i></button><button class="btn btn-warning warning"><i class="icon-off"></i></button></div>
 		<div class="envelop-alert" style="height:16px; width:16px; background:orange;float:right; font-size:12px; color:white; font-weight:bold; vertical-align:middle; display:none;">&nbsp1</div>
-	</div>
+	<div class="btn-group head-buttons" style="float:right;margin-right:19px;"><button class="btn btn-success btn-usercenter"><i class="icon-user"></i></button><button class="btn btn-success btn-msgcenter"><i class="icon-envelope"></i></button><button class="btn btn-warning warning" data-toggle="modal" data-target="#myModal"><i class="icon-off"></i></button></div></div>
 	<div class="container">
 		<div class="slides">
 			<eq name="slide1" value="slide1">
@@ -1058,7 +1125,7 @@ tr{
 				
 				<div class="content">
 					<!-- 已加入的好友的展示首页 -->
-					<div class="context context-all context-showfriend">
+					<div class="context-showfriend context context-all ">
 						<input class='smyfri-hidden-value' value='' type='hidden'/>
 					</div>
 					
@@ -1089,6 +1156,23 @@ tr{
 						
 					</div>
 					
+					<!-- usercenter 用户个人资料编辑页面 -->
+					<div class="context-usercenter context-all" id="context-usercenter" style="display:none;">
+				        <div style="margin:50px 0 0 295px;">
+					         <div class="control-group" >
+					            <div class="controls" >
+					              <input type="text" id="inputphone-usercenter" placeholder="手机号">
+					            </div>
+					         </div>
+					         <div class="control-group">
+					            <div class="controls">
+					              <button type="button" class="btn btn-usercenter-change" style="width:220px;">确认修改</button>
+					            </div>
+					         </div>
+					         <div class="alert alert-info alter-info-usercenter" style="text-align:center; width:210px; padding-left:4px; padding-right:4px; padding-top:2px; padding-bottom:3px; font-size:13px;display:none;"></div>
+				         </div> 
+					</div>
+					
 					<!-- captain context 创建圈子页面 -->
 					<div class="context-captain context-all" style="display:none">
 						
@@ -1117,7 +1201,6 @@ tr{
 						  </div>
 						  <div class="modal-body">
 						    <p><input class="span4" id="input-joinCirpass" type="password" placeholder="圈子密码" style="margin-top:10px;"></p>
-						  	<!-- 圈子id值 -->
 						  	<input id="input-joinCirId" type="hidden" value="">
 						  </div>
 						  <div class="modal-footer" style="height:40px;">
@@ -1126,13 +1209,25 @@ tr{
 						  </div>
 						</div>
 						
-						<div class="hide-join-pass2">
+						<div class="hide-join-pass2" style="display:none">
 						  <div class="modal-header">
 						    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 						    <h3 id="h3-joinCirInfo" style="color:#999;">确认加入该圈子吗？</h3>
 						  </div>
 						  <div class="modal-footer" style="height:45px;padding: 14px 15px 1px;">
 						    <button type="button" class="btn btn-primary btn-joincir-ture" id='btn-joincir-true'>确认</button>
+						  </div>
+						</div>
+						
+						<div class="hide-join-pass3" >
+							<div class="modal-header">
+						    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						    <h3 id="h3-joinCirInfo" style="color:#999;">确认退出吗？</h3>
+						  </div>
+						  <div class="modal-footer" style="height:45px;padding: 14px 15px 1px;">
+						  	<form action="__URL__/loginout">
+						    	<button type="submit" class="btn btn-primary btn-loginout" id='btn-joincir-true'>确认</button>
+						  	</form>
 						  </div>
 						</div>
 						

@@ -3,7 +3,7 @@
 class PublicAction extends GlobalAction {
 	/**
 	 * 注册页面以及登陆页面模板显示
-	 * @author wangkai2013716
+	 * @author wangkai
 	 * */
 	public function login(){
 		$this->display();
@@ -75,7 +75,7 @@ class PublicAction extends GlobalAction {
 	
 	/**
 	 * 接收并且验证注册数据
-	 * @author wangkai201385
+	 * @author wangkai
 	 */
 	public function registerIn(){
 		$userModel = M('user');
@@ -117,7 +117,7 @@ class PublicAction extends GlobalAction {
 			$dataIn['uname'] = $Name;//姓名
 			$dataIn['email'] = $Email;//账号email
 			$dataIn['password'] = sha1(md5($Password));//登录密码
-			$dataIn['phonenumber'] = $Phone;//手机号
+			$dataIn['phonenumber'] = $matchArea+$Phone;//手机号
 			
 			$resultIn = $userModel->add($dataIn);
 			if($resultIn != false){

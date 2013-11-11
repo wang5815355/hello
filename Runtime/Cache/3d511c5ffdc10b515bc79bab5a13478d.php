@@ -376,7 +376,7 @@
      	     							$('.btn').attr("disabled",false);
        	     						    $('.btn').fadeTo(300,1);
      	     						  }else{
-     	     							  location.href = '__APP__/Index/index';
+     	     							  location.href = '__APP__';
      	     						  }
      	     					  });
      	     					//解析服务端返回的json数据
