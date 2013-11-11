@@ -405,8 +405,12 @@ class IndexAction extends GlobalAction {
    				
    				//查询该用户是否为你的好友
    				foreach($list as $k=>$v){
-   					$mapAf['uemail1'] = $list[$k]['uemail'];//其他用户
-   					$mapAf['uemail2'] = $uemail;//当前登录用户
+   					//查询所有的好友申请记录
+   					$mapAf['uemail1|uemail2'] = $list[$k]['uemail'];//其他用户
+   					$mapAf['uemail1|uemail2'] = $uemail;//当前登录用户
+   					
+//    				$mapAf['uemail1'] = $list[$k]['uemail'];//其他用户
+//    				$mapAf['uemail2'] = $uemail;//当前登录用户
    					$appInfoModel = M('friendapply');
    					$isFriend = $appInfoModel->where($mapAf)->getField('status');
    					if($isFriend == null && $mapAf['uemail1'] != $mapAf['uemail2']){//1代表已成为好友
