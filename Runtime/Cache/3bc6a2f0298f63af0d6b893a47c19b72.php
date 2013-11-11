@@ -949,12 +949,12 @@ tr{
 					$.each(data['info'],function(index,content){
 						$('.context-msgcenter').append("<div class='row normal-user' style='margin-top:40px;'><div class='span2 offset1'><div class='cface'><img src='__ROOT__/hello/Uploads/4.jpg' class='img-polaroid'></div></div><div class='span1 captain-talk'><div class='talkbox-title-left'></div><div class='talkbox-title-left-2'></div></div><div class='span5'><div class='talkbox'>我是<span style='color:#888'>"+content.uname2+"</span>在圈子<span style='color:#999'>"+content.circlename+"</span>中申请和你成为好友！<span class='label label-info lable-info-agreefa' id='lable-info-agreefa' style='float:none; margin-left:0;' onclick=\"applyAgree('"+content.uemail2+"')\">同意</span></div></div></div>");
 					});
-					
 				}else{
 					$('.context-msgcenter').append("<p class='p-applymsg' style='text-align:center; font-size:15px; font-weight:bold; color:#999; margin-left:100px;'>暂时没有任何信息..</p>");
 				}
 			});
 		}
+		
 		
 	});
 	
@@ -962,7 +962,7 @@ tr{
 	function queryMyFriend(pagechange,pagenum,condition){
 		$('.well').remove();
 		$('.friend').remove();
-		$('p').remove();
+		$('.showfriend-p').remove();
 		$('#appendedInputButton').attr('placeholder','输入电话或姓名查找自己的好友');
 		var condition = condition;
 		
@@ -981,7 +981,7 @@ tr{
 					$('.context-showfriend').append("<div class='friend'><div class='f-face'><img src='/hello/Uploads/1.jpg' class='f-face-img'></div><div class='f-bottom'><p class='muted'>"+content.uname1+"&nbsp;&nbsp;</p><p class='muted muted-phone'>"+content.uphonenumber1+"</p></div></div>");
 				});
 			}else{
-				$('.context-showfriend').append("<p style='text-align:center; font-size:15px; font-weight:bold; color:#999; margin-left:100px;'>你好友里面没这个人，你傻吧你</P>");
+				$('.context-showfriend').append("<p class='showfriend-p' style='text-align:center; font-size:15px; font-weight:bold; color:#999; margin-left:100px;'>你好友里面没这个人，你傻吧你</P>");
 			}
 			
 			if(data['pageif'] == '-1'){

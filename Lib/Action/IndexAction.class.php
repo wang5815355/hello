@@ -116,7 +116,7 @@ class IndexAction extends GlobalAction {
     		$condition = trim($_POST['condition']);
     	}
     	
-    	$pagecount = 5;//每页记录数
+    	$pagecount = 7;//每页记录数
     	$matchCircleid = '/^[0-9]{1,50}$/';//ID号只能为1至50位纯数字
 		
     	if(preg_match($matchCircleid,$pagenum)){
@@ -363,7 +363,7 @@ class IndexAction extends GlobalAction {
     	$uemail = $this->getUserName();
     	$circleid = $_POST['circleId'];//获取需要查询的圈子id号
     	$pagenum = $_POST['pagenum'];//当前页数
-    	$pagecount = 4;//每页记录数
+    	$pagecount = 7;//每页记录数
     	$matchCircleid = '/^[0-9]{1,50}$/';//ID号只能为1至50位纯数字
 		    	
     	if(preg_match($matchCircleid,$circleid) && preg_match($matchCircleid,$pagenum)){//圈子id格式正确
