@@ -521,7 +521,7 @@ tr{
 				pagenum = pagenum;
 			}
 			
-			var pagenumcurrent = 
+			//var pagenumcurrent = 
 			$.post('__URL__/serchCirclePersion',{circleId:circleId,pagenum:pagenum},function(data){
 				$.each(data['data'],function(index,content){
 					
@@ -533,6 +533,8 @@ tr{
 						var html = "<div style='text-align:right;font-size:13px; font-weight:bold; margin-right:11px; color:rgb(190,190,190); padding:3px;'>我的好友</div>";
 					}else if(content.appstatus == '-2'){
 						var html = "<div style='text-align:right;font-size:13px; font-weight:bold; margin-right:11px; color:rgb(190,190,190); padding:3px;'>我自己</div>";
+					}else if(content.appstatus == '3'){
+						var html = "<div style='text-align:right;font-size:13px; font-weight:bold; margin-right:11px; color:rgb(190,190,190); padding:3px;'>已被其申请好友</div>";
 					}
 					
 					$('.context-current-cir').append("<div class='friend friend-cir'><div class='f-face'><img src='/hello/Uploads/1.jpg' class='f-face-img'></div><div class='f-bottom'><p class='muted'>"+content.uname+"&nbsp&nbsp</p><p class='muted muted-phone'>"+content.phonenumber+"</p><p>"+html+"</p></div></div>");
@@ -545,9 +547,11 @@ tr{
 					if(data['pageold'] == '1'){
 						var pageoldhtml = "<button type='button' class='btn btn-small btn-block btn-primary' onclick=\"$.doSerCirFrien(2,"+pagenum+","+circleId+",this)\">上一页</button>";
 					}
+					
 					if(data['pagenext'] == '1'){
 						var pagenexthtml = "<button type='button' class='btn btn-small btn-block' onclick=\"$.doSerCirFrien(1,"+pagenum+","+circleId+",this)\">下一页</button>";
 					}
+					
 					var infohtml = "<div class='alert alert-info' style='font-size:11px; border-color:#d9edf7;margin-bottom:6px; padding:3px 5px;'>共"+data['pagenumCount']+"页&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp第<span style=' font-weight:bold; font-size:13px;'>"+pagenum+"</span>页</div>";
 					$('.context-current-cir').append("<div class='well' style='width: 124px;  padding:6px; margin-left:42px; margin-top:30px;float:left; '>"+infohtml+pageoldhtml+pagenexthtml+"</div>");
 				}

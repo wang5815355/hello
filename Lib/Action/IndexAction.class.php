@@ -413,12 +413,23 @@ class IndexAction extends GlobalAction {
 //    				$mapAf['uemail2'] = $uemail;//当前登录用户
    					$appInfoModel = M('friendapply');
    					$isFriend = $appInfoModel->where($mapAf)->getField('status');
+   					
    					if($isFriend == null && $mapAf['uemail1'] != $mapAf['uemail2']){//1代表已成为好友
    						$list[$k]['appstatus'] = '-1';//还未提交好友申请
-   					}else if($mapAf['uemail1'] == $mapAf['uemail2']){
+   					}else if($list[$k]['uemail'] == $uemail){
    						$list[$k]['appstatus'] = '-2';//该用户是登录用户自己
    					}else{
    						$list[$k]['appstatus'] = $isFriend;
+   						//当uemail1为登录用户的时候
+   						if($isFriend == '0' && $list[$k]['uemail1'] == $uemail){
+   							$list[$k]['appstatus'] == '3'; //3代表对方向登陆用户为被申请人  该好友已经像你提交申请
+   						}else if($isFriend == '0' && $list[$k]['uemail2'] == $uemail){//0 代表 未处理信息 且为你已向对方提交申请
+   							$list[$k]['appstatus'] == '0';
+   						}
+   					}
+   					
+   					if($list[$k]['appstatus'] != '1' && $list[$k]['appstatus'] != '-2'){
+   						$list[$k]['phonenumber'] = substr($list[$k]['phonenumber'],0,3)."******".substr($list[$k]['phonenumber'],9,2);
    					}
    				}
    				
