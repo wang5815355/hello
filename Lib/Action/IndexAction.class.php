@@ -39,6 +39,9 @@ class IndexAction extends GlobalAction {
 	    			$mapGr['uemail'] = $uEmail;
 	    			$resultGr = $grModel->where($mapGr)->find();
 		    		
+	    			$circleList[$k]['time'] = substr(date('Y年m月d日 ',time()),2);
+	    			
+	    			
 		    		if($circleList[$k]['password'] != null){//将存在密码的圈子密码隐藏为000
 	    				$circleList[$k]['password'] = '000';
 	    			}
@@ -252,7 +255,7 @@ class IndexAction extends GlobalAction {
     		$mapGr['circleid'] = $circleId;
     		$resultIsCount = $grModel->where($mapGr)->count();
     		
-    		if($resultIsCount == 2){//当存在两条记录说明申请人和被申请人在同一个圈子当中
+    		if($resultIsCount >= 2){//当存在两条记录说明申请人和被申请人在同一个圈子当中
     			
     			//查询是否存在相同的申请人和被申请人记录 若存在且申请处理情况且status为2（申请未通过） 时不必添加新纪录 直接将status改为0（未处理）
     			$faModel = M('friendapply');
@@ -294,6 +297,33 @@ class IndexAction extends GlobalAction {
     	$this->ajaxReturn($dataInfo,'JSON');
     }
     
+    /**
+     * 拒绝好友申请
+     * @author wangkai
+     */
+    public function applyCancel(){
+    	$uemail2 = $_POST['uemail'];//申请人的email
+    	$uemail1 = $this->getUserName();//被申请人的email
+    	$matchEmail = "/^[_.0-9a-z-a-z-]+@([0-9a-z][0-9a-z-]+.)+[a-z]{2,4}$/"; //email正则表达式
+    	 
+    	//email通过正则表达式验证
+    	if(preg_match($matchEmail,$uemail1)){
+    		$faModel = M('friendapply');//好友申请 信息表
+    		$map['uemail1'] = $uemail1;
+    		$map['$uemail2'] = $uemail2;
+    		$resultUf = $faModel->where($map)->delete(); 
+    		
+    		if($resultUf != false){
+    			$dataInfo['status'] = '1';//删除好友申请记录成功
+    		}else{
+    			$dataInfo['status'] = '-1';//删除好友申请记录失败
+    		}
+    			 
+    		$this->ajaxReturn($dataInfo,'JSON');
+    	}
+    	
+    }
+     
     /**
      * 同意用户申请自己成为好友
      * @author wangkai
@@ -452,7 +482,7 @@ class IndexAction extends GlobalAction {
     	$gModel = M('group');
     	$competence = false;
     	
-    	if(preg_match($matchCircleid,$circlrid) && preg_match($matchPassword,$password)){
+    	if(preg_match($matchCircleid,$circlrid) && (preg_match($matchPassword,$password) || $password == null || $password == '') ){
     		//检测当前圈子id是否当前登录用户创建的圈子 若是才可以修改密码
     		$map['id'] = $circlrid;
     		$map['createuser'] = $this->getUserName(); 
@@ -466,13 +496,18 @@ class IndexAction extends GlobalAction {
     		if($gModelUpRe != false){
     			if($password == null){
     				$dataInfo['info'] = '密码取消成功，他人不再需要密码加入';
+    			}else{
+    				$dataInfo['info'] = '密码设置成功，他人需要密码才可加入(若想取消密码 提交空密码即可)'; 
     			}
-    			$dataInfo['info'] = '密码设置成功，他人需要密码才可加入'; 
     		}else{
-    			$dataInfo['info'] = "修改失败（新密码与原密码值不能相同）";
+    			if($password == null){
+    				$dataInfo['info'] = '该圈子现在无密码，他人不再需要密码即可加入';
+    			}else{
+    				$dataInfo['info'] = "修改失败（新密码与原密码值不能相同）";
+    			}
     		}
     	}else{
-    		$dataInfo['info'] = '密码只能由6至20位数字字母下划线组成'.$password.$circlrid;
+    		$dataInfo['info'] = '密码只能由6至20位数字字母下划线组成';
     	}
     	
     	$this->ajaxReturn($dataInfo,'JSON');
@@ -501,9 +536,11 @@ class IndexAction extends GlobalAction {
     			$list[$k]['time'] = date("Y年m月d日  H:i:s",$circleName['time']);
     			
     		}
+    		$data = $list;
+    	}else{
+    		$data['status'] = '0';//不存在数据
     	}
     	
-    	$data = $list;
     	$this->ajaxReturn($data,'JSON');
     }
     
@@ -608,14 +645,14 @@ class IndexAction extends GlobalAction {
     		$circleList = $circleModle->limit(7)->where($map)->select();
     		//查询当前圈子是否已经加入
     		foreach($circleList as $k=>$v){
-    			$grModel = M(grouprelationship);
+    			$grModel = M('grouprelationship');
     			$circleId = $circleList[$k]['id'];
     			if($circleList[$k]['password'] != null){
     				$circleList[$k]['password'] = '000';
     			}
     			$mapGr['circleid'] = $circleId;
-    			$uEmail = $this->getUserName();
     			$mapGr['uemail'] = $uEmail;
+    			$uEmail = $this->getUserName();
     			$resultGr = $grModel->where($mapGr)->find();
     			if($resultGr != null){
     				$circleList[$k]['isJo'] = 1;//是否已加入圈子标记 1代表已加入 0代表未加入
@@ -641,7 +678,7 @@ class IndexAction extends GlobalAction {
 	    	$upload = new UploadFile();// 实例化上传类
 	    	$upload->maxSize  = 3145728 ;// 设置附件上传大小
 	    	$upload->allowExts  = array('jpg', 'gif', 'png', 'jpeg');// 设置附件上传类型
-	    	$upload->savePath =  './Public/Uploads/';// 设置附件上传目录
+	    	$upload->savePath =  './Public/Uploads/';// 设置附件上传目录 条件上传目录 
 	    	$upload->thumb = true;
 	    	$upload->thumbMaxWidth = '50,220';
 	    	$upload->thumbMaxHeight = '50,200';
@@ -665,7 +702,7 @@ class IndexAction extends GlobalAction {
 	    	// 保存表单数据 包括附件数据
 	    	$userModel = M('User'); // 实例化User对象
 	    	$userModel->create(); // 创建数据对象
-	    	$map['email'] = $email;
+	    	$map['email'] = $uEmail;
 	    	$data['faceimage'] = 'thumb_'.$info[0]['savename'];//缩略图文件名
 	    	$result = $userModel->where($map)->save($data); // 写入用户数据到数据库
 	    	 
@@ -685,10 +722,12 @@ class IndexAction extends GlobalAction {
      */
     public function doCircle(){
     	$uEmail = $this->getUserName();//获取创建者email
+    	$uInfo = $this->getUinfo();
     	if($uEmail != null){
 	    	$circleGroup = M('group'); 
 	    	$circleName = trim($_POST['circlename']).'';
-	    	$matchCircleName = '/^[a-z0-9\x80-\xff]{1,}$/'; //正则表达式 匹配数字字母下划线以及中文 1`10位
+// 	    	$matchCircleName = '/^[a-z0-9\x80-\xff]{1,}$/'; //正则表达式 匹配数字字母下划线以及中文 1`10位
+	    	$matchCircleName = '/[a-zA-Z0-9\x{4e00}-\x{9fa5}]{1,10}/u'; //正则表达式 匹配数字字母下划线以及中文 1`10位
 	    	$len = mb_strlen($circleName,"utf-8");//验证圈子名称长度
 	    	
 	    //检测当前用户创建圈子个数 若超过八个则不能创建
@@ -707,6 +746,7 @@ class IndexAction extends GlobalAction {
 	    			$data['count'] = 1;//圈子总人数 创建时默认1
 	    			$data['type'] = '0';//圈子类型 默认为0  (公司或者学校类型的圈子 0 即为 无类型)
 	    			$data['createuser'] = $uEmail; //圈子创建人 当前登录创建人（email账号）
+	    			$data['createname'] = $uInfo['uname'];
 	    			$data['location'] = null;//圈子所在地（例如公司或者学校类型的圈子） 默认传null
 	    			$data['fcircle'] = 0;//圈子所属（父圈子）
 	    			$data['time'] = time();//时间
@@ -719,6 +759,9 @@ class IndexAction extends GlobalAction {
 	    				$dataGr['uemail'] = $uEmail;
 	    				$dataGr['time'] = time();
 	    				$dataGr['isCreater'] = '1';
+	    				$dataGr['uname'] = $uInfo['uname'];
+	    				$dataGr['phonenumber'] = $uInfo['phonenumber'];
+// 	    				$dataGr['status '] = '1';
 	    				$grModel->add($dataGr);
 	    				$dataInfo['info'] = "圈子'".$circleName."'创建成功.";
 	    				$dataInfo['status'] = 1;//创建成功状态为1
@@ -727,7 +770,7 @@ class IndexAction extends GlobalAction {
 	    			}
 	    		}
 	    	}else if(preg_match($matchCircleName,$circleName) && $len<=10 && $resultGC >= 8){
-	    		$dataInfo['info'] = "创建失败,暂时不能创建8个以上的圈子".$resultGC;
+	    		$dataInfo['info'] = "创建失败,暂时不能创建8个以上的圈子";
 	    	}else{
 	    		$dataInfo['info'] = "圈子名称只能由小于10位的数字子母以及中文组成,请重新输入.";
 	    	}
