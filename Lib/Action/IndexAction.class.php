@@ -727,7 +727,7 @@ class IndexAction extends GlobalAction {
 	    	$circleGroup = M('group'); 
 	    	$circleName = trim($_POST['circlename']).'';
 // 	    	$matchCircleName = '/^[a-z0-9\x80-\xff]{1,}$/'; //正则表达式 匹配数字字母下划线以及中文 1`10位
-	    	$matchCircleName = '/[a-zA-Z0-9\x{4e00}-\x{9fa5}]{1,10}/u'; //正则表达式 匹配数字字母下划线以及中文 1`10位
+	    	$matchCircleName = '/^[a-z0-9\xa1-\xff]{1,10}$/'; //正则表达式 匹配数字字母下划线以及中文 1`10位
 	    	$len = mb_strlen($circleName,"utf-8");//验证圈子名称长度
 	    	
 	    //检测当前用户创建圈子个数 若超过八个则不能创建
