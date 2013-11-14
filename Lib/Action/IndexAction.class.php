@@ -176,6 +176,7 @@ class IndexAction extends GlobalAction {
 	    				$urList[$k]['uemail1'] = $urList[$k]['uemail2'];
 	    				$urList[$k]['uname1'] = $urList[$k]['uname2'];
 	    				$urList[$k]['uphonenumber1'] = $urList[$k]['uphonenumber2'];
+	    				$urList[$k]['uphonenumber1'] = substr($urList[$k]['uphonenumber1'],4,11);
 	    				$urList[$k]['faceimage1'] = $urList[$k]['faceimage2'];
 	    			}
 	    		}
@@ -448,6 +449,7 @@ class IndexAction extends GlobalAction {
    						$list[$k]['appstatus'] = '-1';//还未提交好友申请
    					}else if($list[$k]['uemail'] == $uemail){
    						$list[$k]['appstatus'] = '-2';//该用户是登录用户自己
+   						$list[$k]['phonenumber'] = substr($list[$k]['phonenumber'],4,11);
    					}else{
    						$list[$k]['appstatus'] = $isFriend;
    						//当uemail1为登录用户的时候
@@ -459,7 +461,7 @@ class IndexAction extends GlobalAction {
    					}
    					
    					if($list[$k]['appstatus'] != '1' && $list[$k]['appstatus'] != '-2'){
-   						$list[$k]['phonenumber'] = substr($list[$k]['phonenumber'],0,3)."******".substr($list[$k]['phonenumber'],9,2);
+   						$list[$k]['phonenumber'] = substr($list[$k]['phonenumber'],4,3)."******".substr($list[$k]['phonenumber'],13,2);
    					}
    				}
    				
@@ -727,7 +729,7 @@ class IndexAction extends GlobalAction {
 	    	$circleGroup = M('group'); 
 	    	$circleName = trim($_POST['circlename']).'';
 // 	    	$matchCircleName = '/^[a-z0-9\x80-\xff]{1,}$/'; //正则表达式 匹配数字字母下划线以及中文 1`10位
-	    	$matchCircleName = '/^[a-z0-9\xa1-\xff]{1,10}$/'; //正则表达式 匹配数字字母下划线以及中文 1`10位
+	    	$matchCircleName = '/^[a-z0-9\x{4e00}-\x{9fa5}]{1,10}$/u'; //正则表达式 匹配数字字母下划线以及中文 1`10位
 	    	$len = mb_strlen($circleName,"utf-8");//验证圈子名称长度
 	    	
 	    //检测当前用户创建圈子个数 若超过八个则不能创建
