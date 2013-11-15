@@ -75,7 +75,8 @@ p {
 	width:1880px;
 }
 .image{
-    color:rgb(28,151,223);
+    background: rgb(28,151,223);
+	color:white;
 	letter-spacing:-1px;
 	font-size:33px;
 	font-weight:800;
@@ -85,11 +86,17 @@ p {
 	line-height: 1;
 	padding:5px;
 	padding-bottom:6px;
-	margin-top:-6px;
-	margin-left:-5px;
+	margin-top:-5px;
+	margin-left:-3px;
+	-webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+	-moz-box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+	box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
 }
 .image:HOVER{
-	background: rgb(28,151,223);
+	background: rgba(28,151,223,.7);
 	color:white;
 	padding:5px;
 	padding-bottom:6px;
@@ -484,10 +491,36 @@ tr{
 	-webkit-border-radius: 8px;
 	-moz-border-radius: 8px;
 	border-radius: 8px;
-	position:relative;
-	left:43px;
+	left:65px;
 	top:-5px;
-	z-index:10;
+	z-index:99;
+	cursor:default;
+}
+
+.android-down{
+	background: rgb(95,176,60);
+	color: white;
+	letter-spacing: -1px;
+	font-size: 15px;
+	font-weight: 800;
+	height: 30px;
+	line-height: 1;
+	padding: 5px;
+	padding-bottom: 6px;
+	margin-top: -5px;
+	margin-left: -3px;
+	line-height:2;
+	-webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+	-moz-box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+	box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	margin-right:30px;
+}
+
+.android-down:hover{
+	background: rgba(95,176,60,.7);
 }
 
 </style>
@@ -532,7 +565,7 @@ tr{
 					if(content.appstatus != '1' && content.appstatus != '0' && content.appstatus != '-2'){
 						var html = "<button class='btn btn-mini btn-primary' type='button' style='float:right; margin-bottom:3px;' onclick=\"$.doFriendApply("+circleId+",'"+content.uemail+"',this)\">加为好友</button>";
 					}else if(content.appstatus == '0'){
-						var html = "<div style='text-align:right;font-size:13px; font-weight:bold; margin-right:11px; color:rgb(190,190,190); padding:3px;'>申请已提交</div>";
+						var html = "<div style='text-align:right;font-size:13px; font-weight:bold; margin-right:11px; color:rgb(190,190,190); padding:3px;'>好友申请中</div>";
 					}else if(content.appstatus == '1'){
 						var html = "<div style='text-align:right;font-size:13px; font-weight:bold; margin-right:11px; color:rgb(190,190,190); padding:3px;'>我的好友</div>";
 					}else if(content.appstatus == '-2'){
@@ -590,7 +623,7 @@ tr{
 			var uemail2 = uemail;
 			$.post("__URL__/applyFriend",{circleid:circleid,uemail2:uemail2},function(data){
 				if(data['info'] == '1'){
-					$(tagThis).parent().html("<div style='text-align:right;font-size:13px; font-weight:bold; margin-right:11px; color:rgb(190,190,190); padding:3px 0 3px;'>申请已提交</div>");
+					$(tagThis).parent().parent().parent().html("<div style='text-align:right;font-size:13px; font-weight:bold; margin-right:11px; color:rgb(190,190,190); padding:3px 0 3px;'>申请已提交</div>");
 				}else{
 					$(tagThis).html("失败,点击重试");
 					$(tagThis).attr('class','btn btn-mini btn-primary');
@@ -600,11 +633,13 @@ tr{
 		
 		//搜索当前登录用户已加入的圈子
 		$('#s-mycircle').click(function(){ 
+			$('.toolbar').append("<div class='group group-center' >"+"正在查询..."+"</div>");
 			$.post('__URL__/myCircle',{},function(data){
 				$('.group-center').remove();
 				if(data['status'] == '0'){
 					$('.toolbar').append("<div class='group group-center' >"+"你还没有加入或创建的圈子..."+"</div>");
 				}else{
+					$('.toolbar').append("<div class='group group-center group-center-blue' onclick='allmyfriend()'>"+"全部好友"+"</div>");
 					$.each(data,function(index,content){
 						if(content.isCreater=='1'){
 							$('.toolbar').append("<div class='group group-center group-center-blue' onclick='$.doSerCirFrien(0,1,"+content.circleid+",this)'>"+content.circlename+"<i class='icon-wrench icon-white' style='float:right; cursor:pointer; margin-top:3px;' onmouseout='$.doCirMngOut(this)' onmouseover='$.doCirMngOver(this)' onclick=\"$.doCirMng("+content.circleid+","+content.count+",'"+content.time+"',this)\"></i></div>");
@@ -771,6 +806,7 @@ tr{
 		}
 		$.doCirMng = function circleMng(circleid,count,time,tagThis){
 			event.stopPropagation();
+			$(".hidden-input").val('manage');
 			$('.context-all').fadeOut(0);
 			$('.context-cirman').fadeIn(200);
 			$('.captain-cirman').fadeIn(200);
@@ -919,7 +955,7 @@ tr{
 			$.post('__URL__/upAppMsgStatus',{status:status},function(data){
 				if(data['status'] == '1'){
 					$.each(data['info'],function(index,content){
-						$('.context-msgcenter').append("<div class='row normal-user' style='margin-top:40px;'><div class='span2 offset1'><div class='cface'><img src='__ROOT__/hello/Uploads/4.jpg' class='img-polaroid'></div></div><div class='span1 captain-talk'><div class='talkbox-title-left'></div><div class='talkbox-title-left-2'></div></div><div class='span5'><div class='talkbox'>我是<span style='color:#888'>"+content.uname2+"</span>在圈子<span style='color:#999'>"+content.circlename+"</span>中申请和你成为好友！<span class='label label-info lable-info-agreefa' id='lable-info-agreefa' style='float:none; margin-left:0;' onclick=\"applyAgree('"+content.uemail2+"')\">同意</span><span class='label label-info lable-info-agreefa' id='lable-info-agreefa' style='float:none; margin-left:2px;' onclick=\"applyCancel('"+content.uemail2+"')\">同意</span></div></div></div>");
+						$('.context-msgcenter').append("<div class='row normal-user' style='margin-top:40px;'><div class='span2 offset1'><div class='cface'><img src='__ROOT__/hello/Uploads/4.jpg' class='img-polaroid'></div></div><div class='span1 captain-talk'><div class='talkbox-title-left'></div><div class='talkbox-title-left-2'></div></div><div class='span5'><div class='talkbox'>我是<span style='color:#888'>"+content.uname2+"</span>在圈子<span style='color:#999'>"+content.circlename+"</span>中申请和你成为好友！<P style='text-align:right;margin: 5px 0 -4px;'><span class='label label-info lable-info-agreefa' id='lable-info-agreefa' style='float:none; margin-left:0;' onclick=\"applyAgree('"+content.uemail2+"')\">同意</span>&nbsp<span class='label label-info lable-info-agreefa' id='lable-info-agreefa' style='float:none; margin-left:2px;' onclick=\"applyCancel('"+content.uemail2+"')\">拒绝</span></p></div></div></div>");
 					});
 					
 				}else{
@@ -955,7 +991,7 @@ tr{
 			$.post('__URL__/upAppMsgStatus',{status:status},function(data){
 				if(data['status'] == '1'){
 					$.each(data['info'],function(index,content){
-						$('.context-msgcenter').append("<div class='row normal-user' style='margin-top:40px;'><div class='span2 offset1'><div class='cface'><img src='__ROOT__/hello/Uploads/4.jpg' class='img-polaroid'></div></div><div class='span1 captain-talk'><div class='talkbox-title-left'></div><div class='talkbox-title-left-2'></div></div><div class='span5'><div class='talkbox'>我是<span style='color:#888'>"+content.uname2+"</span>在圈子<span style='color:#999'>"+content.circlename+"</span>中申请和你成为好友！<span class='label label-info lable-info-agreefa' id='lable-info-agreefa' style='float:none; margin-left:0;' onclick=\"applyAgree('"+content.uemail2+"')\">同意</span></div></div></div>");
+						$('.context-msgcenter').append("<div class='row normal-user' style='margin-top:40px;'><div class='span2 offset1'><div class='cface'><img src='__ROOT__/hello/Uploads/4.jpg' class='img-polaroid'></div></div><div class='span1 captain-talk'><div class='talkbox-title-left'></div><div class='talkbox-title-left-2'></div></div><div class='span5'><div class='talkbox'>我是<span style='color:#888'>"+content.uname2+"</span>在圈子<span style='color:#999'>"+content.circlename+"</span>中申请和你成为好友！<P style='text-align:right;margin: 5px 0 -4px;'><span class='label label-info lable-info-agreefa' id='lable-info-agreefa' style='float:none; margin-left:0;' onclick=\"applyAgree('"+content.uemail2+"')\">同意</span>&nbsp<span class='label label-info lable-info-agreefa' id='lable-info-agreefa' style='float:none; margin-left:2px;' onclick=\"applyCancel('"+content.uemail2+"')\">拒绝</span></p></div></div></div>");
 					});
 				}else{
 					$('.context-msgcenter').append("<p class='p-applymsg' style='text-align:center; font-size:15px; font-weight:bold; color:#999; margin-left:100px;'>暂时没有任何信息..</p>");
@@ -992,7 +1028,7 @@ tr{
 			}else{
 				//当查询全部好友时
 				if(condition == null){
-					$('.context-showfriend').append("<div class='alert alert-block alert-info nofriend-info fade in' style='width:550px; margin-top:32px; margin-left:120px;'><h4 class='alert-heading' style='text-align:center;'>目前你还没有任何联系人！</h4><p style='text-align:left;'>&nbsp通过以下操作可以获取新的联系人  </p><p style='text-align:left;'>1.创建新的联联系组然后邀请好友加入你所创建的圈子  </p><p style='text-align:left;'>2.加入已有的圈子并在圈子中添加你所认识的好友</p><p><button class='btn btn-success nf-joincircle' onclick='nofjoincircle()'>加入圈子</button>&nbsp&nbsp&nbsp<button class='btn nf-createcircle' onclick='nofcreatecir()'>创建圈子</button></p></div>");
+					$('.context-showfriend').append("<div class='alert alert-block alert-info nofriend-info fade in' style='width:550px; margin-top:32px; margin-left:120px;'><h4 class='alert-heading' style='text-align:center;'>目前你还没有任何好友！</h4><p style='text-align:left;'>&nbsp好友间才能看到对方电话号码，哥这下不会丢谁的电话了~</p><p style='text-align:left;'>1.创建新的圈子然后邀请好友加入 </p><p style='text-align:left;'>2.加入已有的圈子并在圈子中添加你所认识的好友</p><p><button class='btn btn-success nf-joincircle' onclick='nofjoincircle()'>加入圈子</button>&nbsp&nbsp&nbsp<button class='btn nf-createcircle' onclick='nofcreatecir()'>创建圈子</button></p></div>");
 				}else{
 					$('.context-showfriend').append("<p class='showfriend-p' style='text-align:center; font-size:15px; font-weight:bold; color:#999; margin-left:100px;'>你好友中没有你搜索的这个人！</P>");
 				}
@@ -1083,7 +1119,7 @@ tr{
 	
 	//点击拒绝好友申请
 	var applyCancelMark = 1;
-	function applyAgree(uemail){
+	function applyCancel(uemail){
 		if(applyAgreeMark == 1){
 			applyAgreeMark = 0;
 			$('#lable-info-agreefa').html("<img src='__ROOT__/hello/Public/img/ajax-loader.gif' class='loader-gif'>");
@@ -1138,17 +1174,20 @@ tr{
 		$('.join-circle').click();
 	}
 	
-	
+	function allmyfriend(){
+		$('.image').click();
+	}
 </script>
 </head>
 
 <body>
 	<div class="logo">
 		<div class="image">Hello</div>
-		<div class="envelop-alert" style="height:16px; width:16px; background:orange;float:right; font-size:12px; color:white; font-weight:bold; vertical-align:middle; display:none;">&nbsp1</div>
+		<div class="android-down" style="float:right;padding:0px 8px;margin-top:0px;">Android客户端<i class="icon-download icon-white" style="margin-left:3px;margin-top:3px;"></i></div>
 		<div class="btn-group head-buttons" style="float:right;margin-right:19px;">
 			<button class="btn btn-success btn-usercenter" style="display:none;"><i class="icon-user"></i></button>
 			<button class="btn btn-success btn-msgcenter" style="display:none;"><i class="icon-envelope"></i></button>
+			<div class="envelop-alert" style="position:absolute; height:16px; width:16px; background:orange; font-size:11px; color:white; font-weight:bold; vertical-align:middle; display:none;">&nbsp1</div>
 			<button class="btn btn-warning warning" id="warning-use" style="display:none;" data-toggle="modal" data-target="#myModal"><i class="icon-off"></i></button>
 		</div>
 		<button class="btn btn-warning warning" style="float:right;margin-right:19px;" id="warning-temp" data-toggle="modal" data-target="#myModal"><i class="icon-off"></i></button>
