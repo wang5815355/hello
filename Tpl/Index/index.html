@@ -513,7 +513,7 @@ tr{
 	-moz-border-radius: 5px;
 	border-radius: 5px;
 	margin-right:30px;
-	cursor:default;
+	cursor:pointer;
 }
 
 .android-down:hover{
@@ -1174,13 +1174,17 @@ tr{
 	function allmyfriend(){
 		$('.image').click();
 	}
+	
+	function allmymodel(){
+		
+	}
 </script>
 </head>
 
 <body>
 	<div class="logo">
 		<div class="image">Hello</div>
-		<div class="android-down" style="float:right;padding:0px 8px;margin-top:0px;">Android客户端<i class="icon-download icon-white" style="margin-left:3px;margin-top:3px;"></i></div>
+		<div class="android-down" data-toggle="modal" data-target="#model-android" style="float:right;padding:0px 8px;margin-top:0px;">Android客户端<i class="icon-download icon-white" style="margin-left:3px;margin-top:3px;"></i></div>
 		<div class="btn-group head-buttons" style="float:right;margin-right:19px;">
 			<button class="btn btn-success btn-usercenter" style="display:none;"><i class="icon-user"></i></button>
 			<button class="btn btn-success btn-msgcenter" style="display:none;"><i class="icon-envelope"></i></button>
@@ -1339,6 +1343,13 @@ tr{
 						  </div>
 						</div>
 						
+					</div>
+					
+					<div class="modal hide fade" id="model-android">
+						  <div class="modal-header" style="border-bottom:0px; padding:15px;">
+						    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="margin-top:-12px;margin-right:-6px;">&times;</button>
+						    <h3 id="h3-joinCirInfo" style="color:#999; font-size:13px;">安卓的马上就搞好,至于你是用土豪金的高富帅，我靠 土豪我们交个朋友吧，iphone端要再等等。毕竟像您这种高富帅不多啊 哈哈</h3>
+						  </div>
 					</div>
 					
 					<!-- 加入圈子页面  根据圈子id号搜索 或者名称 或者创始人名称-->
