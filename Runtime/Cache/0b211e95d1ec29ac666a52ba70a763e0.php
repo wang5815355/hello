@@ -368,7 +368,7 @@
      	    			 $.post("register", 
      	     	    			{ username:email,password:inputValue}, 
      	     	    			  function(data,status){
-     	     					  $('#dialog').append("<div class= 'row captain' style='display:none'><div class= 'span2 offset1'><div class= 'cface'><img src='__ROOT__/hello/Uploads/1.jpg' class= 'img-polaroid'></div></div><div class= 'span1 captain-talk' ><div class= 'talkbox-title-left' ></div><div class= 'talkbox-title-left-2' ></div></div><div class= 'span5' ><div class= 'talkbox' >&nbsp</div></div></div>");
+     	     					  $('#dialog').append("<div class= 'row captain' style='display:none'><div class= 'span2 offset1'><div class= 'cface'><img src='__ROOT__/hello/Uploads/4.jpg' class= 'img-polaroid'></div></div><div class= 'span1 captain-talk' ><div class= 'talkbox-title-left' ></div><div class= 'talkbox-title-left-2' ></div></div><div class= 'span5' ><div class= 'talkbox' >&nbsp</div></div></div>");
      	     					  //如果账号正确，则记录账号，并且将输入框type改成password
      	     					  $('#dialog>div:last-child').fadeIn(400,function(){
      	     						  //加载完毕后 登录状态status不为3（登陆成功） 即显示“发送”按钮
@@ -424,6 +424,7 @@
 					<div class="logo">Hello</div>
 				</div>
 			</div>
+			<img  style="z-index:-1; position:absolute; left:800px; top:80px;" src="__ROOT__/hello/Public/img/backlogin.png">
 
 			<div class="content">
 				<div class="dialog left" id="dialog">

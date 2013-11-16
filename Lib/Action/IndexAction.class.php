@@ -26,7 +26,7 @@ class IndexAction extends GlobalAction {
     			$friendMsgList = $userModel->where($map)->select();
     			$this->assign('friendMsgList',$friendMsgList);
     			
-	    		//查询前面8条圈子记录
+	    		//查询前面7条圈子记录
     			$circleModle = M('group');//圈子表
     			$grModel = M('grouprelationship');//圈子关系表
     			//获取当前用户登录email账号 
@@ -58,6 +58,13 @@ class IndexAction extends GlobalAction {
     	}else{//如果cookie中不存在用户账号则跳转到登录页面上
     		$this->redirect('Public/login');
     		$this->display();
+    	}
+    }
+    
+    public function requestMyInfo(){
+    	if(cookie('username')!=null){
+    		$data = $this->getUinfo();
+    		$this->ajaxReturn($data,'JSON');
     	}
     }
     
@@ -641,9 +648,10 @@ class IndexAction extends GlobalAction {
 //     	$circleId = trim($_POST['circleId']);
 //     	$map['id'] = $circleId;
     	
-    	if($circleName != ''){//若提交条件不为空
+    	if($circleName != '' || $circleName != null){$map['name|id'] =  array('like',"%".$circleName."%");}
+    	if($circleName == null || $circleName == ''){$map['name|id'] =  array('notlike',"%11111111111111111111111111%");}
+    		
     		//查询前面8条圈子记录
-    		$map['name|id'] =  array('like',"%".$circleName."%");
     		$circleList = $circleModle->limit(7)->where($map)->select();
     		//查询当前圈子是否已经加入
     		foreach($circleList as $k=>$v){
@@ -652,9 +660,9 @@ class IndexAction extends GlobalAction {
     			if($circleList[$k]['password'] != null){
     				$circleList[$k]['password'] = '000';
     			}
+    			$uEmail = $this->getUserName();
     			$mapGr['circleid'] = $circleId;
     			$mapGr['uemail'] = $uEmail;
-    			$uEmail = $this->getUserName();
     			$resultGr = $grModel->where($mapGr)->find();
     			if($resultGr != null){
     				$circleList[$k]['isJo'] = 1;//是否已加入圈子标记 1代表已加入 0代表未加入
@@ -665,7 +673,7 @@ class IndexAction extends GlobalAction {
     		$data = $circleList;
     		
     		$this->ajaxReturn($data,'JSON');
-    	}
+    	
     }
     
     /**
@@ -682,7 +690,7 @@ class IndexAction extends GlobalAction {
 	    	$upload->allowExts  = array('jpg', 'gif', 'png', 'jpeg');// 设置附件上传类型
 	    	$upload->savePath =  './Public/Uploads/';// 设置附件上传目录 条件上传目录 
 	    	$upload->thumb = true;
-	    	$upload->thumbMaxWidth = '50,220';
+	    	$upload->thumbMaxWidth = '50,200';
 	    	$upload->thumbMaxHeight = '50,200';
 	    	$upload->thumbRemoveOrigin = true;
 	    	 
