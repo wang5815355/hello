@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2013 年 11 月 13 日 10:23
+-- 生成日期: 2013 年 11 月 17 日 15:26
 -- 服务器版本: 5.5.8
 -- PHP 版本: 5.3.3
 
@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS `hello_friendapply` (
   `uemail1` varchar(40) NOT NULL COMMENT '被申请人email',
   `uemail2` varchar(40) NOT NULL COMMENT '申请人email',
   `uname2` varchar(20) NOT NULL COMMENT '申请人姓名',
+  `ufaceimg2` varchar(40) DEFAULT NULL COMMENT '申请人头像2',
   `info` varchar(20) DEFAULT NULL COMMENT '申请备注信息',
   `status` char(1) NOT NULL COMMENT '申请信息处理状态（0,代表未处理.1,申请通过2,申请未通过）',
   `msgreadstatus` char(1) NOT NULL DEFAULT '0' COMMENT '信息查看状态（0，代表未被查看，1，代表已被查看）',
@@ -31,14 +32,12 @@ CREATE TABLE IF NOT EXISTS `hello_friendapply` (
   `circlename` varchar(20) DEFAULT NULL COMMENT '圈子名称',
   `time` varchar(20) NOT NULL COMMENT '申请时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0 ;
 
 --
 -- 转存表中的数据 `hello_friendapply`
 --
 
-INSERT INTO `hello_friendapply` (`id`, `uemail1`, `uemail2`, `uname2`, `info`, `status`, `msgreadstatus`, `circleid`, `circlename`, `time`) VALUES
-(9, '3938679167@qq.com', '393867916@qq.com', '王凯', '', '0', '0', '60', '一二三四五六七八九十', '1384315395');
 
 -- --------------------------------------------------------
 
@@ -58,20 +57,12 @@ CREATE TABLE IF NOT EXISTS `hello_group` (
   `time` varchar(11) DEFAULT NULL COMMENT '创建时间',
   `id` int(40) NOT NULL AUTO_INCREMENT COMMENT '主键id',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='圈子表' AUTO_INCREMENT=69 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='圈子表' AUTO_INCREMENT=0 ;
 
 --
 -- 转存表中的数据 `hello_group`
 --
 
-INSERT INTO `hello_group` (`name`, `password`, `count`, `type`, `createuser`, `createname`, `location`, `fcircle`, `time`, `id`) VALUES
-('创建个（）', NULL, 1, 0, '393867916@qq.com', '王凯', NULL, 0, '1384338132', 68),
-('创建（）', NULL, 1, 0, '393867916@qq.com', '王凯', NULL, 0, '1384338084', 67),
-('创建1', NULL, 1, 0, '393867916@qq.com', '王凯', NULL, 0, '1384338078', 66),
-('（）你好', NULL, 1, 0, '393867916@qq.com', '王凯', NULL, 0, '1384337498', 65),
-('下次再说', NULL, 1, 0, '3938679166@qq.com', '王凯', NULL, 0, '1384336634', 64),
-('创建', NULL, 1, 0, '3938679166@qq.com', '王凯', NULL, 0, '1384336439', 63),
-('你好', NULL, 1, 0, '3938679166@qq.com', '王凯', NULL, 0, '1384335613', 62);
 
 -- --------------------------------------------------------
 
@@ -85,24 +76,17 @@ CREATE TABLE IF NOT EXISTS `hello_grouprelationship` (
   `uemail` varchar(50) NOT NULL COMMENT '用户email',
   `uname` varchar(20) DEFAULT NULL COMMENT '用户姓名',
   `phonenumber` varchar(20) DEFAULT NULL COMMENT '用户手机号',
+  `faceimg` varchar(40) DEFAULT NULL COMMENT '用户头像',
   `status` char(1) DEFAULT NULL COMMENT '圈子状态（1，为待审核状态2，加入成功，3，审核未通过）',
   `isCreater` char(1) DEFAULT NULL COMMENT '是否创始人（1,代表是创始人，空则代表不是）',
   `time` varchar(20) NOT NULL COMMENT '加入圈子时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=214 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0 ;
 
 --
 -- 转存表中的数据 `hello_grouprelationship`
 --
 
-INSERT INTO `hello_grouprelationship` (`id`, `circleid`, `uemail`, `uname`, `phonenumber`, `status`, `isCreater`, `time`) VALUES
-(213, '68', '393867916@qq.com', '王凯', '008615820781327', NULL, '1', '1384338132'),
-(212, '67', '393867916@qq.com', '王凯', '008615820781327', NULL, '1', '1384338084'),
-(211, '66', '393867916@qq.com', '王凯', '008615820781327', NULL, '1', '1384338078'),
-(210, '65', '393867916@qq.com', '王凯', '008615820781327', NULL, '1', '1384337498'),
-(209, '64', '3938679166@qq.com', '王凯', '15820781327', NULL, '1', '1384336634'),
-(208, '63', '3938679166@qq.com', '王凯', '15820781327', NULL, '1', '1384336439'),
-(207, '62', '3938679166@qq.com', NULL, NULL, NULL, '1', '1384335613');
 
 -- --------------------------------------------------------
 
@@ -118,49 +102,14 @@ CREATE TABLE IF NOT EXISTS `hello_user` (
   `phonenumber` varchar(20) NOT NULL COMMENT '手机号',
   `faceimage` varchar(40) DEFAULT NULL COMMENT '头像图片名',
   `auth` char(1) NOT NULL DEFAULT '0' COMMENT '账号认证状态（3,未认证且非首次登陆0,未认证首次登陆1,已邮箱认证，且首次登陆。2,已认证且非首次登陆）',
-  `regtime` datetime NOT NULL COMMENT '注册时间',
+  `regtime` char(15) NOT NULL COMMENT '注册时间',
   PRIMARY KEY (`uid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='用户注册表' AUTO_INCREMENT=46 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='用户注册表' AUTO_INCREMENT=0 ;
 
 --
 -- 转存表中的数据 `hello_user`
 --
 
-INSERT INTO `hello_user` (`uid`, `uname`, `email`, `password`, `phonenumber`, `faceimage`, `auth`, `regtime`) VALUES
-(18, '王凯', '393867916@qq.com', '00fbfeb9353ca2055ddc129b2f0a01', '008615820781327', 'thumb_521b5c1b4332d.jpg', '3', '0000-00-00 00:00:00'),
-(10, '王凯', '393817926@qq.com', 'wang5815355', '15820781327', NULL, '0', '0000-00-00 00:00:00'),
-(9, '王凯', '393867926@qq.com', 'wang5815355', '15820781327', NULL, '0', '0000-00-00 00:00:00'),
-(8, '王凯', '393867011@qq.com', 'wang5815355', '15820781327', NULL, '0', '0000-00-00 00:00:00'),
-(11, '王凯', '293817926@qq.com', 'wang5815355', '15820781327', NULL, '0', '0000-00-00 00:00:00'),
-(12, '王凯', '56848@qq.com', '00fbfeb9353ca2055ddc129b2f0a01', '15826547896', NULL, '0', '0000-00-00 00:00:00'),
-(13, '王凯', '568428@qq.com', '33a173a86a3c0bd6ff8a84f32432e6', '15826547896', NULL, '0', '0000-00-00 00:00:00'),
-(19, '王凯', '3938679161@qq.com', '33a173a86a3c0bd6ff8a84f32432e6', '15820781327', NULL, '0', '0000-00-00 00:00:00'),
-(20, '王凯', '3938679162@qq.com', '33a173a86a3c0bd6ff8a84f32432e6', '15820781327', NULL, '0', '0000-00-00 00:00:00'),
-(21, '王凯', '3938679182@qq.com', '33a173a86a3c0bd6ff8a84f32432e6', '15820781327', NULL, '0', '0000-00-00 00:00:00'),
-(22, '王凯', '393679182@qq.com', '33a173a86a3c0bd6ff8a84f32432e6', '15820781327', NULL, '0', '0000-00-00 00:00:00'),
-(23, '王凯', '3938679166@qq.com', '00fbfeb9353ca2055ddc129b2f0a01', '15820781327', 'thumb_52832ae44dd35.jpg', '3', '0000-00-00 00:00:00'),
-(24, '王凯', '93867916@qq.com', '33a173a86a3c0bd6ff8a84f32432e6', '15820781327', NULL, '0', '0000-00-00 00:00:00'),
-(25, '王凯', '3938679136@qq.com', '33a173a86a3c0bd6ff8a84f32432e6', '15820781327', NULL, '0', '0000-00-00 00:00:00'),
-(26, '王凯', '3938679126@qq.com', '5df4319a5779e372698042399bc724', '15820781327', NULL, '0', '0000-00-00 00:00:00'),
-(27, '王凯', '3932867916@qq.com', '00fbfeb9353ca2055ddc129b2f0a01', '15820781327', NULL, '0', '0000-00-00 00:00:00'),
-(28, '王凯', '3938267916@qq.com', '00fbfeb9353ca2055ddc129b2f0a01', '15820796541', NULL, '0', '0000-00-00 00:00:00'),
-(29, '王凯', '3938627916@qq.com', '00fbfeb9353ca2055ddc129b2f0a01', '15820781358', NULL, '0', '0000-00-00 00:00:00'),
-(30, '王凯', '39328267916@qq.com', '33a173a86a3c0bd6ff8a84f32432e6', '15820781327', NULL, '0', '0000-00-00 00:00:00'),
-(31, '王凯', '329328267916@qq.com', '832acda925f6562753ecfe3c07fe7c', '15820781327', NULL, '0', '0000-00-00 00:00:00'),
-(32, '王凯', '123456916@qq.com', '33a173a86a3c0bd6ff8a84f32432e6', '15820781327', NULL, '0', '0000-00-00 00:00:00'),
-(33, '王凯', '16@qq.com', '48015de93123d0e87c545b0c58c428', '15820781327', NULL, '0', '0000-00-00 00:00:00'),
-(34, '王凯', '111393867916@qq.com', '00fbfeb9353ca2055ddc129b2f0a01', '15820781327', NULL, '0', '0000-00-00 00:00:00'),
-(35, '王凯', '222393867916@qq.com', '33a173a86a3c0bd6ff8a84f32432e6', '15820781327', NULL, '0', '0000-00-00 00:00:00'),
-(36, '王凯', '555393867916@qq.com', '00fbfeb9353ca2055ddc129b2f0a01', '15820781327', NULL, '', '0000-00-00 00:00:00'),
-(37, '王凯', '555391233867916@qq.com', '33a173a86a3c0bd6ff8a84f32432e6', '15820781327', NULL, '1', '0000-00-00 00:00:00'),
-(38, '王凯', '3938679886@qq.com', '00fbfeb9353ca2055ddc129b2f0a01', '15820781327', NULL, '0', '0000-00-00 00:00:00'),
-(39, '王凯', '39386755886@qq.com', '00fbfeb9353ca2055ddc129b2f0a01', '15820781327', NULL, '0', '0000-00-00 00:00:00'),
-(40, '王凯', '393864447916@qq.com', '00fbfeb9353ca2055ddc129b2f0a01', '15820781327', NULL, '0', '0000-00-00 00:00:00'),
-(41, '王凯', '393822264447916@qq.com', '33a173a86a3c0bd6ff8a84f32432e6', '15820781327', NULL, '0', '0000-00-00 00:00:00'),
-(42, '王凯', '3938222642447916@qq.com', '040bd08a4290267535cd247b8ba2ec', '15820781327', NULL, '0', '0000-00-00 00:00:00'),
-(43, '王凯', '39386792@qq.com', '00fbfeb9353ca2055ddc129b2f0a01', '15820781327', 'thumb_5264fa9e91a28.JPG', '3', '0000-00-00 00:00:00'),
-(44, '王凯超人', '39386791666@qq', '33a173a86a3c0bd6ff8a84f32432e6', '15820781327', NULL, '0', '0000-00-00 00:00:00'),
-(45, '王凯超级', '3938679167@qq.com', '00fbfeb9353ca2055ddc129b2f0a01', '15820781327', 'thumb_527371249ce87.jpg', '3', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -169,7 +118,7 @@ INSERT INTO `hello_user` (`uid`, `uname`, `email`, `password`, `phonenumber`, `f
 --
 
 CREATE TABLE IF NOT EXISTS `hello_userrelationship` (
-  `id` int(50) NOT NULL COMMENT '主键id',
+  `id` int(50) NOT NULL AUTO_INCREMENT COMMENT '主键id',
   `uemail1` varchar(40) NOT NULL COMMENT '用户1id',
   `uname1` varchar(20) NOT NULL COMMENT '用户1姓名',
   `uphonenumber1` varchar(20) NOT NULL COMMENT '用户1电话号码',
@@ -179,9 +128,8 @@ CREATE TABLE IF NOT EXISTS `hello_userrelationship` (
   `uphonenumber2` varchar(20) NOT NULL COMMENT '用户2电话号码',
   `faceimage2` varchar(40) DEFAULT NULL COMMENT '用户头像',
   `time` varchar(20) NOT NULL COMMENT '时间',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id` (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='好友关系表';
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='好友关系表' AUTO_INCREMENT=0 ;
 
 --
 -- 转存表中的数据 `hello_userrelationship`

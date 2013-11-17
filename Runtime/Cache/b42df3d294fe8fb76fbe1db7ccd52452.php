@@ -119,6 +119,7 @@ p {
 .logo{
 	padding:11px 0 0 18px;
 	height:41px;
+	min-width:500px;
 	background:rgb(247,247,247);
 	-webkit-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
 	-moz-box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
@@ -235,7 +236,7 @@ input:-moz-placeholder {
 .f-face{
 	margin:5px auto 0;
 	width:120px;
-	background:black;
+	background:rgb(243,243,243);
 	overflow: hidden;
 	-webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 	-moz-box-shadow: 0 1px 3px rgba(0,0,0,0.1);
@@ -558,6 +559,7 @@ tr{
 			$('.well').remove();
 			$('#appendedInputButton').attr('placeholder','');
 			$(".hidden-input").val('circle-person');
+			$('.context-current-cir').append("<img style='margin-left:400px;' src='/hello/Public/img/ajax-loader.gif' id='circle-serchper'>");
 			
 			//当pagechange分页状态为1的时候 则是用户点击了上一页 为2时
 			if(pagechange == 1){
@@ -570,9 +572,10 @@ tr{
 			
 			//var pagenumcurrent = 
 			$.post('__URL__/serchCirclePersion',{circleId:circleId,pagenum:pagenum},function(data){
+				$('#circle-serchper').remove();
 				$.each(data['data'],function(index,content){
 					
-					if(content.appstatus != '1' && content.appstatus != '0' && content.appstatus != '-2'){
+					if(content.appstatus != '1' && content.appstatus != '0' && content.appstatus != '-2' && content.appstatus != '3'){
 						var html = "<button class='btn btn-mini btn-primary' type='button' style='float:right; margin-bottom:3px;' onclick=\"$.doFriendApply("+circleId+",'"+content.uemail+"',this)\">加为好友</button>";
 					}else if(content.appstatus == '0'){
 						var html = "<div style='text-align:right;font-size:13px; font-weight:bold; margin-right:11px; color:rgb(190,190,190); padding:3px;'>好友申请中</div>";
@@ -584,7 +587,7 @@ tr{
 						var html = "<div style='text-align:right;font-size:13px; font-weight:bold; margin-right:11px; color:rgb(190,190,190); padding:3px;'>已被其申请好友</div>";
 					}
 					
-					$('.context-current-cir').append("<div class='friend friend-cir'><div class='f-face'><img src='/hello/Uploads/1.jpg' class='f-face-img'></div><div class='f-bottom'><p class='muted'>"+content.uname+"&nbsp&nbsp</p><p class='muted muted-phone'>"+content.phonenumber+"</p><p>"+html+"</p></div></div>");
+					$('.context-current-cir').append("<div class='friend friend-cir'><div class='f-face'><img src='/hello/Public/Uploads/"+content.faceimg+"' class='f-face-img'></div><div class='f-bottom'><p class='muted'>"+content.uname+"&nbsp&nbsp</p><p class='muted muted-phone'>"+content.phonenumber+"</p><p>"+html+"</p></div></div>");
 				});
 				
 				if(data['pageif'] == '-1'){
@@ -792,7 +795,7 @@ tr{
 										}else{
 											var isJo = "<button  style='font-size:12px;' type='button' class='btn btn-primary  circle-"+content.id+"'' onclick='$.doJoin("+content.id+",this,2)'>加入圈子</button>";
 										}
-										$('.thumbnails-ser-ui').append("<li class='span3 first-li' style='"+liStyle+"'><div class='thumbnail'><div class='caption'><h5 style='color:#666'>"+content.name+"</h5><dl class='dl-horizontal'><dt>圈子编号：</dt><dd>"+content.id+"</dd><dt>成员数量：</dt><dd>"+content.count+"</dd><dt>创建人：</dt><dd>"+content.uname+"</dd><dt>创建日期：</dt><dd>"+content.time+"</dd></dl><p class='join_btn' style='text-align:right;margin:0px;'>"+isJo+"</p></div></div></li>");
+										$('.thumbnails-ser-ui').append("<li class='span3 first-li' style='"+liStyle+"'><div class='thumbnail'><div class='caption'><h5 style='color:#666'>"+content.name+"</h5><dl class='dl-horizontal'><dt>圈子编号：</dt><dd>"+content.id+"</dd><dt>成员数量：</dt><dd>"+content.count+"</dd><dt>创建人：</dt><dd>"+content.createname+"</dd><dt>创建日期：</dt><dd>"+content.time+"</dd></dl><p class='join_btn' style='text-align:right;margin:0px;'>"+isJo+"</p></div></div></li>");
 										ei = ei+1;
 									});
 									$(".button-face").animate({opacity:'1'},10,function(){
@@ -966,14 +969,13 @@ tr{
 			$.post('__URL__/upAppMsgStatus',{status:status},function(data){
 				if(data['status'] == '1'){
 					$.each(data['info'],function(index,content){
-						$('.context-msgcenter').append("<div class='row normal-user' style='margin-top:40px;'><div class='span2 offset1'><div class='cface'><img src='__ROOT__/hello/Uploads/4.jpg' class='img-polaroid'></div></div><div class='span1 captain-talk'><div class='talkbox-title-left'></div><div class='talkbox-title-left-2'></div></div><div class='span5'><div class='talkbox'>我是<span style='color:#888'>"+content.uname2+"</span>在圈子<span style='color:#999'>"+content.circlename+"</span>中申请和你成为好友！<P style='text-align:right;margin: 5px 0 -4px;'><span class='label label-info lable-info-agreefa' id='lable-info-agreefa' style='float:none; margin-left:0;' onclick=\"applyAgree('"+content.uemail2+"')\">同意</span>&nbsp<span class='label label-info lable-info-agreefa' id='lable-info-agreefa' style='float:none; margin-left:2px;' onclick=\"applyCancel('"+content.uemail2+"')\">拒绝</span></p></div></div></div>");
+						$('.context-msgcenter').append("<div class='row normal-user' style='margin-top:40px;'><div class='span2 offset1'><div class='cface'><img src='__ROOT__/hello/Public/Uploads/"+content.ufaceimg2+"' class='img-polaroid'></div></div><div class='span1 captain-talk'><div class='talkbox-title-left'></div><div class='talkbox-title-left-2'></div></div><div class='span5'><div class='talkbox'>我是<span style='color:#888'>"+content.uname2+"</span>在圈子<span style='color:#999'>"+content.circlename+"</span>中申请和你成为好友！<P style='text-align:right;margin: 5px 0 -4px;'><span class='label label-info lable-info-agreefa' id='lable-info-agreefa' style='float:none; margin-left:0;' onclick=\"applyAgree('"+content.uemail2+"',this)\">同意</span>&nbsp<span class='label label-info lable-info-agreefa' id='lable-info-agreefa' style='float:none; margin-left:2px;' onclick=\"applyCancel('"+content.uemail2+"',this)\">拒绝</span></p></div></div></div>");
 					});
 					
 				}else{
 					$('.context-msgcenter').append("<p class='p-applymsg' style='text-align:center; font-size:15px; font-weight:bold; color:#999; margin-left:100px;'>暂时没有任何信息..</p>");
 				}
 			});
-			
 			
 		});
 		
@@ -988,28 +990,7 @@ tr{
 			
 		});
 		
-		/*查询所有好友申请信息*/
-		function queryFrApp(){
-			$('.hidden-input').val('hidden-msgcenter');
-			$('#appendedInputButton').attr('placeholder','');
-			$('.context-all').fadeOut(0);
-			$('.context-msgcenter').fadeIn(200);
-			
-			//同时将 所有查看状态为0的信息查看状态设置为1
-			var status = '1';
-			$(".envelop-alert").css('display','none');
-			$(".normal-user").remove();
-			$(".p-applymsg").remove();
-			$.post('__URL__/upAppMsgStatus',{status:status},function(data){
-				if(data['status'] == '1'){
-					$.each(data['info'],function(index,content){
-						$('.context-msgcenter').append("<div class='row normal-user' style='margin-top:40px;'><div class='span2 offset1'><div class='cface'><img src='__ROOT__/hello/Uploads/4.jpg' class='img-polaroid'></div></div><div class='span1 captain-talk'><div class='talkbox-title-left'></div><div class='talkbox-title-left-2'></div></div><div class='span5'><div class='talkbox'>我是<span style='color:#888'>"+content.uname2+"</span>在圈子<span style='color:#999'>"+content.circlename+"</span>中申请和你成为好友！<P style='text-align:right;margin: 5px 0 -4px;'><span class='label label-info lable-info-agreefa' id='lable-info-agreefa' style='float:none; margin-left:0;' onclick=\"applyAgree('"+content.uemail2+"')\">同意</span>&nbsp<span class='label label-info lable-info-agreefa' id='lable-info-agreefa' style='float:none; margin-left:2px;' onclick=\"applyCancel('"+content.uemail2+"')\">拒绝</span></p></div></div></div>");
-					});
-				}else{
-					$('.context-msgcenter').append("<p class='p-applymsg' style='text-align:center; font-size:15px; font-weight:bold; color:#999; margin-left:100px;'>暂时没有任何信息..</p>");
-				}
-			});
-		}
+		
 		
 		
 	});
@@ -1035,7 +1016,7 @@ tr{
 		$.post('__URL__/queryMyFriend',{pagenum:pagenum,condition:condition},function(data){
 			if(data['info'] != null){
 				$.each(data['info'],function(index,content){
-					$('.context-showfriend').append("<div class='friend'><div class='f-face'><img src='/hello/Uploads/1.jpg' class='f-face-img'></div><div class='f-bottom'><p class='muted'>"+content.uname1+"&nbsp;&nbsp;</p><p class='muted muted-phone'>"+content.uphonenumber1+"</p></div></div>");
+					$('.context-showfriend').append("<div class='friend'><div class='f-face'><img src='/hello/Public/Uploads/"+content.faceimage1+"' class='f-face-img'></div><div class='f-bottom'><p class='muted'>"+content.uname1+"&nbsp;&nbsp;</p><p class='muted muted-phone'>"+content.uphonenumber1+"</p></div></div>");
 				});
 			}else{
 				//当查询全部好友时
@@ -1106,14 +1087,14 @@ tr{
 	
 	//点击同意好友申请
 	var applyAgreeMark = 1;
-	function applyAgree(uemail){
+	function applyAgree(uemail,thisTag){
 		if(applyAgreeMark == 1){
 			applyAgreeMark = 0;
-			$('#lable-info-agreefa').html("<img src='__ROOT__/hello/Public/img/ajax-loader.gif' class='loader-gif'>");
+			$(thisTag).html("<img src='__ROOT__/hello/Public/img/ajax-loader.gif' class='loader-gif'>");
 			$.post('__URL__/applyAgree',{uemail:uemail},function(data){
 				if(data['status'] == '1'){
-					$('#lable-info-agreefa').html('成功');
-					$('#lable-info-agreefa').parent().parent().parent().fadeOut(600,function(){
+					$(thisTag).html('成功');
+					$(thisTag).parent().parent().parent().parent().fadeOut(600,function(){
 						var childrenLen = $('.context-msgcenter').children().length;
 						if(childrenLen == 1){
 							//$('.context-msgcenter').append("<p class='p-applymsg' style='text-align:center; font-size:15px; font-weight:bold; color:#999; margin-left:100px;'>暂时没有任何好友申请信息..</p>");
@@ -1126,6 +1107,29 @@ tr{
 				}
 			});
 		}
+	}
+	
+	/*查询所有好友申请信息*/
+	function queryFrApp(){
+		$('.hidden-input').val('hidden-msgcenter');
+		$('#appendedInputButton').attr('placeholder','');
+		$('.context-all').fadeOut(0);
+		$('.context-msgcenter').fadeIn(200);
+		
+		//同时将 所有查看状态为0的信息查看状态设置为1
+		var status = '1';
+		$(".envelop-alert").css('display','none');
+		$(".normal-user").remove();
+		$(".p-applymsg").remove();
+		$.post('__URL__/upAppMsgStatus',{status:status},function(data){
+			if(data['status'] == '1'){
+				$.each(data['info'],function(index,content){
+					$('.context-msgcenter').append("<div class='row normal-user' style='margin-top:40px;'><div class='span2 offset1'><div class='cface'><img src='__ROOT__/hello/Uploads/4.jpg' class='img-polaroid'></div></div><div class='span1 captain-talk'><div class='talkbox-title-left'></div><div class='talkbox-title-left-2'></div></div><div class='span5'><div class='talkbox'>我是<span style='color:#888'>"+content.uname2+"</span>在圈子<span style='color:#999'>"+content.circlename+"</span>中申请和你成为好友！<P style='text-align:right;margin: 5px 0 -4px;'><span class='label label-info lable-info-agreefa' id='lable-info-agreefa' style='float:none; margin-left:0;' onclick=\"applyAgree('"+content.uemail2+"',this)\">同意</span>&nbsp<span class='label label-info lable-info-agreefa' id='lable-info-agreefa' style='float:none; margin-left:2px;' onclick=\"applyCancel('"+content.uemail2+"',this)\">拒绝</span></p></div></div></div>");
+				});
+			}else{
+				$('.context-msgcenter').append("<p class='p-applymsg' style='text-align:center; font-size:15px; font-weight:bold; color:#999; margin-left:100px;'>暂时没有任何信息..</p>");
+			}
+		});
 	}
 	
 	//查找最新全部圈子
@@ -1160,14 +1164,14 @@ tr{
 	
 	//点击拒绝好友申请
 	var applyCancelMark = 1;
-	function applyCancel(uemail){
-		if(applyAgreeMark == 1){
-			applyAgreeMark = 0;
-			$('#lable-info-agreefa').html("<img src='__ROOT__/hello/Public/img/ajax-loader.gif' class='loader-gif'>");
+	function applyCancel(uemail,thisTag){
+		if(applyCancelMark == 1){
+			applyCancelMark = 0;
+			$(thisTag).html("<img src='__ROOT__/hello/Public/img/ajax-loader.gif' class='loader-gif'>");
 			$.post('__URL__/applyCancel',{uemail:uemail},function(data){
 				if(data['status'] == '1'){
-					$('#lable-info-agreefa').html('已取消');
-					$('#lable-info-agreefa').parent().parent().parent().fadeOut(600,function(){
+					$(thisTag).html('已取消');
+					$(thisTag).parent().parent().parent().parent().fadeOut(600,function(){
 						var childrenLen = $('.context-msgcenter').children().length;
 						if(childrenLen == 1){
 							//$('.context-msgcenter').append("<p class='p-applymsg' style='text-align:center; font-size:15px; font-weight:bold; color:#999; margin-left:100px;'>暂时没有任何好友申请信息..</p>");
@@ -1199,7 +1203,9 @@ tr{
 	
 	//请求服务器获取头像等个人资料
 	function requestMyInfo(){
+		$('.label-firstimage-text').html('<img src=/hello/Public/img/ajax-loader.gif>');
 		$.post('__URL__/requestMyInfo',{},function(data){
+			$('.label-firstimage-text').html('请点图片上传真实头像');
 			$('#img-polaroid-myface').attr('src','/hello/Public/Uploads/'+data['faceimage']);
 		});
 	}
@@ -1232,6 +1238,7 @@ tr{
 		
 	}
 </script>
+<link rel="shortcut icon" href="/hello/Public/img/logo.ico" type="image/icon">
 </head>
 
 <body>
@@ -1258,10 +1265,10 @@ tr{
 						action="__URL__/doImageUp" method="post"
 						target="ifram" id="formif">
 						<a href="#" class="thumbnail"> 
-							<img data-src="holder.js/160x160" alt="160x160" style="width: 176px; height: 160px;" src="__ROOT__/hello/Uploads/faceup.png">
+							<img data-src="holder.js/160x160" alt="160x160" style="width: 170px; " src="/hello/Public/img/clickhead2.jpg">
 						</a>
 						<p>
-							<span class="label label-info" id="lable">点击图片上传真实头像</span>
+							<span class="label label-info label-firstimage-text" id="lable">请点图片上传真实头像</span>
 						</p>
 						<input type="file" name="photo" class="fileSelect"> 
 						<input type="submit" class="submit">
@@ -1284,7 +1291,7 @@ tr{
 					</div>
 					
 					<div class="uface2 button-face" id='button-face'>
-						<img src="/hello/Uploads/4.jpg" class="img-polaroid" id="img-polaroid-myface">
+						<img src="/hello/Public/img/logo2.png" class="img-polaroid" id="img-polaroid-myface">
 					</div>
 				</div>
 				

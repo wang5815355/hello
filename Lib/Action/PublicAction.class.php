@@ -117,7 +117,8 @@ class PublicAction extends GlobalAction {
 			$dataIn['uname'] = $Name;//姓名
 			$dataIn['email'] = $Email;//账号email
 			$dataIn['password'] = sha1(md5($Password));//登录密码
-			$dataIn['phonenumber'] = $matchArea+$Phone;//手机号
+			$dataIn['phonenumber'] = $matchArea.$Phone;//手机号
+			$dataIn['regtime'] = time();
 			
 			$resultIn = $userModel->add($dataIn);
 			if($resultIn != false){

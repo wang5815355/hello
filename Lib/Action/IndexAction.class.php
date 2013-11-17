@@ -268,6 +268,7 @@ class IndexAction extends GlobalAction {
     			//查询是否存在相同的申请人和被申请人记录 若存在且申请处理情况且status为2（申请未通过） 时不必添加新纪录 直接将status改为0（未处理）
     			$faModel = M('friendapply');
     			$mapFa['uemail1'] = $uemail2;//被申请好友email
+    			$mapFa['uemail2'] = $uemail1;//当前登录用户
     			$resultIsFa = $faModel->where($mapFa)->find();
     			
     			if($resultIsFa != null && $resultIsFa['status'] == '2'){
@@ -285,6 +286,7 @@ class IndexAction extends GlobalAction {
     				$dataF['uemail1'] = $uemail2;
     				$dataF['uemail2'] = $uemail1;
     				$dataF['uname2'] = $uname;
+    				$dataF['ufaceimg2'] = $uInfo['faceimage'];
     				$dataF['info'] = '';
     				$dataF['status'] = '0';
     				$dataF['circleid'] = $circleId;
@@ -318,7 +320,7 @@ class IndexAction extends GlobalAction {
     	if(preg_match($matchEmail,$uemail1)){
     		$faModel = M('friendapply');//好友申请 信息表
     		$map['uemail1'] = $uemail1;
-    		$map['$uemail2'] = $uemail2;
+    		$map['uemail2'] = $uemail2;
     		$resultUf = $faModel->where($map)->delete(); 
     		
     		if($resultUf != false){
@@ -367,6 +369,7 @@ class IndexAction extends GlobalAction {
     			$uinfo2 = $uModel->where($mapU)->find();
     			
     			//添加申请人与被申请人好友关系记录
+    			$dataUf['id'] = '0';
     			$dataUf['uemail1'] = $uinfo['email'];//当前登录用户的信息
     			$dataUf['uname1'] = $uinfo['uname'];//当前登录用户的姓名
     			$dataUf['uphonenumber1'] = $uinfo['phonenumber'];
@@ -440,19 +443,22 @@ class IndexAction extends GlobalAction {
    					$dataInfo['pageif'] = '1';
    				}
    				$dataInfo['pagenumCount'] = $pagenumCount;//总页数
-   				
+   				$dataInfo['data2'] = '你';
    				//查询该用户是否为你的好友
    				foreach($list as $k=>$v){
    					//查询所有的好友申请记录
-   					$mapAf['uemail1|uemail2'] = $list[$k]['uemail'];//其他用户
-   					$mapAf['uemail1|uemail2'] = $uemail;//当前登录用户
+//    				$mapAf['uemail1|uemail2'] = $list[$k]['uemail'];//圈子中的所有用户
+//    				$mapAf['uemail1|uemail2'] = $uemail;//当前登录用户
    					
 //    				$mapAf['uemail1'] = $list[$k]['uemail'];//其他用户
 //    				$mapAf['uemail2'] = $uemail;//当前登录用户
    					$appInfoModel = M('friendapply');
-   					$isFriend = $appInfoModel->where($mapAf)->getField('status');
+   					$isFriend = $appInfoModel->query("select `status` from `hello_friendapply` where (`uemail1` = '".$list[$k]['uemail']."' or `uemail2` = '".$list[$k]['uemail']."') and (`uemail1` = '".$uemail."' or `uemail2` = '".$uemail."') limit 1");
+//    					where($mapAf)->getField('status');
+   					$isFriend = $isFriend[0]['status'];
+   					$dataInfo['data2'] = $dataInfo['data2'].$isFriend;
    					
-   					if($isFriend == null && $mapAf['uemail1'] != $mapAf['uemail2']){//1代表已成为好友
+   					if($isFriend == null && $list[$k]['uemail'] != $uemail){//1代表已成为好友
    						$list[$k]['appstatus'] = '-1';//还未提交好友申请
    					}else if($list[$k]['uemail'] == $uemail){
    						$list[$k]['appstatus'] = '-2';//该用户是登录用户自己
@@ -468,7 +474,10 @@ class IndexAction extends GlobalAction {
    					}
    					
    					if($list[$k]['appstatus'] != '1' && $list[$k]['appstatus'] != '-2'){
-   						$list[$k]['phonenumber'] = substr($list[$k]['phonenumber'],4,3)."******".substr($list[$k]['phonenumber'],13,2);
+   						$list[$k]['phonenumber'] = substr($list[$k]['phonenumber'],4,2)."*******".substr($list[$k]['phonenumber'],13,2);
+   					}
+   					if($list[$k]['appstatus'] == '1'){
+   						$list[$k]['phonenumber'] = substr($list[$k]['phonenumber'],4,11);
    					}
    				}
    				
@@ -476,6 +485,7 @@ class IndexAction extends GlobalAction {
     		
     	}
     	$dataInfo['data'] = $list;
+    	
     	$this->ajaxReturn($dataInfo,'JSON');
     }     
     
@@ -583,7 +593,7 @@ class IndexAction extends GlobalAction {
     	 	if($resultIfPass != null && $resultIfPass != ''){//如果该圈子设有密码 
     	 		
     	 		if($resultIfPass == $passWord){//用户提交密码与圈子密码相符合 则加入该圈子
-    	 			$mapC['circleId'] = $circleId;
+    	 			$mapC['circleid'] = $circleId;
     	 			//统计当前圈子一共有多少人
     	 			$count = $grModel->where($mapC)->count();
     	 			//获取当前需要加入圈子的用户姓名
@@ -608,12 +618,13 @@ class IndexAction extends GlobalAction {
     	 			$dataInfo['info'] = '3';//圈子密码不正确
     	 		}
     	 	}else{
-    	 		$mapC['circleId'] = $circleId;
+    	 		$mapC['circleid'] = $circleId;
     	 		//统计当前圈子一共有多少人
     	 		$count = $grModel->where($mapC)->count();
     	 		$userInfo = $this->getUinfo();
     	 		$data['uname'] = $userInfo['uname'];
     	 		$data['phonenumber'] = $userInfo['phonenumber'];
+    	 		$data['faceimg'] = $userInfo['faceimage'];
     	 		
     	 		$result = $grModel->add($data);
     	 		$dataInfo['info'] = '2';
@@ -771,6 +782,7 @@ class IndexAction extends GlobalAction {
 	    				$dataGr['isCreater'] = '1';
 	    				$dataGr['uname'] = $uInfo['uname'];
 	    				$dataGr['phonenumber'] = $uInfo['phonenumber'];
+	    				$dataGr['faceimg'] = $uInfo['faceimage'];
 // 	    				$dataGr['status '] = '1';
 	    				$grModel->add($dataGr);
 	    				$dataInfo['info'] = "圈子'".$circleName."'创建成功.";
