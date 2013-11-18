@@ -89,25 +89,40 @@ class IndexAction extends GlobalAction {
     	$matchArea = '0086'; //区号验证正则表达式(目前必须为中国0086) 暂时直接插入数据库不验证
     	
     	if(preg_match($matchPhone,$phonenumber)){
-    		if($uinfo['phonenumber'].'' != ($matchArea.$phonenumber).''){
+    		if($uinfo['phonenumber'].'' != $matchArea.$phonenumber.''){
     			$userModel = M('user');
-    			$userModel = M('userrelationship');
+    			$userRModel = M('userrelationship');
     			$grModel = M('grouprelationship');
+    			$userModel->startTrans();
+    			
     			$data['phonenumber'] = $matchArea.$phonenumber;
     			$data2['phonenumber'] = $matchArea.$phonenumber;
     			$map['email'] = $uemail;
     			$map2['uemail'] = $uemail;
+    			$map3['uemail1|uemail2'] = $uemail;
     			
     			$result = $userModel->where($map)->save($data);
     			$result2 = $grModel->where($map2)->save($data2);
+    			
+    			$resultEmail = $userRModel->where($map3)->find();
+    			if($resultEmail['uemail1'] == $uemail){
+    				$data3['uphonenumber1'] = $matchArea.$phonenumber;
+    				$result3 = $userRModel->where($map3)-save($data3);
+    			}
+    			if($resultEmail['uemail2'] == $uemail){
+    				$data3['uphonenumber2'] = $matchArea.$phonenumber;
+    				$result3 = $userRModel->where($map3)-save($data3);
+    			}
     			
     			//查询好友关系表中自己的手机号
 //     			$result3 = $userModel->where($map)->save($data);
     			 
     			if($result != false){
     				$dataInfo['info'] = '手机号修改成功';
+    				$userModel->commit();
     			}else{
-    				$dataInfo['info'] = $uinfo['phonenumber'].'手机号未被修改'.$phonenumber;
+    				$userModel->rollback();
+    				$dataInfo['info'] = $uinfo['phonenumber'].'手机号未被修改';
     			}
     		}else{
     			$dataInfo['info'] = '该手机号与已存在的手机号相同';
