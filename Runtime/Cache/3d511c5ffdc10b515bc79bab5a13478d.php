@@ -8,7 +8,12 @@
 <script type="text/javascript" src="__ROOT__/hello/Public/js/jquery.js"></script>
 <script type="text/javascript" src="__ROOT__/hello/Public/js/bootstrap.min.js"></script>
     <style type="text/css">
-    	body{
+    html,body{
+				margin:0px;
+				padding:0px;
+    		}
+    	
+	body{
     		background-color: rgb(28,151,223);
     		font-family: 微软雅黑;
     		background-image: url('__ROOT__/hello/Public/img/glow.png');
@@ -246,6 +251,45 @@
 		.loader-gif{
 			margin:0 6px;
 		}
+		.starbg-hidden{
+			background-repeat:no-repeat;
+			background-image: url(/hello/Public/img/starbg.png);
+			-moz-background-size:cover; /* 老版本的 Firefox */
+			background-size:cover;
+			z-index:99;
+			height:100%;
+			width:100%;
+			overflow:hidden;
+			position:absolute;
+			min-width:20px;
+			margin:0px;
+			padding:0px;
+			background-origin:content-box;
+			display:none;
+		}
+		.starbg-hidden-cover{
+			background-repeat:no-repeat;
+			background-color:rgba(17,160,256,.5);
+			-moz-background-size:cover; /* 老版本的 Firefox */
+			background-size:cover;
+			z-index:100;
+			height:100%;
+			width:100%;
+			overflow:hidden;
+			position:absolute;
+			min-width:20px;
+			margin:0px;
+			padding:0px;
+			background-origin:content-box;
+			display:none;
+		}
+		.starbg-font{
+			font-family: 微软雅黑;
+			font-size:30px;
+			text-align:center;
+			font-weight:bold;
+			color:rgba(255,255,255,0.97);
+		}
     </style>
     <script type="text/javascript">
     	$(document).ready(function(){
@@ -300,7 +344,7 @@
       		    	//点击提交注册后显示加载进度条 注册按钮失效
       		    	$('#registerBtn').attr("disabled",true);
           		    $('#registerBtn').html("<img src='__ROOT__/hello/Public/img/ajax-loader.gif' class='loader-gif'>");
-      		    	
+          		  	$('.alert-info').html("正在提交资料，请耐心等待");
       		    	//使用post提交注册信息
       		    	$.post("registerIn", 
  	     	    			{ Email:rEmail,
@@ -314,7 +358,25 @@
  	     					  	//如果插入数据成功 status == 5
  	     					  	if(data['status']=='5'){
  	     					  		$('#registerBtn').html("成功");
- 	     					  		location.href='__APP__/Index/index';
+ 	     					  		$('div.body').fadeOut(200,function(){
+ 	     					  			$('.starbg-hidden-all').fadeIn(500,function(){
+ 	     					  				$('.starbg-font-1').fadeIn(3000,function(){
+ 	     					  					$('.starbg-font-1').fadeOut(3000,function(){
+ 	     					  						$('.starbg-font-2').fadeIn(3000,function(){
+	 	     					  						$('.starbg-font-2').fadeOut(3000,function(){
+	 	     					  							$('.starbg-font-3').fadeIn(3000,function(){
+	 	     					  								$('.starbg-hidden-cover').fadeOut(600,function(){
+	 	     					  									location.href='__APP__/Index/index';
+	 	     					  								});
+	 	     					  							});
+	 	     					  						});
+ 	     					  						});
+ 	     					  					});
+ 	     					  				});
+ 	     					  			});
+ 	     					  		});
+      		    	
+      		    	
  	     					  	}else{
  	     					  		//恢复注册按钮
  	      		    		    	$('#registerBtn').attr("disabled",false);
@@ -368,7 +430,7 @@
      	    			 $.post("register", 
      	     	    			{ username:email,password:inputValue}, 
      	     	    			  function(data,status){
-     	     					  $('#dialog').append("<div class= 'row captain' style='display:none'><div class= 'span2 offset1'><div class= 'cface'><img src='__ROOT__/hello/Uploads/1.jpg' class= 'img-polaroid'></div></div><div class= 'span1 captain-talk' ><div class= 'talkbox-title-left' ></div><div class= 'talkbox-title-left-2' ></div></div><div class= 'span5' ><div class= 'talkbox' >&nbsp</div></div></div>");
+     	     					  $('#dialog').append("<div class= 'row captain' style='display:none'><div class= 'span2 offset1'><div class= 'cface'><img src='__ROOT__/hello/Uploads/4.jpg' class= 'img-polaroid'></div></div><div class= 'span1 captain-talk' ><div class= 'talkbox-title-left' ></div><div class= 'talkbox-title-left-2' ></div></div><div class= 'span5' ><div class= 'talkbox' >&nbsp</div></div></div>");
      	     					  //如果账号正确，则记录账号，并且将输入框type改成password
      	     					  $('#dialog>div:last-child').fadeIn(400,function(){
      	     						  //加载完毕后 登录状态status不为3（登陆成功） 即显示“发送”按钮
@@ -414,18 +476,28 @@
     		
     	});
     </script>
+    <link rel="shortcut icon" href="/hello/Public/img/logo.ico" type="image/icon">
   </head>
 
   <body>
-  	<div class="body">
+  	<div class="starbg-hidden starbg-hidden-all">
+  	</div>
+  	<div class="starbg-hidden-cover starbg-hidden-all">
+  		<p class='starbg-font starbg-font-1' id="starbg-font-1" style="display:none; margin-top:380px;">哥丢了n多手机 一个个通知别人换号是件麻烦事~</p>
+  		<p class='starbg-font starbg-font-2' id="starbg-font-2" style="display:none; margin-top:380px;"> 哥忙着睡觉呢 ，任何时候要哥电话就上这！</p>
+  		<p class='starbg-font starbg-font-3' id="starbg-font-3" style="display:none; font-size:40px; margin-top:380px;">Hello</p>
+  	</div>
+  	 
+  	<div class="body" >
 		<div class="container">
 			<div class="row-fluid header">
 				<div class="span12">
 					<div class="logo">Hello</div>
 				</div>
 			</div>
-
 			<div class="content">
+				<img  style="z-index:-1; position:absolute; left:58%; top:13%;" src="__ROOT__/hello/Public/img/backlogin.png">
+			
 				<div class="dialog left" id="dialog">
 					<div class="row captain">
 						<div class="span2 offset1">

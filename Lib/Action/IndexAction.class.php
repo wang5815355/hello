@@ -91,9 +91,18 @@ class IndexAction extends GlobalAction {
     	if(preg_match($matchPhone,$phonenumber)){
     		if($uinfo['phonenumber'].'' != ($matchArea.$phonenumber).''){
     			$userModel = M('user');
+    			$userModel = M('userrelationship');
+    			$grModel = M('grouprelationship');
     			$data['phonenumber'] = $matchArea.$phonenumber;
+    			$data2['phonenumber'] = $matchArea.$phonenumber;
     			$map['email'] = $uemail;
+    			$map2['uemail'] = $uemail;
+    			
     			$result = $userModel->where($map)->save($data);
+    			$result2 = $grModel->where($map2)->save($data2);
+    			
+    			//查询好友关系表中自己的手机号
+//     			$result3 = $userModel->where($map)->save($data);
     			 
     			if($result != false){
     				$dataInfo['info'] = '手机号修改成功';
@@ -693,12 +702,14 @@ class IndexAction extends GlobalAction {
      */
     public function doImageUp(){
     	$uEmail = $this->getUserName();//获取创建者email
+    	$result = null;
     	if($uEmail != null){
 	    	//获取分页类
 	    	import('ORG.Net.UploadFile');
 	    	$upload = new UploadFile();// 实例化上传类
-	    	$upload->maxSize  = 3145728 ;// 设置附件上传大小
+	    	$upload->maxSize  = 3145728;// 设置附件上传大小
 	    	$upload->allowExts  = array('jpg', 'gif', 'png', 'jpeg');// 设置附件上传类型
+	    	$upload->allowTypes = array('image/png','image/jpg','image/jpeg','image/gif');//检测mime类型
 	    	$upload->savePath =  './Public/Uploads/';// 设置附件上传目录 条件上传目录 
 	    	$upload->thumb = true;
 	    	$upload->thumbMaxWidth = '50,200';
@@ -718,21 +729,23 @@ class IndexAction extends GlobalAction {
 	    		}else if($auth == '0'){
 	    			$data['auth'] = '3';
 	    		}
+	    		
+	    		// 保存表单数据 包括附件数据
+	    		$userModel = M('User'); // 实例化User对象
+	    		$userModel->create(); // 创建数据对象
+	    		$map['email'] = $uEmail;
+	    		$data['faceimage'] = 'thumb_'.$info[0]['savename'];//缩略图文件名
+	    		$result = $userModel->where($map)->save($data); // 写入用户数据到数据库
 	    	}
 	    	 
-	    	// 保存表单数据 包括附件数据
-	    	$userModel = M('User'); // 实例化User对象
-	    	$userModel->create(); // 创建数据对象
-	    	$map['email'] = $uEmail;
-	    	$data['faceimage'] = 'thumb_'.$info[0]['savename'];//缩略图文件名
-	    	$result = $userModel->where($map)->save($data); // 写入用户数据到数据库
+	    	
 	    	 
 	    	if($result != false){
 	    		$infoMsg = '1';//数据保存成功
 	    		echo "<script> parent.notice("."'".$infoMsg."'".");</script>";//执行提交页面的回调函数
 	    	}else{
 	    		$infoMsg = '2';//数据保存失败
-	    		echo "<script> parent.notice("."'".$infoMsg."'".");</script>";
+	    		echo "<script> parent.notice("."'".$upload->getErrorMsg()."'".");</script>";
 	    	}
     	}
     }

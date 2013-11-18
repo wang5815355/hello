@@ -677,7 +677,7 @@ tr{
 		
 		//点击创建圈子之后 将现有context界面隐藏 然后吸纳实处captain对话框
 		$('.create-circle').click(function(){
-			$('#appendedInputButton').attr('placeholder','输入你要创建的圈子名称');
+			$('#appendedInputButton').attr('placeholder','输入你要创建的圈子名称 点击头像发送');
 			$('.hidden-input').attr('value','hidden-circle');
 			
 			$('.context-all').fadeOut(0);
@@ -688,7 +688,7 @@ tr{
 		
 		//点击加入圈子按钮
 		$('.join-circle').click(function(){
-			$('#appendedInputButton').attr('placeholder','输入圈子名称或圈子号可以查找你要加入的圈子');
+			$('#appendedInputButton').attr('placeholder','输入圈子名称或圈子号可以查找你要加入的圈子  点击头像发送');
 			$('.hidden-input').attr('value','joinCircleInput');
 			$('.context-all').fadeOut(0);
 			$('.context-join').fadeIn(150);
@@ -1193,7 +1193,7 @@ tr{
 			$('#warning-temp').fadeOut(0);
 			$('#warning-use').fadeIn(500);
 		}else{
-			alert('数据保存失败');
+			alert(msg);
 		}
 	}
 	
@@ -1201,7 +1201,7 @@ tr{
 	function requestMyInfo(){
 		$('.label-firstimage-text').html('<img src=/hello/Public/img/ajax-loader.gif>');
 		$.post('__URL__/requestMyInfo',{},function(data){
-			$('.label-firstimage-text').html('请点图片上传真实头像');
+			$('.label-firstimage-text').html('请点击图片上传真实头像');
 			$('#img-polaroid-myface').attr('src','/hello/Public/Uploads/'+data['faceimage']);
 		});
 	}
@@ -1242,6 +1242,7 @@ tr{
 		<div class="image">Hello
 			<img src="__ROOT__/hello/Public/img/logo2.png" style="width:28px;margin-top:-8px; margin-left:-5px;">
 		</div>
+		
 		<div class="android-down" data-toggle="modal" data-target="#model-android" style="float:right;padding:0px 8px;margin-top:0px;">Android客户端<i class="icon-download icon-white" style=" margin-left:3px;margin-top:3px;"></i></div>
 		<div class="btn-group head-buttons" style="float:right;margin-right:19px;">
 			<button class="btn btn-success btn-usercenter" style="display:none;"><i class="icon-user"></i></button>
